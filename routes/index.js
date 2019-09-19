@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/lotta-llama', function(req, res, next) {
-  res.render('lotta_llama', { title: "lottallama | hOmewRecKerzzzzz" });
+  res.render('llama', { title: "lottallama | hOmewRecKerzzzzz" });
 });
 
 module.exports = router;
