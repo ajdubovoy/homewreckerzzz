@@ -5,14 +5,18 @@ var favicon = require('serve-favicon')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
-var postcssMiddleware = require('postcss-middleware');
-var autoprefixer = require('autoprefixer');
+// var postcssMiddleware = require('postcss-middleware');
+// var autoprefixer = require('autoprefixer');
+var browserify = require('browserify-middleware');
 
 var indexRouter = require('./routes/index');
 
 var app = express();
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+// Browserify JS
+app.get('/app.js', browserify('./vue/app.js'));
 
 // SASS
 app.use(sassMiddleware({
