@@ -4,13 +4,33 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+var postcssMiddleware = require('postcss-middleware');
+var autoprefixer = require('autoprefixer');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 
-// view engine setup
+// SASS
+// app.use(postcssMiddleware({
+//   plugins: [
+//     autoprefixer({
+//       browsers: 'last 2 versions', 
+//       cascade: false 
+//     })
+//   ],
+//   src: function(req) {
+//     return path.join(path.join(__dirname, 'public', 'stylesheets'), req.url);
+//   }
+// }));
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: true, // true = .sass and false = .scss
+  sourceMap: true
+}));
+
+// PUG Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -18,16 +38,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: true, // true = .sass and false = .scss
-  sourceMap: true
-}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routers
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/lotta-llama', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
