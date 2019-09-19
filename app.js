@@ -12,23 +12,22 @@ var indexRouter = require('./routes/index');
 var app = express();
 
 // SASS
+// app.use(postcssMiddleware({
+//   plugins: [
+//     autoprefixer({
+//       browsers: 'last 2 versions', 
+//       cascade: false 
+//     })
+//   ],
+//   src: function(req) {
+//     return path.join(path.join(__dirname, 'public', 'stylesheets'), req.url);
+//   }
+// }));
 app.use(sassMiddleware({
-  src: path.join(__dirname, 'sass'),
+  src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
-  prefix: '/stylesheets',
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
-}));
-app.use(postcssMiddleware({
-  plugins: [
-    autoprefixer({
-      browsers: 'last 2 versions', 
-      cascade: false 
-    })
-  ],
-  src: function(req) {
-    return path.join(path.join(__dirname, 'public', 'stylesheets'), req.url);
-  }
 }));
 
 // PUG Views
