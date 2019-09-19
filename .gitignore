@@ -66,3 +66,6 @@ public/stylesheets/*.css.map
 
 # Compiled JS
 public/javascripts/*.js
+
+# Files in uploads
+public/uploads/*.mp3

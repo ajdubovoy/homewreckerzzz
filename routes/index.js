@@ -14,4 +14,8 @@ router.get('/play', function(req, res, next) {
   res.render('play', { title: 'play | hOmewRecKerzzzzz' });
 });
 
+router.get('/upload', function(req,res,next) {
+	res.render('upload')
+})
+
 module.exports = router;
