@@ -16,6 +16,9 @@ var app = express();
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // Browserify JS
+browserify.settings({
+  transform: ['babelify']
+});
 app.get('/app.js', browserify('./vue/app.js'));
 
 // SASS
