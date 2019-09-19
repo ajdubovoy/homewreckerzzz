@@ -14,25 +14,6 @@ var app = express();
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-// SASS
-// app.use(postcssMiddleware({
-//   plugins: [
-//     autoprefixer({
-//       browsers: 'last 2 versions', 
-//       cascade: false 
-//     })
-//   ],
-//   src: function(req) {
-//     return path.join(path.join(__dirname, 'public', 'stylesheets'), req.url);
-//   }
-// }));
-app.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: true, // true = .sass and false = .scss
-  sourceMap: true
-}));
-
 // PUG Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -46,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routers
 app.use('/', indexRouter);
 app.use('/lotta-llama', indexRouter);
+app.use('/play', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,5 +44,27 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// SASS
+var destPath = path.join(__dirname, 'public');
+app.use(sassMiddleware({
+    /* Options */
+    src: __dirname
+  , response: false
+  , dest: destPath
+  , outputStyle: 'extended'
+}));
+app.use(postcssMiddleware({
+  plugins: [
+    /* Plugins */
+    autoprefixer({
+      /* Options */
+    })
+  ],
+  src: function(req) {
+    return path.join(destPath, req.url);
+  }
+}));
+
 
 module.exports = app;

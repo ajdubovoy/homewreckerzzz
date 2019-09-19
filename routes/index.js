@@ -10,4 +10,8 @@ router.get('/lotta-llama', function(req, res, next) {
   res.render('llama', { title: "lottallama | hOmewRecKerzzzzz" });
 });
 
+router.get('/play', function(req, res, next) {
+  res.render('play', { title: 'play | hOmewRecKerzzzzz' });
+});
+
 module.exports = router;
