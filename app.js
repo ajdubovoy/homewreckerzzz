@@ -14,6 +14,26 @@ var app = express();
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+// SASS
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: true, // true = .sass and false = .scss
+  sourceMap: true
+}));
+// var destPath = path.join(__dirname, 'public');
+// app.use(postcssMiddleware({
+//   plugins: [
+//     /* Plugins */
+//     autoprefixer({
+//       /* Options */
+//     })
+//   ],
+//   src: function(req) {
+//     return path.join(destPath, req.url);
+//   }
+// }));
+
 // PUG Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -44,27 +64,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// SASS
-var destPath = path.join(__dirname, 'public');
-app.use(sassMiddleware({
-    /* Options */
-    src: __dirname
-  , response: false
-  , dest: destPath
-  , outputStyle: 'extended'
-}));
-app.use(postcssMiddleware({
-  plugins: [
-    /* Plugins */
-    autoprefixer({
-      /* Options */
-    })
-  ],
-  src: function(req) {
-    return path.join(destPath, req.url);
-  }
-}));
 
 
 module.exports = app;
