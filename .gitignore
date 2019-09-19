@@ -63,3 +63,6 @@ typings/
 # Compiled CSS
 public/stylesheets/*.css
 public/stylesheets/*.css.map
+
+# Compiled JS
+public/javascripts/*.js

@@ -5,14 +5,41 @@ var favicon = require('serve-favicon')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
-var postcssMiddleware = require('postcss-middleware');
-var autoprefixer = require('autoprefixer');
+// var postcssMiddleware = require('postcss-middleware');
+// var autoprefixer = require('autoprefixer');
+var browserify = require('browserify-middleware');
 
 var indexRouter = require('./routes/index');
 
 var app = express();
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+// Browserify JS
+browserify.settings({
+  transform: ['babelify']
+});
+app.get('/app.js', browserify('./vue/app.js'));
+
+// SASS
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: true, // true = .sass and false = .scss
+  sourceMap: true
+}));
+// var destPath = path.join(__dirname, 'public');
+// app.use(postcssMiddleware({
+//   plugins: [
+//     /* Plugins */
+//     autoprefixer({
+//       /* Options */
+//     })
+//   ],
+//   src: function(req) {
+//     return path.join(destPath, req.url);
+//   }
+// }));
 
 // PUG Views
 app.set('views', path.join(__dirname, 'views'));
@@ -44,27 +71,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// SASS
-var destPath = path.join(__dirname, 'public');
-app.use(sassMiddleware({
-    /* Options */
-    src: __dirname
-  , response: false
-  , dest: destPath
-  , outputStyle: 'extended'
-}));
-app.use(postcssMiddleware({
-  plugins: [
-    /* Plugins */
-    autoprefixer({
-      /* Options */
-    })
-  ],
-  src: function(req) {
-    return path.join(destPath, req.url);
-  }
-}));
 
 
 module.exports = app;
