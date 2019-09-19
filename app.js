@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+const autoprefixer = require('autoprefixer');
+const postcss = require('postcss');
 
 var indexRouter = require('./routes/index');
 
@@ -21,10 +23,16 @@ app.use(sassMiddleware({
   src: path.join(__dirname, './sass'),
   dest: path.join(__dirname, '../public/stylesheets'),
   prefix: '/stylesheets',
-  indentedSyntax: false, // true = .sass and false = .scss
+  indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+postcss([ autoprefixer ]).process(css).then(result => {
+  result.warnings().forEach(warn => {
+    console.warn(warn.toString())
+  })
+  console.log(result.css)
+});
 
 app.use('/', indexRouter);
 
