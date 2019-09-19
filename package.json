@@ -7,16 +7,18 @@
     "serve": "DEBUG=homewreckerzzz:* npm start"
   },
   "dependencies": {
-    "autoprefixer": "^9.6.1",
     "bootstrap": "^4.3.1",
     "bootstrap-sass": "^3.4.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-autoprefixer": "^5.4.0",
     "http-errors": "~1.6.3",
+    "jquery": "^3.4.1",
     "morgan": "~1.9.1",
-    "node-sass-middleware": "0.11.0",
-    "postcss": "^7.0.18",
+    "node-sass-middleware": "^0.11.0",
+    "popper.js": "^1.15.0",
+    "postcss-middleware": "^1.1.4",
     "pug": "2.0.0-beta11"
   }
 }
