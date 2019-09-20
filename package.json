@@ -20,6 +20,8 @@
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-es2015": "^6.24.1",
     "@babel/preset-vue-app": "^2.0.0",
+    "adsr": "^1.0.1",
+    "adsr-envelope": "^1.0.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-vue-app": "^2.0.0",
     "babelify": "^10.0.0",
