@@ -10,10 +10,10 @@
     ]
   },
   "scripts": {
-    "serve": "DEBUG=homewreckerzzz:* npm start",
     "watch": "watchify vue/app.js -o public/javascripts/app.js -v",
     "build": "browserify vue/app.js -o public/javascripts/app.js",
-    "start": "npm run watch & nodemon server.js"
+    "serve": "npm run watch & nodemon server.js",
+    "start": "npm run build && node ./bin/www"
   },
   "dependencies": {
     "@babel/core": "^7.6.0",
@@ -25,6 +25,7 @@
     "bootstrap": "^4.3.1",
     "bootstrap-sass": "^3.4.1",
     "browserify-middleware": "^8.1.1",
+    "browserify": "^16.5.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -41,7 +42,6 @@
     "vuex": "^3.1.1"
   },
   "devDependencies": {
-    "browserify": "^16.5.0",
     "nodemon": "^1.19.2",
     "watchify": "^3.11.1"
   }
