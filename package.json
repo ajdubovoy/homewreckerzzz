@@ -11,8 +11,8 @@
   },
   "scripts": {
     "watch": "watchify vue/app.js -o public/javascripts/app.js -v",
-    "build": "browserify vue/app.js -o public/javascripts/app.js",
-    "serve": "npm run watch & nodemon server.js",
+    "build": "browserify vue/app.js -t uglifyify -t babelify -o public/javascripts/app.js",
+    "develop": "npm run watch & nodemon server.js",
     "start": "npm run build && node ./bin/www"
   },
   "dependencies": {
@@ -21,8 +21,8 @@
     "babelify": "^10.0.0",
     "bootstrap": "^4.3.1",
     "bootstrap-sass": "^3.4.1",
-    "browserify-middleware": "^8.1.1",
     "browserify": "^16.5.0",
+    "browserify-middleware": "^8.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -35,6 +35,7 @@
     "postcss-middleware": "^1.1.4",
     "pug": "2.0.0-beta11",
     "serve-favicon": "^2.5.0",
+    "uglifyify": "^5.0.2",
     "vue": "^2.6.10",
     "vuex": "^3.1.1"
   },
