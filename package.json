@@ -11,9 +11,9 @@
   },
   "scripts": {
     "watch": "watchify vue/app.js -o public/javascripts/app.js -v",
-    "build": "browserify vue/app.js -t uglifyify -t babelify -o public/javascripts/app.js",
-    "develop": "npm run watch & nodemon server.js",
-    "start": "npm run build && node ./bin/www"
+    "build": " NODE_ENV=production browserify vue/app.js -t uglifyify -t babelify -o public/javascripts/app.js",
+    "develop": "DEBUG=homewreckerzzz: NODE_ENV=development npm run watch & nodemon server.js",
+    "start": "NODE_ENV=production npm run build && node ./bin/www"
   },
   "dependencies": {
     "@babel/core": "^7.6.0",
