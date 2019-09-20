@@ -11,6 +11,7 @@
     "start": "yarn express:run"
   },
   "dependencies": {
+    "adsr": "^1.0.1",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.1",
     "core-js": "^2.6.5",
