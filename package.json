@@ -10,10 +10,10 @@
     ]
   },
   "scripts": {
-    "serve": "DEBUG=homewreckerzzz:* npm start",
     "watch": "watchify vue/app.js -o public/javascripts/app.js -v",
     "build": "browserify vue/app.js -o public/javascripts/app.js",
-    "start": "npm run watch & nodemon server.js"
+    "serve": "npm run watch & nodemon server.js",
+    "start": "npm run build && node ./bin/www"
   },
   "dependencies": {
     "@babel/core": "^7.6.0",
