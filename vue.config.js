@@ -4,12 +4,5 @@ module.exports = {
       shouldServeApp: true,
       serverDir: './srv'
     }
-  },
-  css: {
-    loaderOptions: {
-      sass: {
-        indentedSyntax: true // SASS mode
-      }
-    }
   }
 }
