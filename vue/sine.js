@@ -10,12 +10,28 @@ Example usage:
 export function sineSustain(freq, peak, context) {
     var gain = context.createGain();
     var sound = context.createOscillator();
+    var env = ADSR(context);
+
     sound.connect(gain);
     gain.connect(context.destination);
-    gain.gain.value = peak;
+    env.connect(gain.gain);
+    
+    // these can be edited for different envelopes. maybe we could define certain envelopes in a separate file
+    env.attack = 0.3;
+    env.decay = 0.05;
+    env.sustain = 0.8;
+    env.release = 0.65;
+    env.value.value = peak;
+
+    gain.gain.value = 0;
+    
     sound.frequency.setValueAtTime(freq, context.currentTime);
-    sound.start(0);
-    return sound;
+    sound.start(context.currentTime);
+    env.start(context.currentTime);
+    return {
+        osc: sound,
+        env: env
+    }
 }
 
 /*
@@ -47,5 +63,8 @@ export function sineDoop(freq, dur, peak, context) {
     env.start(context.currentTime);
     var end = env.stop(context.currentTime + dur, true);
     sound.stop(end + 0.1);
-    return sound;
+    return {
+        osc: sound,
+        env: env
+    };
 }

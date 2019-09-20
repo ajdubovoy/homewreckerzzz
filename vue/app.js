@@ -33,7 +33,11 @@ const app = new Vue({
   		return Math.pow(2, exp)*440;
   	},
   	killActive: function() {
-  		this.active.forEach((sound) => sound.stop(0));
+  		var self = this;
+  		this.active.forEach(function(sound) {
+  			var end = sound.env.stop(self.context.currentTime)
+  			sound.osc.stop(end);
+  		});
   		this.active = [];
   	}
   },
