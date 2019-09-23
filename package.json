@@ -11,6 +11,7 @@
     "start": "yarn build && yarn express:run"
   },
   "dependencies": {
+    "@vue/cli": "^3.11.0",
     "adsr": "^1.0.1",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.1",
