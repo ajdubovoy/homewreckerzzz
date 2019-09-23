@@ -1,11 +1,12 @@
 import express from 'express';
 import createError from 'http-errors';
 import path from 'path';
+import routes from 'express-namespace-routes';
 // import socketIO from "socket.io";
 
 export default (app, http) => {
   app.use(express.json());
-  //
+  
   // app.get('/foo', (req, res) => {
   //   res.json({msg: 'foo'});
   // });
@@ -23,6 +24,16 @@ export default (app, http) => {
   //   });
   //   client.emit("message", "Welcome");
   // });
+
+  // Routes
+  // https://github.com/WebStyle/express-namespace-routes
+  routes.prefix('/api', (api) => {
+    api.get('/', (req, res) => {
+      res.json({ success: "Welcome to API v. 1.0" });
+    });
+  });
+
+  app.use(routes);
 
   // error handler
   app.use(function(err, req, res, next) {
