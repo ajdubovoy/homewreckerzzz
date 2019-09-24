@@ -22,9 +22,13 @@ export default (app, http) => {
   const io = socketIO(http);
   io.on("connection", client => {
     console.log('New socket connection');
-    client.on('puppetPlay', function() {
-      io.emit('play');
+    client.on('puppetPlay', function(options = {}) {
+      io.emit('play', options);
       console.log('Play command sent');
+    });
+    client.on('puppetKill', function(options = {}) {
+      io.emit('kill', options);
+      console.log('Kill command sent');
     });
   });
 
