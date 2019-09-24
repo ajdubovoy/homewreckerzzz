@@ -2,13 +2,14 @@
 .play
   Cover(v-if="!audioContext")
     h1 plz turn OFFFFF your content blockers and let me contRoL ur aud.io!
-  Cover(v-if="!connected")
+  Cover(v-else-if="!connected")
     h1 overcoming the teCHnical boundarIEs and CONNECTING...
 </template>
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import SineInstrument from '../instruments/sine_instrument';
+import Cover from '../components/Cover';
 
 export default {
   name: 'Play',
@@ -29,16 +30,14 @@ export default {
     },
     disconnect() {
       this.connected = false;
-      this.kill();
+      this.killInstrument(); // Kill sound on disconnect just in case
     },
     play(options) {
       this.setPlayingInstrument(this.sineInstrument);
       this.playingInstrument.play(options);
     },
     kill(options) {
-      if (this.playingInstrument) {
-        this.playingInstrument.kill(options);
-      }
+      this.killInstrument(options);
     }
   },
   computed: {
@@ -51,9 +50,17 @@ export default {
     ])
   },
   methods: {
+    killInstrument(options = {}) {
+      if (this.playingInstrument) {
+        this.playingInstrument.kill(options);
+      }
+    },
     ...mapActions([
       'setPlayingInstrument'
     ])
+  },
+  components: {
+    Cover
   }
 }
 </script>
