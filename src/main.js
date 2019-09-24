@@ -8,6 +8,7 @@ import Index from './pages/Index';
 import Llama from './pages/Llama';
 import Play from './pages/Play';
 import Quiz from './pages/Quiz';
+import Puppeteer from './pages/Puppeteer';
 
 Vue.config.productionTip = false;
 
@@ -17,7 +18,8 @@ const routes = [
   { path: '/', component: Index },
   { path: '/lotta-llama', component: Llama },
   { path: '/play', component: Play },
-  { path: '/quiz', component: Quiz }
+  { path: '/quiz', component: Quiz },
+  { path: '/puppeteer', component: Puppeteer }
 ];
 
 const router = new Router({
@@ -39,7 +41,8 @@ const store = new Vuex.Store({
     seatingHeight: 0,
     randomQuestion: 0,
     audioContext: new AudioContext(),
-    playingInstrument: null
+    playingInstrument: null,
+    puppeteer: false
   },
   mutations: {
     SET_ROOM_SECTION(state, section) {
@@ -50,6 +53,9 @@ const store = new Vuex.Store({
     },
     SET_RANDOM_QUESTION(state, answer) {
       state.randomQuestion = answer;
+    },
+    MAKE_PUPPETEER(state) {
+      state.puppeteer = true
     }
   },
   actions: {
@@ -61,6 +67,11 @@ const store = new Vuex.Store({
     },
     setRandomQuestion({ commit }, answer) {
       commit('SET_RANDOM_QUESTION', answer);
+    },
+    makePuppeteer({ commit }, password) {
+      if (password === 'iamgkap720') {
+        commit('MAKE_PUPPETEER')
+      }
     }
   },
   getters: {
@@ -94,7 +105,7 @@ const store = new Vuex.Store({
     }
   },
   plugins: [createPersistedState({
-    paths: ['key', 'roomSection', 'seatingHeight', 'randomQuestion']
+    paths: ['key', 'roomSection', 'seatingHeight', 'randomQuestion', 'puppeteer']
   })]
 });
 

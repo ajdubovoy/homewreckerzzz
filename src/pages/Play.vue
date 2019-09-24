@@ -1,6 +1,5 @@
 <template lang="pug">
 .play
-  b-button(@click="sineInstrument.play()") Play
 </template>
 
 <script>
