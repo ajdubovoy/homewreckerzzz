@@ -3,11 +3,14 @@ import Router from 'vue-router';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import Bootstrap from 'bootstrap-vue';
+import VueSocketIOExt from 'vue-socket.io-extended';
+import io from 'socket.io-client';
 import App from './App.vue';
 import Index from './pages/Index';
 import Llama from './pages/Llama';
 import Play from './pages/Play';
 import Quiz from './pages/Quiz';
+import Puppeteer from './pages/Puppeteer';
 
 Vue.config.productionTip = false;
 
@@ -17,7 +20,8 @@ const routes = [
   { path: '/', component: Index },
   { path: '/lotta-llama', component: Llama },
   { path: '/play', component: Play },
-  { path: '/quiz', component: Quiz }
+  { path: '/quiz', component: Quiz },
+  { path: '/puppeteer', component: Puppeteer }
 ];
 
 const router = new Router({
@@ -30,12 +34,17 @@ Vue.use(Router);
 // Store
 Vue.use(Vuex);
 
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+
 const store = new Vuex.Store({
   state: {
     key: Math.random().toString(36).substr(2, 9), // Generate random key
     roomSection: 0,
     seatingHeight: 0,
-    randomQuestion: 0
+    randomQuestion: 0,
+    audioContext: new AudioContext(),
+    playingInstrument: null,
+    puppeteer: false
   },
   mutations: {
     SET_ROOM_SECTION(state, section) {
@@ -46,6 +55,9 @@ const store = new Vuex.Store({
     },
     SET_RANDOM_QUESTION(state, answer) {
       state.randomQuestion = answer;
+    },
+    MAKE_PUPPETEER(state) {
+      state.puppeteer = true
     }
   },
   actions: {
@@ -57,6 +69,11 @@ const store = new Vuex.Store({
     },
     setRandomQuestion({ commit }, answer) {
       commit('SET_RANDOM_QUESTION', answer);
+    },
+    makePuppeteer({ commit }, password) {
+      if (password === 'iamgkap720') {
+        commit('MAKE_PUPPETEER')
+      }
     }
   },
   getters: {
@@ -89,8 +106,15 @@ const store = new Vuex.Store({
       }
     }
   },
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState({
+    paths: ['key', 'roomSection', 'seatingHeight', 'randomQuestion', 'puppeteer']
+  })]
 });
+
+// Sockets
+const socket = io('/');
+
+Vue.use(VueSocketIOExt, socket);
 
 Vue.use(Bootstrap);
 

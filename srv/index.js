@@ -2,28 +2,11 @@ import express from 'express';
 import createError from 'http-errors';
 import path from 'path';
 import routes from 'express-namespace-routes';
-// import socketIO from "socket.io";
+import socketIO from "socket.io";
 
 export default (app, http) => {
   app.use(express.json());
   
-  // app.get('/foo', (req, res) => {
-  //   res.json({msg: 'foo'});
-  // });
-  //
-  // app.post('/bar', (req, res) => {
-  //   res.json(req.body);
-  // });
-  // 
-  // optional support for socket.io
-  // 
-  // let io = socketIO(http);
-  // io.on("connection", client => {
-  //   client.on("message", function(data) {
-  //     // do something
-  //   });
-  //   client.emit("message", "Welcome");
-  // });
 
   // Routes
   // https://github.com/WebStyle/express-namespace-routes
@@ -34,6 +17,16 @@ export default (app, http) => {
   });
 
   app.use(routes);
+
+  // Sockets
+  const io = socketIO(http);
+  io.on("connection", client => {
+    console.log('New socket connection');
+    client.on('puppetPlay', function() {
+      io.emit('play');
+      console.log('Play command sent');
+    });
+  });
 
   // error handler
   app.use(function(err, req, res, next) {
