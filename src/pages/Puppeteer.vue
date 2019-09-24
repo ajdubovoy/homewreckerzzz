@@ -13,7 +13,9 @@
     h2
       | I made it 'speciALLY für U with lovE and cArE
     b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
+    b-form-checkbox(v-model="sustain") Sustain Mode
     b-button(@click="handlePlay") Play
+    b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
 </template>
 
 <script>
@@ -28,6 +30,13 @@ export default {
       'puppeteer'
     ]),
   },
+  data() {
+    return {
+      password: '',
+      socketMessage: "Loading...",
+      sustain: false
+    };
+  },
   methods: {
     handleSubmit(password) {
       this.makePuppeteer(password);
@@ -36,7 +45,19 @@ export default {
     handlePlay() {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending play request...';
-      this.$socket.client.emit('puppetPlay');
+      this.$socket.client.emit('puppetPlay', {
+        sustain: this.sustain
+      });
+      this.resetData();
+    },
+    handleKill() {
+      // TODO rework with fuller featureset
+      this.socketMessage = 'Sending kill request...';
+      this.$socket.client.emit('puppetKill');
+      this.resetData();
+    },
+    resetData() {
+      this.sustain = false;
     },
     ...mapActions([
       'makePuppeteer',
@@ -56,12 +77,6 @@ export default {
     play() {
       this.socketMessage = 'Play request successfully emitted';
     }
-  },
-  data() {
-    return {
-      password: '',
-      socketMessage: "Loading..."
-    };
   },
   components: {
     Cover,

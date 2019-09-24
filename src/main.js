@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate';
 import Bootstrap from 'bootstrap-vue';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import io from 'socket.io-client';
+import AudioContext from './helpers/audio_context';
 import App from './App.vue';
 import Index from './pages/Index';
 import Llama from './pages/Llama';
@@ -34,8 +35,6 @@ Vue.use(Router);
 // Store
 Vue.use(Vuex);
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-
 const store = new Vuex.Store({
   state: {
     key: Math.random().toString(36).substr(2, 9), // Generate random key
@@ -58,6 +57,9 @@ const store = new Vuex.Store({
     },
     MAKE_PUPPETEER(state) {
       state.puppeteer = true
+    },
+    SET_PLAYING_INSTRUMENT(state, instrument) {
+      state.playingInstrument = instrument;
     }
   },
   actions: {
@@ -72,8 +74,11 @@ const store = new Vuex.Store({
     },
     makePuppeteer({ commit }, password) {
       if (password === 'iamgkap720') {
-        commit('MAKE_PUPPETEER')
+        commit('MAKE_PUPPETEER');
       }
+    },
+    setPlayingInstrument({ commit }, instrument) {
+      commit('SET_PLAYING_INSTRUMENT', instrument);
     }
   },
   getters: {
