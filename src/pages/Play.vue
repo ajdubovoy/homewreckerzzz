@@ -1,5 +1,6 @@
 <template lang="pug">
 .play
+  b-button(@click="sineInstrument.play()") Play
 </template>
 
 <script>
@@ -18,7 +19,6 @@ export default {
   },
   sockets: {
     play() {
-      console.log('playing the instrument');
       this.sineInstrument.play();
     }
   },
