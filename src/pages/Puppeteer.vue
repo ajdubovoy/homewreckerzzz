@@ -12,7 +12,7 @@
       | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
     h2
       | I made it 'speciALLY für U with lovE and cArE
-    p {{ socketMessage }}
+    b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
     b-button(@click="handlePlay") Play
 </template>
 
@@ -36,7 +36,7 @@ export default {
     handlePlay() {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending play request...';
-      this.$socket.emit('PUPPET_PLAY');
+      this.$socket.client.emit('puppetPlay');
     },
     ...mapActions([
       'makePuppeteer',
@@ -53,7 +53,7 @@ export default {
       this.socketMessage = "Oops, you're offline!";
     },
 
-    play() {
+    minionPlay() {
       this.socketMessage = 'Play request successfully emitted';
     }
   },

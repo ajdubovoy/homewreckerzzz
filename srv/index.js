@@ -20,10 +20,10 @@ export default (app, http) => {
 
   // Sockets
   const io = socketIO(http);
-  io.of('/socket').on("connection", client => {
+  io.on("connection", client => {
     console.log('New socket connection');
-    client.on('PUPPET_PLAY', function() {
-      io.emit('PLAY');
+    client.on('puppetPlay', function() {
+      io.emit('minionPlay');
       console.log('Play command sent');
     });
   });
