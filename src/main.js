@@ -7,6 +7,7 @@ import App from './App.vue';
 import Index from './pages/Index';
 import Llama from './pages/Llama';
 import Play from './pages/Play';
+import Quiz from './pages/Quiz';
 
 Vue.config.productionTip = false;
 
@@ -15,7 +16,8 @@ Vue.config.productionTip = false;
 const routes = [
   { path: '/', component: Index },
   { path: '/lotta-llama', component: Llama },
-  { path: '/play', component: Play }
+  { path: '/play', component: Play },
+  { path: '/quiz', component: Quiz }
 ];
 
 const router = new Router({
@@ -30,6 +32,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    key: Math.random().toString(36).substr(2, 9), // Generate random key
     roomSection: 0,
     seatingHeight: 0,
     randomQuestion: 0
@@ -72,6 +75,18 @@ const store = new Vuex.Store({
     randomQuestionString(state) {
       // Enum
       return ['uninitialized', 'chuckNorris', 'llama', 'pineapple'][state.randomQuestion];
+    },
+    currentQuizSection({ roomSection, seatingHeight, randomQuestion }) {
+      // Returns an integer from 0-3 depending on how many of the quiz questions the person has answered. Useful for Quiz component.
+      if (!roomSection) {
+        return 0;
+      } else if (!seatingHeight) {
+        return 1;
+      } else if (!randomQuestion) {
+        return 2;
+      } else {
+        return 3;
+      }
     }
   },
   plugins: [createPersistedState()]
