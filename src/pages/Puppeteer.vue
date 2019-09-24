@@ -12,7 +12,8 @@
       | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
     h2
       | I made it 'speciALLY für U with lovE and cArE
-    b-button Play
+    p {{ socketMessage }}
+    b-button(@click="handlePlay") Play
 </template>
 
 <script>
@@ -22,21 +23,44 @@ import BlinkyText from '../components/BlinkyText';
 
 export default {
   name: 'Puppeteer',
-  computed: mapState([
-    'puppeteer'
-  ]),
+  computed: {
+    ...mapState([
+      'puppeteer'
+    ]),
+  },
   methods: {
     handleSubmit(password) {
       this.makePuppeteer(password);
       this.password = '';
     },
+    handlePlay() {
+      // TODO rework with fuller featureset
+      this.socketMessage = 'Sending play request...';
+      this.$socket.emit('PUPPET_PLAY');
+    },
     ...mapActions([
-      'makePuppeteer'
+      'makePuppeteer',
+      'emitPlay'
     ])
+  },
+  sockets: {
+    connect() {
+      // Fired when the socket connects.
+      this.socketMessage = "Successfully connected";
+    },
+
+    disconnect() {
+      this.socketMessage = "Oops, you're offline!";
+    },
+
+    play() {
+      this.socketMessage = 'Play request successfully emitted';
+    }
   },
   data() {
     return {
-      password: ''
+      password: '',
+      socketMessage: "Loading..."
     };
   },
   components: {

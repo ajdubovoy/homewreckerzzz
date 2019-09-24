@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import VueSocketIO from 'vue-socket.io'
 import Bootstrap from 'bootstrap-vue';
 import App from './App.vue';
 import Index from './pages/Index';
@@ -108,6 +109,20 @@ const store = new Vuex.Store({
     paths: ['key', 'roomSection', 'seatingHeight', 'randomQuestion', 'puppeteer']
   })]
 });
+
+// Sockets
+const sockets = new VueSocketIO({
+  // debug: process.env.NODE_ENV === 'production',
+  debug: true,
+  connection: '/socket',
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  }
+});
+
+Vue.use(sockets);
 
 Vue.use(Bootstrap);
 

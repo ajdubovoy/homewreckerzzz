@@ -16,6 +16,12 @@ export default {
       this.$router.push('/quiz');
     }
   },
+  sockets: {
+    play() {
+      console.log('playing the instrument');
+      this.sineInstrument.play();
+    }
+  },
   computed: {
     ...mapGetters([
       'initialized'
