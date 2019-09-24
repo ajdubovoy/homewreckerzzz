@@ -76,6 +76,9 @@ export default {
 
     play() {
       this.socketMessage = 'Play request successfully emitted';
+    },
+    kill() {
+      this.socketMessage = 'Kill request successfully emitted';
     }
   },
   components: {
