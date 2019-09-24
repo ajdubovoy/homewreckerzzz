@@ -7,6 +7,12 @@
       b-form-group
         b-form-input(v-model='password' type='password') 
       b-button(type="submit" variant="primary") Unleash the Hounds
+  Cover(v-else)
+    h1
+      | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
+    h2
+      | I made it 'speciALLY für U with lovE and cArE
+    b-button Play
 </template>
 
 <script>
