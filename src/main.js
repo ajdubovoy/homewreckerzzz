@@ -30,12 +30,16 @@ Vue.use(Router);
 // Store
 Vue.use(Vuex);
 
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+
 const store = new Vuex.Store({
   state: {
     key: Math.random().toString(36).substr(2, 9), // Generate random key
     roomSection: 0,
     seatingHeight: 0,
-    randomQuestion: 0
+    randomQuestion: 0,
+    audioContext: new AudioContext(),
+    playingInstrument: null
   },
   mutations: {
     SET_ROOM_SECTION(state, section) {
@@ -89,7 +93,9 @@ const store = new Vuex.Store({
       }
     }
   },
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState({
+    paths: ['key', 'roomSection', 'seatingHeight', 'randomQuestion']
+  })]
 });
 
 Vue.use(Bootstrap);

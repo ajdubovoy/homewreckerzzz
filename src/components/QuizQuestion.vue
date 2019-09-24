@@ -2,7 +2,7 @@
 Cover.quiz-question
   h1 {{ text.question }}
 
-  b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)") {{ answer }}
+  b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" :key="key") {{ answer }}
 </template>
 
 <script>
