@@ -53,7 +53,7 @@ export default {
       this.socketMessage = "Oops, you're offline!";
     },
 
-    minionPlay() {
+    play() {
       this.socketMessage = 'Play request successfully emitted';
     }
   },

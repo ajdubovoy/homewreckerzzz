@@ -23,7 +23,7 @@ export default (app, http) => {
   io.on("connection", client => {
     console.log('New socket connection');
     client.on('puppetPlay', function() {
-      io.emit('minionPlay');
+      io.emit('play');
       console.log('Play command sent');
     });
   });
