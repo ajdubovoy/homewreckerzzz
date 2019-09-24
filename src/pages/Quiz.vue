@@ -42,11 +42,17 @@ export default {
     }
   },
   mounted() {
-    if (this.initialized) {
-      this.$router.push('/play');
-    }
+    this.redirectOnCompletion();
+  },
+  updated() {
+    this.redirectOnCompletion();
   },
   methods: {
+    redirectOnCompletion() {
+      if (this.initialized) {
+        this.$router.push('/play');
+      }
+    },
     ...mapActions([
       'setRoomSection',
       'setSeatingHeight',
