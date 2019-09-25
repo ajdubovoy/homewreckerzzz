@@ -67,15 +67,15 @@ export default {
       }
     },
     handleQuizSubmit(response) {
-      const throttledEmit = throttle(this.emitQuizReponse, 500); // Throttle # of responses
-      throttledEmit(response);
+      this.throttledEmitQuizResponse(response);
     },
-    emitQuizReponse(response) {
+    throttledEmitQuizResponse: throttle(function(response) {
+      // Throttle to prevent spamming
       this.$socket.client.emit('quizResponse', {
         clientID: this.$store.state.token,
         value: response
       });
-    },
+    }, 750),
     ...mapActions([
       'setPlayingInstrument'
     ]),

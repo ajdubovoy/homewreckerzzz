@@ -45,8 +45,8 @@ export default (app, http) => {
         console.log('Quiz response received: ' + JSON.stringify(response));
         responses.push(response);
         io.emit('quizTally', {
-          response,
-          quiz
+          quiz: currentQuiz,
+          response
         })
       } else {
         console.log('Unauthorized quiz response urgh');

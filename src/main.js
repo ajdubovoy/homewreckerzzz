@@ -117,8 +117,7 @@ const store = new Vuex.Store({
 });
 
 // Sockets
-const socketAddress = process.env.NODE_ENV === 'production' ? '/' : 'localhost:3000';
-const socket = io('/');
+const socket = io(process.env.SERVER_URI);
 
 Vue.use(VueSocketIOExt, socket);
 
