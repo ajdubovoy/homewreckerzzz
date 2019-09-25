@@ -172,6 +172,9 @@ export default {
     },
     kill() {
       this.socketMessage = 'Kill request successfully emitted';
+    },
+    quizCompletion({ responses }) {
+      this.socketMessage = 'The results are in: ' + JSON.stringify(responses);
     }
   },
   components: {

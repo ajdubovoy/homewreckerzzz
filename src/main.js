@@ -37,7 +37,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    key: Math.random().toString(36).substr(2, 9), // Generate random key
+    token: Math.random().toString(36).substr(2, 9), // Generate random key
     roomSection: 0,
     seatingHeight: 0,
     randomQuestion: 0,
@@ -112,7 +112,7 @@ const store = new Vuex.Store({
     }
   },
   plugins: [createPersistedState({
-    paths: ['key', 'roomSection', 'seatingHeight', 'randomQuestion', 'puppeteer']
+    paths: ['token', 'roomSection', 'seatingHeight', 'randomQuestion', 'puppeteer']
   })]
 });
 
