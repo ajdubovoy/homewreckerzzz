@@ -67,7 +67,7 @@ export default {
       }
     },
     handleQuizSubmit(response) {
-      const throttledEmit = throttle(this.emitQuizReponse, 5000); // Throttle # of responses
+      const throttledEmit = throttle(this.emitQuizReponse, 500); // Throttle # of responses
       throttledEmit(response);
     },
     emitQuizReponse(response) {
