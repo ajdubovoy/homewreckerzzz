@@ -43,7 +43,8 @@ const store = new Vuex.Store({
     randomQuestion: 0,
     audioContext: new AudioContext(),
     playingInstrument: null,
-    puppeteer: false
+    puppeteer: false,
+    confirmedConsent: false
   },
   mutations: {
     SET_ROOM_SECTION(state, section) {
@@ -60,6 +61,9 @@ const store = new Vuex.Store({
     },
     SET_PLAYING_INSTRUMENT(state, instrument) {
       state.playingInstrument = instrument;
+    },
+    CONFIRM_CONSENT(state) {
+      state.confirmedConsent = true;
     }
   },
   actions: {
@@ -79,6 +83,9 @@ const store = new Vuex.Store({
     },
     setPlayingInstrument({ commit }, instrument) {
       commit('SET_PLAYING_INSTRUMENT', instrument);
+    },
+    confirmConsent({ commit }) {
+      commit('CONFIRM_CONSENT');
     }
   },
   getters: {
