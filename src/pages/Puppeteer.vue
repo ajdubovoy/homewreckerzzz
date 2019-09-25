@@ -13,15 +13,16 @@
     h2
       | I made it 'speciALLY für U with lovE and cArE
     b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
-    b-form-checkbox(v-model="sustain") Sustain Mode
+    b-button(@click="handlePlay") Play
+    b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
     b-form-group
-      label(for="amplitude") Amplitude
+      b-form-checkbox(v-model="sustain") Sustain Mode
+    b-form-group
+      label(for="amplitude") Amplitude: {{ amplitudePercentage }}%
       b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
     b-form-group
       label(for="frequency") Frequency: {{ pitchName }}
       b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
-    b-button(@click="handlePlay") Play
-    b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
 </template>
 
 <script>
@@ -47,6 +48,9 @@ export default {
   computed: {
     pitchName() {
       return midiToName(this.frequency);
+    },
+    amplitudePercentage() {
+      return Math.round(this.amplitude / 128 * 100);
     },
     ...mapState([
       'puppeteer'
