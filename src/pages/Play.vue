@@ -4,6 +4,8 @@
     h1 plz turn OFFFFF your content blockers and let me contRoL ur aud.io!
   Cover(v-else-if="!connected")
     h1 overcoming the teCHnical boundarIEs and CONNECTING...
+  Cover(v-else-if="audioContext.state !== 'running'")
+    h1 urgh, im expERIencING some issues with taking over ur speakeRS. Try tapping your screen
   QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
 </template>
 
@@ -19,7 +21,11 @@ export default {
   mounted() {
     if (!this.initialized) {
       this.$router.push('/quiz');
+    } else if (!this.confirmedConsent && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      // Go back home if iOS user hasn't enabled WebAudio yet
+      this.$router.push('/');
     }
+
     this.sineInstrument = new SineInstrument(this.audioContext);
   },
   data() {
@@ -53,7 +59,8 @@ export default {
   computed: {
     ...mapState([
       'audioContext',
-      'playingInstrument'
+      'playingInstrument',
+      'confirmedConsent'
     ]),
     ...mapGetters([
       'initialized',
