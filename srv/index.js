@@ -42,17 +42,14 @@ export default (app, http) => {
     client.on('quizResponse', function(response) {
       // Collect all responses
       if (quizActive) {
-        console.log('Quiz response received');
-        if (!responses.some(r => r.clientID === response.clientID)) {
-          // Prevents people from submitting multiple responses
-          responses.push(response);
-        }
+        console.log('Quiz response received: ' + JSON.stringify(response));
+        responses.push(response);
       } else {
         console.log('Unauthorized quiz response urgh');
       }
     });
 
-    client.on('puppetQuiz', function(options = { duration: '5000' }) {
+    client.on('puppetQuiz', function(options = { duration: '30000' }) {
       console.log('Quiz started');
       responses = []; // Clear any remnants
 

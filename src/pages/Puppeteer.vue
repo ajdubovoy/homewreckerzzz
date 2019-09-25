@@ -25,7 +25,7 @@
       b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
     h3 Quizzes
     b-form-group
-      b-form-select(v-model="quiz" :options="quizOptions")
+      b-form-select(v-model="quiz" :options="quizOptions()")
     b-button(type="submit" variant="primary" :disabled="quiz === 0" @click="handleQuiz") Start Jeopardy Time
 </template>
 
@@ -34,36 +34,12 @@ import { mapState, mapActions } from 'vuex';
 import midiToName from '../helpers/midi_to_name';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
+import quizzes from '../data/quizzes';
 
 export default {
   name: 'Puppeteer',
   mounted() {
     this.connectMIDI();
-  },
-  created() {
-    // Immutable state
-    this.quizzes = [
-      {
-        title: 'Emoji',
-        question: "Please select an emoji:",
-        answers: [
-          '😍',
-          '🤓',
-          '🤗',
-          '🤯'
-        ],
-        duration: 6000
-      }
-    ];
-    this.quizOptions = [
-      { value: 0, text: 'Please select a quiz' },
-      ...this.quizzes.map((quiz, index) => { 
-        return { 
-          value: index + 1, 
-          text: quiz.title 
-        };
-      })
-    ];
   },
   data() {
     return {
@@ -139,7 +115,7 @@ export default {
       this.resetData('Kill request sent');
     },
     handleQuiz() {
-      const quiz = this.quizzes[this.quiz - 1];
+      const quiz = quizzes[this.quiz - 1];
       if (quiz) {
         this.socketMessage = 'Sending quiz request...';
         this.$socket.client.emit('puppetQuiz', quiz);
@@ -151,6 +127,17 @@ export default {
     resetData(message = "Back to basics") {
       Object.assign(this.$data, this.$options.data.call(this));
       this.socketMessage = message;
+    },
+    quizOptions() {
+      return [
+        { value: 0, text: 'Please select a quiz' },
+        ...quizzes.map((quiz, index) => { 
+          return { 
+            value: index + 1, 
+            text: quiz.title 
+          };
+        })
+      ];
     },
     ...mapActions([
       'makePuppeteer',
@@ -173,8 +160,8 @@ export default {
     kill() {
       this.socketMessage = 'Kill request successfully emitted';
     },
-    quizCompletion({ responses }) {
-      this.socketMessage = 'The results are in: ' + JSON.stringify(responses);
+    quizCompletion() {
+      this.socketMessage = 'The results are in :) Quiz over'
     }
   },
   components: {
