@@ -4,7 +4,7 @@
     h1 plz turn OFFFFF your content blockers and let me contRoL ur aud.io!
   Cover(v-else-if="!connected")
     h1 overcoming the teCHnical boundarIEs and CONNECTING...
-  Cover(v-else-if="webAudioError")
+  Cover(v-else-if="audioContext.state !== 'running'")
     h1 urgh, im expERIencING some issues with taking over ur speakeRS. Try tapping your screen
   QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
 </template>
@@ -12,7 +12,6 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import throttle from 'lodash.throttle';
-import webAudioTouchUnlock from 'web-audio-touch-unlock';
 import SineInstrument from '../instruments/sine_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
@@ -27,29 +26,12 @@ export default {
       this.$router.push('/');
     }
 
-    webAudioTouchUnlock(this.audioContext)
-      .then((unlocked) => {
-        if(unlocked) {
-          this.webAudioIOs = true;
-        } else {
-          this.webAudioIOs = false;
-        }
-      }, function(reason) {
-        this.webAudioError = reason;
-      });
-
-    if (!this.audioContext.state === 'running') {
-      this.$router.push('/');
-    }
-
     this.sineInstrument = new SineInstrument(this.audioContext);
   },
   data() {
     return {
       connected: true, // Assume connected and only show message on disconnect
-      quiz: null,
-      webAudioIOs: true,
-      webAudioError: ''
+      quiz: null
     }
   },
   sockets: {

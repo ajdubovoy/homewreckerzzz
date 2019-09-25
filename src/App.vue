@@ -5,8 +5,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import webAudioTouchUnlock from 'web-audio-touch-unlock';
+
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    // Small hack to unlock WebAudio on iOS
+    webAudioTouchUnlock(this.audioContext)
+  },
+  computed: mapState([
+    'audioContext'
+  ])
 }
 </script>
 
