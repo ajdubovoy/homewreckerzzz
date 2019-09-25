@@ -160,8 +160,11 @@ export default {
     kill() {
       this.socketMessage = 'Kill request successfully emitted';
     },
-    quizCompletion() {
-      this.socketMessage = 'The results are in :) Quiz over'
+    quizTally(payload) {
+      this.socketMessage = 'The results are coming: ' + payload.responses.length
+    },
+    quizCompletion(payload) {
+      this.socketMessage = 'The results are in :) Quiz over with ' + payload.responses.length + ' responses'
     }
   },
   components: {
