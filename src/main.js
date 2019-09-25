@@ -12,6 +12,7 @@ import Llama from './pages/Llama';
 import Play from './pages/Play';
 import Quiz from './pages/Quiz';
 import Puppeteer from './pages/Puppeteer';
+import Visualize from './pages/Visualize';
 
 Vue.config.productionTip = false;
 
@@ -22,7 +23,8 @@ const routes = [
   { path: '/lotta-llama', component: Llama },
   { path: '/play', component: Play },
   { path: '/quiz', component: Quiz },
-  { path: '/puppeteer', component: Puppeteer }
+  { path: '/puppeteer', component: Puppeteer },
+  { path: '/visualize', component: Visualize }
 ];
 
 const router = new Router({

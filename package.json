@@ -30,6 +30,7 @@
     "jquery": "^3.4.1",
     "lodash.throttle": "^4.1.1",
     "node": "^12.10.0",
+    "p5": "^0.9.0",
     "popper.js": "^1.15.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
