@@ -13,7 +13,7 @@
     h2
       | I made it 'speciALLY für U with lovE and cArE
     b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
-    b-button(@click="handlePlay") Play
+    b-button(@click="handlePlay" variant="primary") Play
     b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
     b-form-group
       b-form-checkbox(v-model="sustain") Sustain Mode
@@ -139,12 +139,10 @@ export default {
       this.resetData('Kill request sent');
     },
     handleQuiz() {
-      const quiz = this.quizzes[this.quiz + 1];
+      const quiz = this.quizzes[this.quiz - 1];
       if (quiz) {
         this.socketMessage = 'Sending quiz request...';
-        this.$socket.client.emit('puppetQuiz', {
-          quiz
-        });
+        this.$socket.client.emit('puppetQuiz', quiz);
         this.resetData('Quiz request sent: ' + quiz.title);
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
