@@ -4,12 +4,14 @@
     h1 plz turn OFFFFF your content blockers and let me contRoL ur aud.io!
   Cover(v-else-if="!connected")
     h1 overcoming the teCHnical boundarIEs and CONNECTING...
+  QuizQuestion(:text="quizProps()" :submit="handleQuizSubmit" v-if="quiz")
 </template>
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import SineInstrument from '../instruments/sine_instrument';
 import Cover from '../components/Cover';
+import QuizQuestion from '../components/QuizQuestion';
 
 export default {
   name: 'Play',
@@ -21,7 +23,8 @@ export default {
   },
   data() {
     return {
-      connected: false
+      connected: true, // Assume connected and only show message on disconnect
+      quiz: null
     }
   },
   sockets: {
@@ -38,6 +41,12 @@ export default {
     },
     kill(options) {
       this.killInstrument(options);
+    },
+    quizAsk(quiz) {
+      this.quiz = quiz;
+    },
+    quizCompletion() {
+      this.quiz = null;
     }
   },
   computed: {
@@ -46,7 +55,8 @@ export default {
       'playingInstrument'
     ]),
     ...mapGetters([
-      'initialized'
+      'initialized',
+      'token'
     ])
   },
   methods: {
@@ -55,12 +65,26 @@ export default {
         this.playingInstrument.kill(options);
       }
     },
+    handleQuizSubmit(response) {
+      this.$socket.client.emit('quizResponse', { 
+        clientID: this.token, 
+        value: response 
+      });
+      this.quiz = null;
+    },
     ...mapActions([
       'setPlayingInstrument'
-    ])
+    ]),
+    quizProps() {
+      return {
+        question: this.quiz.question,
+        answers: this.quiz.answers
+      }
+    }
   },
   components: {
-    Cover
+    Cover,
+    QuizQuestion
   }
 }
 </script>
