@@ -18,14 +18,15 @@
       label(for="amplitude") Amplitude
       b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
     b-form-group
-      label(for="amplitude") Pitch
-      b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
+      label(for="frequency") Frequency: {{ pitchName }}
+      b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
     b-button(@click="handlePlay") Play
     b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import midiToName from '../helpers/midi_to_name';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
 
@@ -39,10 +40,14 @@ export default {
       password: '',
       socketMessage: "Loading...",
       sustain: false,
-      amplitude: 100
+      amplitude: 100,
+      frequency: 60,
     };
   },
   computed: {
+    pitchName() {
+      return midiToName(this.frequency);
+    },
     ...mapState([
       'puppeteer'
     ]),
@@ -67,7 +72,7 @@ export default {
           this.amplitude = velocity;
           break;
         case 3:
-          this.pitch = velocity;
+          this.frequency = velocity;
           break;
       }
     },
