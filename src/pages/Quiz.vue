@@ -20,7 +20,8 @@ export default {
           "The big couch 🛋",
           "The dining table 🍽",
           "The door 🚪"
-        ]
+        ],
+        class: "living-room"
       },
       seatingHeight: {
         question: "Next up, what manner of seating hast thou chosen?",
@@ -29,7 +30,8 @@ export default {
           "On the couch 🛋",
           "On a chair 💺",
           "naw, im stAnDinG 🐥"
-        ]
+        ],
+        class: "chair"
       },
       randomQuestion: {
         question: "In conclusion, EarTHliNG, PICK ONE FAST!",
@@ -37,7 +39,8 @@ export default {
           "Chuck Norris",
           "A Llama",
           "A Pineapple"
-        ]
+        ],
+        class: 'chuck-norris'
       }
     }
   },

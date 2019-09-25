@@ -1,5 +1,5 @@
 <template lang="pug">
-Cover.quiz-question
+Cover.quiz-question(:class="text.class")
   h1 {{ text.question }}
 
   b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" :key="key") {{ answer }}
@@ -24,4 +24,17 @@ export default {
 </script>
 
 <style lang="scss">
+.living-room{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/living_room.jpg');
+  background-position: center;
+  background-size: cover;
+}
+.chair{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/chair.jpg');
+  background-size: contain;
+}
+.chuck-norris{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/chuck_norris.gif');
+  background-size: contain;
+}
 </style>

@@ -9,6 +9,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
+import throttle from 'lodash.throttle';
 import SineInstrument from '../instruments/sine_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
@@ -66,12 +67,15 @@ export default {
       }
     },
     handleQuizSubmit(response) {
-      this.$socket.client.emit('quizResponse', { 
-        clientID: this.token, 
-        value: response 
-      });
-      this.quiz = null;
+      this.throttledEmitQuizResponse(response);
     },
+    throttledEmitQuizResponse: throttle(function(response) {
+      // Throttle to prevent spamming
+      this.$socket.client.emit('quizResponse', {
+        clientID: this.$store.state.token,
+        value: response
+      });
+    }, 750),
     ...mapActions([
       'setPlayingInstrument'
     ]),

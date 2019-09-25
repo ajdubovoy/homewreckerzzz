@@ -20,7 +20,7 @@ export default (app, http) => {
 
   // Sockets
   let responses = []; // Initial empty quiz responses array to local state
-  let quizActive = false;
+  let currentQuiz = null;
 
   const io = socketIO(http);
   io.on("connection", client => {
@@ -41,23 +41,24 @@ export default (app, http) => {
     // Quizzes
     client.on('quizResponse', function(response) {
       // Collect all responses
-      if (quizActive) {
-        console.log('Quiz response received');
-        if (!responses.some(r => r.clientID === response.clientID)) {
-          // Prevents people from submitting multiple responses
-          responses.push(response);
-        }
+      if (currentQuiz) {
+        console.log('Quiz response received: ' + JSON.stringify(response));
+        responses.push(response);
+        io.emit('quizTally', {
+          quiz: currentQuiz,
+          response
+        })
       } else {
         console.log('Unauthorized quiz response urgh');
       }
     });
 
-    client.on('puppetQuiz', function(options = { duration: '5000' }) {
+    client.on('puppetQuiz', function(options = { duration: '30000' }) {
       console.log('Quiz started');
       responses = []; // Clear any remnants
 
       // Listen for survey responses
-      quizActive = true;
+      currentQuiz = options;
       io.emit('quizAsk', options); // Ask clients to respond
 
       setTimeout(() => {
@@ -69,7 +70,7 @@ export default (app, http) => {
         });
         console.log('Quiz ended and results sent: ' + JSON.stringify(responseValues));
         responses = []; // Get out of quiz mode
-        quizActive = false;
+        currentQuiz = null;
       }, options.duration)
     });
   });

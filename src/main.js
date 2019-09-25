@@ -117,7 +117,7 @@ const store = new Vuex.Store({
 });
 
 // Sockets
-const socket = io('/');
+const socket = io(process.env.SERVER_URI);
 
 Vue.use(VueSocketIOExt, socket);
 
