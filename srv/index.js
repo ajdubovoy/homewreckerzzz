@@ -46,6 +46,7 @@ export default (app, http) => {
         responses.push(response);
         io.emit('quizTally', {
           quiz: currentQuiz,
+          responses,
           response
         })
       } else {
