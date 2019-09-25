@@ -81,7 +81,7 @@ export default {
       }
     },
     getMIDIMessage(message) {
-      const [, note, velocity] = message; // Assign the MIDI message data to useable variables and disregard the first (command) for now
+      const [, note, velocity] = message.data; // Assign the MIDI message data to useable variables and disregard the first (command) for now
 
       switch (note) {
         // Translate slider input into appropriate state change

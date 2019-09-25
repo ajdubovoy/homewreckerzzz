@@ -7282,6 +7282,11 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+  integrity sha512-uPIxXNis1CRbv1DwqAxkgBk5NFV3s7cMN/Gf556jSw6jBvV7ca4F9lRL/8cALcZecRibeqU+5dFYqFFmzv5a0Q==
+
 node-dir@^0.1.17:
   version "0.1.17"
   resolved "https://registry.yarnpkg.com/node-dir/-/node-dir-0.1.17.tgz#5f5665d93351335caabef8f1c554516cf5f1e4e5"
@@ -7375,6 +7380,13 @@ node-releases@^1.1.29:
   integrity sha512-VhVknkitq8dqtWoluagsGPn3dxTvN9fwgR59fV3D7sLBHe0JfDramsMI8n8mY//ccq/Kkrf8ZRHRpsyVZ3qw1A==
   dependencies:
     semver "^5.3.0"
+
+node@^12.10.0:
+  version "12.10.0"
+  resolved "https://registry.yarnpkg.com/node/-/node-12.10.0.tgz#5b9c5c6e3420965052bccd80e404c7620049a050"
+  integrity sha512-gzhu/wPSyupcu4TWzOoCsy9r1NONUZyzBQuItHeiRKWA5nov2pqHa+IO3CKNBHDu85nRw8yq13sw4I8S3aJxIQ==
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 nodemon@^1.18.10, nodemon@^1.19.1:
   version "1.19.2"

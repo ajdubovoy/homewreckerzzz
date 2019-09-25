@@ -29,6 +29,7 @@
     "express-namespace-routes": "^0.0.3",
     "jquery": "^3.4.1",
     "lodash.throttle": "^4.1.1",
+    "node": "^12.10.0",
     "popper.js": "^1.15.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
