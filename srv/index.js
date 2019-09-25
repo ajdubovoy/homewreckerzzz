@@ -40,12 +40,14 @@ export default (app, http) => {
     let quizActive = false;
     client.on('quizResponse', function(response) {
       // Collect all responses
+      console.log('Quiz response received');
       if (quizActive) {
         responses.push(response);
       }
     });
 
     client.on('puppetQuiz', function(options = { duration: '5000' }) {
+      console.log('Quiz started');
       // Listen for survey responses
       quizActive = true;
       io.emit('quizAsk', options); // Ask clients to respond
@@ -58,6 +60,7 @@ export default (app, http) => {
         });
         responses = []; // Get out of quiz mode
         quizActive = false;
+        console.log('Quiz ended and results sent');
       }, options.duration)
     });
   });

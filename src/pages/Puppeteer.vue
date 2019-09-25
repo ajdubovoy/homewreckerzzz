@@ -23,6 +23,10 @@
     b-form-group
       label(for="frequency") Frequency: {{ pitchName }}
       b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
+    h3 Quizzes
+    b-form-group
+      b-form-select(v-model="quiz" :options="quizOptions")
+    b-button(type="submit" variant="primary" :disabled="quiz === 0" @click="handleQuiz") Start Jeopardy Time
 </template>
 
 <script>
@@ -36,6 +40,31 @@ export default {
   mounted() {
     this.connectMIDI();
   },
+  created() {
+    // Immutable state
+    this.quizzes = [
+      {
+        title: 'Emoji',
+        question: "Please select an emoji:",
+        answers: [
+          '😍',
+          '🤓',
+          '🤗',
+          '🤯'
+        ],
+        duration: 6000
+      }
+    ];
+    this.quizOptions = [
+      { value: 0, text: 'Please select a quiz' },
+      ...this.quizzes.map((quiz, index) => { 
+        return { 
+          value: index + 1, 
+          text: quiz.title 
+        };
+      })
+    ];
+  },
   data() {
     return {
       password: '',
@@ -43,6 +72,7 @@ export default {
       sustain: false,
       amplitude: 100,
       frequency: 60,
+      quiz: 0
     };
   },
   computed: {
@@ -67,7 +97,14 @@ export default {
       navigator.requestMIDIAccess()
         .then(this.onMIDISuccess, this.onMIDIFailure);
     },
-    onMIDISuccess(message) {
+    onMIDISuccess(midiAccess) {
+      // https://www.smashingmagazine.com/2018/03/web-midi-api/
+      this.socketMessage = "Gained access to your MIDI device!";
+      for (var input of midiAccess.inputs.values()) {
+        input.onmidimessage = this.getMIDIMessage;
+      }
+    },
+    getMIDIMessage(message) {
       const [, note, velocity] = message; // Assign the MIDI message data to useable variables and disregard the first (command) for now
 
       switch (note) {
@@ -100,6 +137,18 @@ export default {
       this.socketMessage = 'Sending kill request...';
       this.$socket.client.emit('puppetKill');
       this.resetData('Kill request sent');
+    },
+    handleQuiz() {
+      const quiz = this.quizzes[this.quiz + 1];
+      if (quiz) {
+        this.socketMessage = 'Sending quiz request...';
+        this.$socket.client.emit('puppetQuiz', {
+          quiz
+        });
+        this.resetData('Quiz request sent: ' + quiz.title);
+      } else {
+        this.socketMessage = 'why dont U seleCT a quiZ!?!?';
+      }
     },
     resetData(message = "Back to basics") {
       Object.assign(this.$data, this.$options.data.call(this));
