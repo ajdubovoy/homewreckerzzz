@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      connected: false
+      connected: true // Assume connected and only show message on disconnect
     }
   },
   sockets: {

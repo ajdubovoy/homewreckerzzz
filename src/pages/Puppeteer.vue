@@ -14,6 +14,12 @@
       | I made it 'speciALLY für U with lovE and cArE
     b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
     b-form-checkbox(v-model="sustain") Sustain Mode
+    b-form-group
+      label(for="amplitude") Amplitude
+      b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
+    b-form-group
+      label(for="amplitude") Pitch
+      b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
     b-button(@click="handlePlay") Play
     b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
 </template>
@@ -25,19 +31,49 @@ import BlinkyText from '../components/BlinkyText';
 
 export default {
   name: 'Puppeteer',
-  computed: {
-    ...mapState([
-      'puppeteer'
-    ]),
+  mounted() {
+    this.connectMIDI();
   },
   data() {
     return {
       password: '',
       socketMessage: "Loading...",
-      sustain: false
+      sustain: false,
+      amplitude: 100
     };
   },
+  computed: {
+    ...mapState([
+      'puppeteer'
+    ]),
+  },
   methods: {
+    connectMIDI() {
+      if (navigator.requestMIDIAccess) {
+        this.socketMessage = "WebMIDI initialized";
+      } else {
+        this.socketMessage = "WebMIDI could not be initialized urgh";
+      }
+
+      navigator.requestMIDIAccess()
+        .then(this.onMIDISuccess, this.onMIDIFailure);
+    },
+    onMIDISuccess(message) {
+      const [command, note, velocity] = message; // Assign the MIDI message data to useable variables
+
+      switch (note) {
+        // Translate slider input into appropriate state change
+        case 1:
+          this.amplitude = velocity;
+          break;
+        case 3:
+          this.pitch = velocity;
+          break;
+      }
+    },
+    onMIDIFailure() {
+      this.socketMessage = "Could not access your MIDI devices urgh";
+    },
     handleSubmit(password) {
       this.makePuppeteer(password);
       this.password = '';
@@ -48,16 +84,17 @@ export default {
       this.$socket.client.emit('puppetPlay', {
         sustain: this.sustain
       });
-      this.resetData();
+      this.resetData('Play request sent');
     },
     handleKill() {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending kill request...';
       this.$socket.client.emit('puppetKill');
-      this.resetData();
+      this.resetData('Kill request sent');
     },
-    resetData() {
-      this.sustain = false;
+    resetData(message = "Back to basics") {
+      Object.assign(this.$data, this.$options.data.call(this));
+      this.socketMessage = message;
     },
     ...mapActions([
       'makePuppeteer',
