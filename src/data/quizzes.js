@@ -8,6 +8,7 @@ export default [
       '🤗',
       '🤯'
     ],
+    class: 'doughnuts',
     duration: 30000
   }
 ];

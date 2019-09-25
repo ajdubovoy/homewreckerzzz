@@ -4,7 +4,7 @@
     h1 plz turn OFFFFF your content blockers and let me contRoL ur aud.io!
   Cover(v-else-if="!connected")
     h1 overcoming the teCHnical boundarIEs and CONNECTING...
-  QuizQuestion(:text="quizProps()" :submit="handleQuizSubmit" v-if="quiz")
+  QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
 </template>
 
 <script>
@@ -79,12 +79,6 @@ export default {
     ...mapActions([
       'setPlayingInstrument'
     ]),
-    quizProps() {
-      return {
-        question: this.quiz.question,
-        answers: this.quiz.answers
-      }
-    }
   },
   components: {
     Cover,

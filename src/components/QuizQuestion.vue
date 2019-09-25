@@ -37,4 +37,8 @@ export default {
   background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/chuck_norris.gif');
   background-size: contain;
 }
+.doughnuts{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/doughnuts.gif');
+  background-size: contain;
+}
 </style>
