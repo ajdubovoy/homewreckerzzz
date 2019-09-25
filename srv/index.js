@@ -20,7 +20,7 @@ export default (app, http) => {
 
   // Sockets
   let responses = []; // Initial empty quiz responses array to local state
-  let quizActive = false;
+  let currentQuiz = null;
 
   const io = socketIO(http);
   io.on("connection", client => {
@@ -41,9 +41,13 @@ export default (app, http) => {
     // Quizzes
     client.on('quizResponse', function(response) {
       // Collect all responses
-      if (quizActive) {
+      if (currentQuiz) {
         console.log('Quiz response received: ' + JSON.stringify(response));
         responses.push(response);
+        io.emit('quizTally', {
+          response,
+          quiz
+        })
       } else {
         console.log('Unauthorized quiz response urgh');
       }
@@ -54,7 +58,7 @@ export default (app, http) => {
       responses = []; // Clear any remnants
 
       // Listen for survey responses
-      quizActive = true;
+      currentQuiz = options;
       io.emit('quizAsk', options); // Ask clients to respond
 
       setTimeout(() => {
@@ -66,7 +70,7 @@ export default (app, http) => {
         });
         console.log('Quiz ended and results sent: ' + JSON.stringify(responseValues));
         responses = []; // Get out of quiz mode
-        quizActive = false;
+        currentQuiz = null;
       }, options.duration)
     });
   });
