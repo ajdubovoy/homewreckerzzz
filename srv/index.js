@@ -22,13 +22,43 @@ export default (app, http) => {
   const io = socketIO(http);
   io.on("connection", client => {
     console.log('New socket connection');
+
+    // Socket routes
+    // The 'puppet' prefix is used to refer to events sent from the 'puppeteer' dashboard that are then relayed to clients
     client.on('puppetPlay', function(options = {}) {
       io.emit('play', options);
       console.log('Play command sent');
     });
+
     client.on('puppetKill', function(options = {}) {
       io.emit('kill', options);
       console.log('Kill command sent');
+    });
+
+    // Quizzes
+    let responses = []; // Initial empty quiz responses array to local state
+    let quizActive = false;
+    client.on('quizResponse', function(response) {
+      // Collect all responses
+      if (quizActive) {
+        responses.push(response);
+      }
+    });
+
+    client.on('puppetQuiz', function(options = { duration: '5000' }) {
+      // Listen for survey responses
+      quizActive = true;
+      io.emit('quizAsk', options); // Ask clients to respond
+
+      setTimeout(() => {
+        // Once quiz finished, notify clients of results
+        io.emit('quizCompletion', {
+          quiz: options,
+          responses
+        });
+        responses = []; // Get out of quiz mode
+        quizActive = false;
+      }, options.duration)
     });
   });
 
