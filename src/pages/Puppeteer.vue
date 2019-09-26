@@ -66,7 +66,7 @@ export default {
     return {
       password: '',
       socketMessage: "Loading...",
-      sustain: false,
+      sustain: true,
       amplitude: 100,
       frequency: 60,
       quiz: 0,
@@ -133,7 +133,17 @@ export default {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending play request...';
       this.$socket.client.emit('puppetPlay', {
-        sustain: this.sustain
+        instrument: this.instrument,
+        audience: {
+          roomSection: this.roomSection,
+          seatingHeight: this.seatingHeight,
+          randomQuestion: this.randomQuestion
+        },
+        controls: {
+          sustain: this.sustain,
+          amplitude: this.amplitude,
+          frequency: this.frequency
+        }
       });
       this.resetData('Play request sent');
     },

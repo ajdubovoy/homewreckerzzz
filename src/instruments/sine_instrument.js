@@ -13,7 +13,7 @@ export default class {
 
   majorChord = (root, options = {}) => {
     // check out that fancy one-liner
-    if(options.sustain) {
+    if(options.controls.sustain) {
       [root, root+4, root+7].forEach((m) => this.active.push(sineSustain(midiToFreq(m), 0.2, this.context)));
     } else {
       [root, root+4, root+7].forEach((m) => sineDoop(midiToFreq(m), 2, 0.2, this.context));
@@ -21,7 +21,7 @@ export default class {
   }
 
   minorChord = (root, options = {}) => {
-    if(options.sustain) {
+    if(options.controls.sustain) {
       [root, root+3, root+7].forEach((m) => this.active.push(sineSustain(midiToFreq(m), 0.2, this.context)));
     } else {
       [root, root+3, root+7].forEach((m) => sineDoop(midiToFreq(m), 2, 0.2, this.context));
