@@ -8,12 +8,16 @@ export default class {
   }
 
   play(options = {}) {
+    const compressor = this.context.createDynamicsCompressor();
+    compressor.connect(this.context.destination);
+
     const chord = this[options.clusterType](parseInt(options.frequency, 10));
-    this.playChord(chord, options);
+    this.playChord(chord, compressor, options);
   }
 
-  playChord = (chord, options = {}) => {
-    chord.forEach((m) => this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 2, 0.2, this.context)));
+  playChord = (chord, destination, options = {}) => {
+    const desiredAmplitude = options.amplitude / 128; // Convert from MIDI standard
+    chord.forEach((m) => this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 0.2, desiredAmplitude, this.context, options.waveType, destination)));
   }
 
   major = (root) => {

@@ -13,11 +13,6 @@ export default {
   mounted() {
     // Small hack to unlock WebAudio on iOS
     webAudioTouchUnlock(this.audioContext)
-
-    // Add a compressor to ward off clipping
-    // https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode/DynamicsCompressorNode
-    const compressor = this.audioContext.createDynamicsCompressor();
-    compressor.connect(this.audioContext.destination);
   },
   computed: mapState([
     'audioContext'
