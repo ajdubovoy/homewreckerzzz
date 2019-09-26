@@ -1,70 +1,40 @@
 import ADSR from 'adsr';
 /*
-Simple sine instrument. Returns its sound source and requires an audio context to run.
-Example usage:
-    var AudioContext = window.AudioContext || window.webkitAudioContext;
-    var context = new AudioContext();
-    var sine = sineSustain(440, context);
-    sine.stop(context.currentTime + 1); //stops after a second, always manually stopped
-*/
-export function sineSustain(freq, peak, context) {
-    var gain = context.createGain();
-    var sound = context.createOscillator();
-    var env = ADSR(context);
-
-    sound.connect(gain);
-    gain.connect(context.destination);
-    env.connect(gain.gain);
-    
-    // these can be edited for different envelopes. maybe we could define certain envelopes in a separate file
-    env.attack = 0.3;
-    env.decay = 0.05;
-    env.sustain = 0.8;
-    env.release = 0.65;
-    env.value.value = peak;
-
-    gain.gain.value = 0;
-    
-    sound.frequency.setValueAtTime(freq, context.currentTime);
-    sound.start(context.currentTime);
-    env.start(context.currentTime);
-    return {
-        osc: sound,
-        env: env
-    }
-}
-
-/*
 Simple sine instrument. Returns its sound source and requires an audio context to run. Takes a duration and has simple envelope. Stops after 'dur' seconds.
 Example usage:
     var AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
     var sine = sine(440, 1, context); //stops after a second, always stops automatically
 */
-export function sineDoop(freq, dur, peak, context) {
-    var gain = context.createGain();
-    var sound = context.createOscillator();
-    var env = ADSR(context);
+export default function(freq, dur, peak, context) {
+  const gain = context.createGain();
+  const sound = context.createOscillator();
+  const env = ADSR(context);
 
-    sound.connect(gain);
-    gain.connect(context.destination);
-    env.connect(gain.gain);
-    
-    env.attack = 0.3*dur;
-    env.decay = 0.05*dur;
-    env.sustain = 0.8;
-    env.release = 0.65*dur;
-    env.value.value = peak;
+  sound.connect(gain);
+  gain.connect(context.destination);
+  env.connect(gain.gain);
+  
+  const multiplier = (amt) => {
+    return dur ? amt * dur : amt;
+  }
+  env.attack = multiplier(0.3);
+  env.decay = multiplier(0.5);
+  env.sustain = multiplier(0.8);
+  env.release = multiplier(0.65);
+  env.value.value = peak;
 
-    gain.gain.value = 0;
-    
-    sound.frequency.setValueAtTime(freq, context.currentTime);
-    sound.start(context.currentTime);
-    env.start(context.currentTime);
-    var end = env.stop(context.currentTime + dur, true);
+  gain.gain.value = 0;
+  
+  sound.frequency.setValueAtTime(freq, context.currentTime);
+  sound.start(context.currentTime);
+  env.start(context.currentTime);
+  if (dur) {
+    const end = env.stop(context.currentTime + dur, true);
     sound.stop(end + 0.1);
-    return {
-        osc: sound,
-        env: env
-    };
+  }
+  return {
+    osc: sound,
+    env: env
+  };
 }
