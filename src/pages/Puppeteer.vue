@@ -15,6 +15,9 @@
     b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
     b-button(@click="handlePlay" variant="primary") Play
     b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
+    h3 INstruments
+    b-form-group
+      b-form-select(v-model="instrument" :options="instrumentOptions()")
     b-form-group
       b-form-checkbox(v-model="sustain") Sustain Mode
     b-form-group
@@ -41,6 +44,7 @@ import midiToName from '../helpers/midi_to_name';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
 import quizzes from '../data/quizzes';
+import instruments from '../data/instruments';
 
 export default {
   name: 'Puppeteer',
@@ -55,7 +59,8 @@ export default {
       amplitude: 100,
       frequency: 60,
       quiz: 0,
-      userFile: null
+      userFile: null,
+      instrument: 0
     };
   },
   computed: {
@@ -157,6 +162,16 @@ export default {
           return { 
             value: index + 1, 
             text: quiz.title 
+          };
+        })
+      ];
+    },
+    instrumentOptions() {
+      return [
+        ...instruments.map((instrument, index) => { 
+          return { 
+            value: index, 
+            text: instrument
           };
         })
       ];
