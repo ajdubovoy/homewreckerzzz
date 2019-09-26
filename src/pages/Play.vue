@@ -63,6 +63,7 @@ export default {
     },
     quizAsk(quiz) {
       if (this.isAudience(quiz)) {
+        this.notificationPing();
         this.quiz = quiz;
       }
     },
@@ -119,6 +120,31 @@ export default {
         value: response
       });
     }, 750),
+    notificationPing() {
+      const playTone = (frequency) => {
+        this.waveInstrument.play({
+          sustain: false,
+          amplitude: 110,
+          frequency: frequency,
+          waveType: 'sawtooth'
+        });
+      }
+
+      playTone(72);
+
+      // Double ping
+      window.setTimeout(() => { playTone(68) }, 100);
+
+      // Vibrate
+      var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
+
+      if (canVibrate && !("vibrate" in navigator))
+        navigator.vibrate = navigator.mozVibrate;
+
+      if (canVibrate) {
+        navigator.vibrate(500);
+      }
+    },
     ...mapActions([
       'setPlayingInstrument'
     ]),
