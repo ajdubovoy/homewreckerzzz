@@ -67,3 +67,7 @@ public/stylesheets/*.css.map
 # Compiled JS
 public/javascripts/*.js
 dist/
+
+# Uploads
+public/uploads/*
+srv/tmp/uploads/*

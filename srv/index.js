@@ -3,10 +3,22 @@ import createError from 'http-errors';
 import path from 'path';
 import routes from 'express-namespace-routes';
 import socketIO from "socket.io";
+import multer from 'multer';
 
 export default (app, http) => {
   app.use(express.json());
   
+  // File Upload
+  const storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+      callback(null, path.join(__dirname, 'tmp', 'uploads'));
+    },
+    filename: function(req, file, callback) {
+      callback(null, file.originalname);
+    }
+  });
+
+  const upload = multer({storage: storage});
 
   // Routes
   // https://github.com/WebStyle/express-namespace-routes
@@ -14,6 +26,11 @@ export default (app, http) => {
     api.get('/', (req, res) => {
       res.json({ success: "Welcome to API v. 1.0" });
     });
+
+    api.post('/file-upload', upload.single('userFile'), function(req, res) {
+      console.log('File uploaded');
+      res.sendStatus(200);
+    })
   });
 
   app.use(routes);
