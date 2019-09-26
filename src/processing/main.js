@@ -1,34 +1,44 @@
-var particles = [];
-var f = 0;
+import p5 from 'p5';
+import {ShimmerSquare} from '../processing/Particle.js';
 
-function setup() {
-  createCanvas(600, 400);
-  resizeCanvas(windowWidth, windowHeight);
-  colorMode(HSB, 360, 255, 255);
-  frameRate(30);
-}
+var sketch = new p5(p5 => {
+  var particles = [];
+  var f = 0;
 
-
-function draw() {
-  background(0);
-  particles.forEach((p, index, arr) => {
-    p.display();
-    p.update();
-    if (p.isDead()) {
-      arr.splice(index, 1);
+  p5.setup = function() {
+    var cnv = p5.createCanvas(510, 510); 
+    cnv.parent('canvas-container');
+    p5.resizeCanvas(window.innerWidth, window.innerHeight);
+    p5.colorMode(p5.HSB, 360, 255, 255);
+    p5.frameRate(30);
+    console.log(window.innerWidth)
+  };
+  p5.draw = function() {
+    p5.background(0);
+    particles.forEach((p, index, arr) => {
+      p.display();
+      p.update();
+      if (p.isDead()) {
+        arr.splice(index, 1);
+      }
+    });
+    var random = Math.random(1);
+    if(random < 0.8 && f % 30 == 0) {
+      for(var i = 0; i < 30; i++) {
+        var randX = Math.random()*window.innerWidth;
+        var randY = Math.random()*window.innerHeight;
+        particles.push(new ShimmerSquare(
+          p5.color(240, 200,255), 
+          randX, 
+          randY, 
+          parseInt(60 + random*120), 
+          p5
+        ));
+      }
     }
-  });
-  var random = Math.random(1);
-  if(random < 0.8 && f % 30 == 0) {
-    for(var i = 0; i < 30; i++) {
-      var randX = Math.random()*windowWidth;
-      var randY = Math.random()*windowHeight;
-      particles.push(new ShimmerSquare(color(240, 200,255), randX, randY, int(60 + random*120)));
-    }
+    f++;
   }
-  f++;
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}
+  p5.windowResized = function() {
+    p5.resizeCanvas(window.innerWidth, window.innerHeight);
+  }
+})

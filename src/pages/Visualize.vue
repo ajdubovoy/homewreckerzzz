@@ -3,9 +3,15 @@
 </template>
 
 <script>
-import p5 from 'p5';
-import '../processing/Particle.js';
 import '../processing/main.js';
 
 export default {}
 </script> 
+
+<style lang="scss">
+#canvas-container {
+  height: 100vh;
+  width: 100%;
+}
+
+</style>
