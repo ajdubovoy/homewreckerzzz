@@ -14,7 +14,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import throttle from 'lodash.throttle';
-import SineInstrument from '../instruments/sine_instrument';
+import WaveInstrument from '../instruments/wave_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
 import instruments from '../data/instruments';
@@ -29,7 +29,7 @@ export default {
       this.$router.push('/');
     }
 
-    this.sineInstrument = new SineInstrument(this.audioContext);
+    this.waveInstrument = new WaveInstrument(this.audioContext);
 
     this.initiateLoadingText();
   },

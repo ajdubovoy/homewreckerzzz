@@ -6,7 +6,7 @@ Example usage:
     var context = new AudioContext();
     var sine = sine(440, 1, context); //stops after a second, always stops automatically
 */
-export default function(freq, dur, peak, context) {
+export default function(freq, dur, peak, context, wave = 'sine') {
   const gain = context.createGain();
   const sound = context.createOscillator();
   const env = ADSR(context);
@@ -26,6 +26,9 @@ export default function(freq, dur, peak, context) {
 
   gain.gain.value = 0;
   
+  sound.type = wave;
+  console.log(wave);
+
   sound.frequency.setValueAtTime(freq, context.currentTime);
   sound.start(context.currentTime);
   env.start(context.currentTime);
