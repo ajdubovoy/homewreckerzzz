@@ -27,10 +27,16 @@
     b-form-group
       b-form-select(v-model="quiz" :options="quizOptions()")
     b-button(type="submit" variant="primary" :disabled="quiz === 0" @click="handleQuiz") Start Jeopardy Time
+    h3 File Upload
+    b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data" method="post" action="/api/file-upload")
+      b-form-group
+        b-form-file(accept="audio" name="userFile" v-model="userFile" :state="Boolean(userFile)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here...")
+        b-button(type="submit" variant="primary") Send it to the alIEnS
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import axios from 'axios';
 import midiToName from '../helpers/midi_to_name';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
@@ -48,7 +54,8 @@ export default {
       sustain: false,
       amplitude: 100,
       frequency: 60,
-      quiz: 0
+      quiz: 0,
+      userFile: null
     };
   },
   computed: {
@@ -123,6 +130,21 @@ export default {
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
       }
+    },
+    handleFileSubmit() {
+      const formData = new FormData();
+      formData.append('userFile', this.userFile)
+      axios({
+        url: '/api/file-upload',
+        method: 'post',
+        data: formData
+      })
+        .then(() => {
+          this.resetData('File uploaded');
+        })
+        .catch((error) => {
+          this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;
+        });
     },
     resetData(message = "Back to basics") {
       Object.assign(this.$data, this.$options.data.call(this));
