@@ -72,7 +72,7 @@ export default {
     },
     instrumentName() {
       return instruments[this.instrument];
-    }
+    },
     ...mapState([
       'puppeteer'
     ]),
