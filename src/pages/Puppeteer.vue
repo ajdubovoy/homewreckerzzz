@@ -27,6 +27,9 @@
     b-form-group
       label(for="frequency") Frequency: {{ pitchName }}
       b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
+    b-form-group(v-if="instrument === 1")
+      label(for="cluster-type") Cluster Type
+      b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random']")
     b-form-group
       label(for="wave-type") Wave Type
       b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
@@ -78,7 +81,8 @@ export default {
       roomSection: 0,
       seatingHeight: 0,
       randomQuestion: 0,
-      waveType: 'sine'
+      waveType: 'sine',
+      clusterType: 'major'
     };
   },
   computed: {
@@ -94,7 +98,8 @@ export default {
           sustain: this.sustain,
           amplitude: this.amplitude,
           frequency: this.frequency,
-          waveType: this.waveType
+          waveType: this.waveType,
+          clusterType: this.clusterType
         }
       }
     },

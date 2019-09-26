@@ -1,5 +1,6 @@
 const instruments = [
-  'waveInstrument'
+  'waveInstrument',
+  'clusterInstrument'
 ]
 
 export default instruments;
