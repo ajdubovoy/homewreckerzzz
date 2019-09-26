@@ -27,6 +27,9 @@
     b-form-group
       label(for="frequency") Frequency: {{ pitchName }}
       b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
+    b-form-group
+      label(for="wave-type") Wave Type
+      b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
     h3 Audience
     b-form-group
       label(for="room-section") Room Section
@@ -74,7 +77,8 @@ export default {
       instrument: 0,
       roomSection: 0,
       seatingHeight: 0,
-      randomQuestion: 0
+      randomQuestion: 0,
+      waveType: 'sine'
     };
   },
   computed: {
@@ -89,7 +93,8 @@ export default {
         controls: {
           sustain: this.sustain,
           amplitude: this.amplitude,
-          frequency: this.frequency
+          frequency: this.frequency,
+          waveType: this.waveType
         }
       }
     },

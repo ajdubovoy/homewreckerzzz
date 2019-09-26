@@ -1,5 +1,5 @@
 const instruments = [
-  'sineInstrument'
+  'waveInstrument'
 ]
 
 export default instruments;
