@@ -78,6 +78,21 @@ export default {
     };
   },
   computed: {
+    instrumentRequest() {
+      return {
+        instrument: this.instrument,
+        audience: {
+          roomSection: this.roomSection,
+          seatingHeight: this.seatingHeight,
+          randomQuestion: this.randomQuestion
+        },
+        controls: {
+          sustain: this.sustain,
+          amplitude: this.amplitude,
+          frequency: this.frequency
+        }
+      }
+    },
     pitchName() {
       return midiToName(this.frequency);
     },
@@ -132,25 +147,13 @@ export default {
     handlePlay() {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending play request...';
-      this.$socket.client.emit('puppetPlay', {
-        instrument: this.instrument,
-        audience: {
-          roomSection: this.roomSection,
-          seatingHeight: this.seatingHeight,
-          randomQuestion: this.randomQuestion
-        },
-        controls: {
-          sustain: this.sustain,
-          amplitude: this.amplitude,
-          frequency: this.frequency
-        }
-      });
+      this.$socket.client.emit('puppetPlay', this.instrumentRequest);
       this.resetData('Play request sent');
     },
     handleKill() {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending kill request...';
-      this.$socket.client.emit('puppetKill');
+      this.$socket.client.emit('puppetKill', this.instrumentRequest);
       this.resetData('Kill request sent');
     },
     handleQuiz() {
