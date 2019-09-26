@@ -6,7 +6,9 @@
     h1 overcoming the teCHnical boundarIEs and CONNECTING...
   Cover(v-else-if="audioContext.state !== 'running'")
     h1 urgh, im expERIencING some issues with taking over ur speakeRS. Try tapping your screen
-  QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
+  Cover(v-else-if="Boolean(loadingText)")
+    h1 {{ loadingText }}
+  QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-else-if="quiz")
 </template>
 
 <script>
@@ -28,11 +30,14 @@ export default {
     }
 
     this.sineInstrument = new SineInstrument(this.audioContext);
+
+    this.initiateLoadingText();
   },
   data() {
     return {
       connected: true, // Assume connected and only show message on disconnect
-      quiz: null
+      quiz: null,
+      loadingText: ""
     }
   },
   sockets: {
@@ -78,6 +83,13 @@ export default {
     ])
   },
   methods: {
+    initiateLoadingText() {
+      this.loadingText = 'wReCkER'
+      window.setTimeout(() => { this.loadingText = 'wrECKinggggg' }, 500);
+      window.setTimeout(() => { this.loadingText = 'WRECKEDDDDD' }, 1000);
+      window.setTimeout(() => { this.loadingText = 'GOOOOOOOOOOOOOO' }, 1500);
+      window.setTimeout(() => { this.loadingText = ''}, 2500);
+    },
     findAndSetInstrument(instrument) {
       const instrumentName = instruments[instrument]
       const instrumentInstance = this[instrumentName];
