@@ -15,9 +15,10 @@
     b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
     b-button(@click="handlePlay" variant="primary") Play
     b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
-    h3 INstruments
+    h3 scUlpt yo soUnd
     b-form-group
-      b-form-select(v-model="instrument" :options="instrumentOptions()")
+      label(for="instrument") Instrument
+      b-form-select(name="instrument" v-model="instrument" :options="instrumentOptions()")
     b-form-group
       b-form-checkbox(v-model="sustain") Sustain Mode
     b-form-group
@@ -26,6 +27,16 @@
     b-form-group
       label(for="frequency") Frequency: {{ pitchName }}
       b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
+    h3 Audience
+    b-form-group
+      label(for="room-section") Room Section
+      b-form-select(name="room-section" v-model="roomSection" :options="{0: 'All', 1: 'Couch', 2: 'Dining Table', 3: 'Door'}")
+    b-form-group
+      label(for="seating-height") Seating Height
+      b-form-select(name="seating-height" v-model="seatingHeight" :options="{0: 'All', 1: 'Floor', 2: 'Couch', 3: 'Chair', 4: 'Standing'}")
+    b-form-group
+      label(for="random-question") Random Question
+      b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
     h3 Quizzes
     b-form-group
       b-form-select(v-model="quiz" :options="quizOptions()")
@@ -60,7 +71,10 @@ export default {
       frequency: 60,
       quiz: 0,
       userFile: null,
-      instrument: 0
+      instrument: 0,
+      roomSection: 0,
+      seatingHeight: 0,
+      randomQuestion: 0
     };
   },
   computed: {
