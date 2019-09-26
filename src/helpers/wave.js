@@ -6,13 +6,13 @@ Example usage:
     var context = new AudioContext();
     var sine = sine(440, 1, context); //stops after a second, always stops automatically
 */
-export default function(freq, dur, peak, context, wave = 'sine') {
+export default function(freq, dur, peak, context, wave = 'sine', destination) {
   const gain = context.createGain();
   const sound = context.createOscillator();
   const env = ADSR(context);
 
   sound.connect(gain);
-  gain.connect(context.destination);
+  gain.connect(destination);
   env.connect(gain.gain);
   
   const multiplier = (amt) => {
