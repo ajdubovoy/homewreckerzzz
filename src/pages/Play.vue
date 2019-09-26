@@ -15,6 +15,7 @@ import throttle from 'lodash.throttle';
 import SineInstrument from '../instruments/sine_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
+import instruments from '../data/instruments';
 
 export default {
   name: 'Play',
@@ -43,11 +44,17 @@ export default {
       this.killInstrument(); // Kill sound on disconnect just in case
     },
     play(options) {
-      this.setPlayingInstrument(this.sineInstrument);
-      this.playingInstrument.play(options);
+      if (this.isAudience(options.audience)) {
+        // Only play if client is target audience
+        this.findAndSetInstrument(options.instrument); // Set instrument based on integer value
+        this.playingInstrument.play(options.controls); // Issue play command to selected instrument class instance
+      }
     },
     kill(options) {
-      this.killInstrument(options);
+      if (this.isAudience(options.audience)) {
+        // Only kill if client is target audience
+        this.killInstrument(options);
+      }
     },
     quizAsk(quiz) {
       this.quiz = quiz;
@@ -60,7 +67,10 @@ export default {
     ...mapState([
       'audioContext',
       'playingInstrument',
-      'confirmedConsent'
+      'confirmedConsent',
+      'roomSection',
+      'seatingHeight',
+      'randomQuestion'
     ]),
     ...mapGetters([
       'initialized',
@@ -68,6 +78,18 @@ export default {
     ])
   },
   methods: {
+    findAndSetInstrument(instrument) {
+      const instrumentName = instruments[instrument]
+      const instrumentInstance = this[instrumentName];
+      this.setPlayingInstrument(instrumentInstance);
+    },
+    isAudience({ roomSection, seatingHeight, randomQuestion }) {
+      // Makes sure current client satisfies 'audience' conditions
+      const isRoomSection = roomSection ? roomSection == this.roomSection : true;
+      const isSeatingHeight = seatingHeight ? seatingHeight == this.seatingHeight : true;
+      const isRandomQuestion = randomQuestion ? randomQuestion == this.randomQuestion : true;
+      return isRoomSection && isSeatingHeight && isRandomQuestion;
+    },
     killInstrument(options = {}) {
       if (this.playingInstrument) {
         this.playingInstrument.kill(options);

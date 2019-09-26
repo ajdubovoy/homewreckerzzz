@@ -28,7 +28,7 @@ export default class {
     }
   }
 
-  kill = (options = {}) => {
+  kill = () => {
     var self = this;
     this.active.forEach(function(sound) {
       var end = sound.env.stop(self.context.currentTime)
