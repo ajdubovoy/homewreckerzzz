@@ -134,6 +134,16 @@ export default {
 
       // Double ping
       window.setTimeout(() => { playTone(68) }, 100);
+
+      // Vibrate
+      var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
+
+      if (canVibrate && !("vibrate" in navigator))
+        navigator.vibrate = navigator.mozVibrate;
+
+      if (canVibrate) {
+        navigator.vibrate(500);
+      }
     },
     ...mapActions([
       'setPlayingInstrument'

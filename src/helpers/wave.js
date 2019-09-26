@@ -27,7 +27,6 @@ export default function(freq, dur, peak, context, wave = 'sine') {
   gain.gain.value = 0;
   
   sound.type = wave;
-  console.log(wave);
 
   sound.frequency.setValueAtTime(freq, context.currentTime);
   sound.start(context.currentTime);
