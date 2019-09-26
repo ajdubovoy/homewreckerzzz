@@ -62,7 +62,9 @@ export default {
       }
     },
     quizAsk(quiz) {
-      this.quiz = quiz;
+      if (this.isAudience(quiz)) {
+        this.quiz = quiz;
+      }
     },
     quizCompletion() {
       this.quiz = null;

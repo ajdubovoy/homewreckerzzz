@@ -158,9 +158,14 @@ export default {
     },
     handleQuiz() {
       const quiz = quizzes[this.quiz - 1];
+      const audience = {
+        roomSection: this.roomSection,
+        seatingHeight: this.seatingHeight,
+        randomQuestion: this.randomQuestion
+      };
       if (quiz) {
         this.socketMessage = 'Sending quiz request...';
-        this.$socket.client.emit('puppetQuiz', quiz);
+        this.$socket.client.emit('puppetQuiz', {...quiz, ...audience});
         this.resetData('Quiz request sent: ' + quiz.title);
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
