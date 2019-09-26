@@ -70,6 +70,9 @@ export default {
     amplitudePercentage() {
       return Math.round(this.amplitude / 128 * 100);
     },
+    instrumentName() {
+      return instruments[this.instrument];
+    }
     ...mapState([
       'puppeteer'
     ]),
