@@ -10,7 +10,6 @@
       yass, i am rAdy to get wrECkeD
     </b-button>
     <b-button variant="danger" to="/lotta-llama">
-      yass, i am rAdy to get wrECkeD
       naw, im p amBIvalEnt about getting wrECkeD
     </b-button>
   </Cover>
