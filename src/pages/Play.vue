@@ -38,7 +38,8 @@ export default {
       connected: true, // Assume connected and only show message on disconnect
       quiz: null,
       loadingText: "",
-      deepFried: false
+      deepFried: false,
+      playing: false
     }
   },
   sockets: {
@@ -52,12 +53,17 @@ export default {
     play(options) {
       if (this.isAudience(options.audience)) {
         // Only play if client is target audience
+        if (this.playing) {
+          // Prevent two play commands from overlapping
+          this.killInstrument(options);
+        }
         this.findAndSetInstrument(options.instrument); // Set instrument based on integer value
         this.playingInstrument.play(options.controls); // Issue play command to selected instrument class instance
         this.$socket.client.emit('clientPlay', {
           token: this.token,
           options
         });
+        this.playing = true;
       }
     },
     kill(options) {
@@ -68,6 +74,7 @@ export default {
           token: this.token,
           options
         });
+        this.playing = false;
       }
     },
     quizAsk(quiz) {
@@ -82,6 +89,11 @@ export default {
     deepFry(fry) {
       if (this.isAudience(fry)) {
         this.deepFried = true;
+      }
+    },
+    unDeepFry(fry) {
+      if (this.isAudience(fry)) {
+        this.deepFried = false;
       }
     }
   },
