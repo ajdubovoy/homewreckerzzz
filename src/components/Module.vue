@@ -199,6 +199,15 @@ export default {
     quizCompletion(payload) {
       this.socketMessage = 'The results are in :) Quiz over with ' + payload.responses.length + ' responses'
     }
+  },
+  props: {
+    midi: Object
+  },
+  watch: {
+    midi(newMIDI) {
+      this.amplitude = newMIDI.amplitude || this.amplitude;
+      this.frequency = newMIDI.frequency || this.frequency;
+    }
   }
 }
 </script>

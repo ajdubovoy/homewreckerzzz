@@ -15,7 +15,7 @@
         h2
           | I made it 'speciALLY für U with lovE and cArE
     b-row.mb-5
-      b-col(v-for="module in modules" lg=6 xl=3 :key="module")
+      b-col(v-for="module in modules" lg=6 xl=3 :key="module" :midi="midiFor(module)")
         Module
           b-button.remove-module(variant="danger" @click="removeModule(module)") ➖
       b-col(lg=6 xl=3)
@@ -46,6 +46,7 @@ export default {
       password: '',
       modules: [],
       userFile: null,
+      midiInput: {}
     };
   },
   computed: {
@@ -74,8 +75,14 @@ export default {
     getMIDIMessage(message) {
       const [, note, velocity] = message.data; // Assign the MIDI message data to useable variables and disregard the first (command) for now
 
-      switch (note) {
-        // TODO
+      this.midiInput[note] = velocity;
+    },
+    midiFor(module) {
+      let i = this.modules.indexOf(module);
+
+      return {
+        amplitude: this.midiInput[i],
+        frequency: this.midiInput[i + 9]
       }
     },
     onMIDIFailure() {
