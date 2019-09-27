@@ -45,9 +45,22 @@ export default (app, http) => {
 
     // Socket routes
     // The 'puppet' prefix is used to refer to events sent from the 'puppeteer' dashboard that are then relayed to clients
+    // The 'client' prefix goes the other way around
     client.on('puppetPlay', function(options = {}) {
       io.emit('play', options);
       console.log('Play command sent');
+    });
+
+    client.on('clientPlay', function(payload = {}) {
+      // Mainly for visualization
+      io.emit('clientWasPlayed', payload);
+      console.log('Client was played');
+    });
+
+    client.on('clientKill', function(payload = {}) {
+      // Mainly for visualization
+      io.emit('clientWasKilled', payload);
+      console.log('Client was killed');
     });
 
     client.on('puppetKill', function(options = {}) {

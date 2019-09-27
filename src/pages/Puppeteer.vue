@@ -54,6 +54,8 @@
         b-button(type="submit" variant="primary") Send it to the alIEnS
     h3 The Mysteries of Deep Frying Are Available to You
     b-button(variant="primary" @click="handleDeepFry") DEEP FRY WITH ALL OF GOD'S FURY
+    h3 Reset buttons back to defaults
+    b-button(variant="primary" @click="resetData") Go backkkkkkkk ET
 </template>
 
 <script>
@@ -160,13 +162,13 @@ export default {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending play request...';
       this.$socket.client.emit('puppetPlay', this.instrumentRequest);
-      this.resetData('Play request sent');
+      this.socketMessage = 'Play request sent';
     },
     handleKill() {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending kill request...';
       this.$socket.client.emit('puppetKill', this.instrumentRequest);
-      this.resetData('Kill request sent');
+      this.socketMessage = 'Kill request sent';
     },
     handleQuiz() {
       const quiz = quizzes[this.quiz - 1];
@@ -178,7 +180,7 @@ export default {
       if (quiz) {
         this.socketMessage = 'Sending quiz request...';
         this.$socket.client.emit('puppetQuiz', {...quiz, ...audience});
-        this.resetData('Quiz request sent: ' + quiz.title);
+        this.socketMessage = 'Quiz request sent: ' + quiz.title;
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
       }
@@ -187,7 +189,7 @@ export default {
       // TODO rework with fuller featureset
       this.socketMessage = 'Sending deep fry...';
       this.$socket.client.emit('puppetDeepFry', this.instrumentRequest);
-      this.resetData('Fries have been fried');
+      this.socketMessage = 'Fries have been fried';
     },
     handleFileSubmit() {
       const formData = new FormData();
@@ -198,7 +200,7 @@ export default {
         data: formData
       })
         .then(() => {
-          this.resetData('File uploaded');
+          this.socketMessage = 'File uploaded';
         })
         .catch((error) => {
           this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;
