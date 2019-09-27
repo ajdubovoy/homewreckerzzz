@@ -1,7 +1,9 @@
-import p5 from 'p5';
 import {ShimmerSquare} from '../processing/Particle.js';
 
-var sketch = new p5(p5 => {
+let p5; 
+
+export default function main(_p5) {
+  p5 = _p5;
   var particles = [];
   var f = 0;
 
@@ -41,4 +43,4 @@ var sketch = new p5(p5 => {
   p5.windowResized = function() {
     p5.resizeCanvas(window.innerWidth, window.innerHeight);
   }
-})
+}
