@@ -56,7 +56,7 @@ export default {
   name: 'Module',
   data() {
     return {
-      socketMessage: "Loading...",
+      socketMessage: "Added!",
       sustain: true,
       amplitude: 100,
       frequency: 60,
