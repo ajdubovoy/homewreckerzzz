@@ -3,9 +3,19 @@
 </template>
 
 <script>
-import '../processing/main.js';
+import p5 from 'p5';
+import main from '../processing/main.js';
 
-export default {}
+export default {
+  data() {
+    return {
+      sketch: null
+    }
+  },
+  mounted() {
+    this.sketch = new p5(main);
+  }
+}
 </script> 
 
 <style lang="scss">
