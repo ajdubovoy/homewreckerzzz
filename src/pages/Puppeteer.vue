@@ -19,7 +19,7 @@
         Module
           b-button.remove-module(variant="danger" @click="removeModule(module)") ➖
       b-col(lg=6 xl=3)
-        b-button.w-100.h-100(variant="success" @click="addModule") ➕ Add Module
+        b-button.w-100.h-100.add-module(variant="success" @click="addModule") ➕ Add Module
   b-container#additional-options
     h3 File Upload
     b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data")
@@ -146,3 +146,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.add-module{
+  min-height: 25rem;
+}
+</style>
