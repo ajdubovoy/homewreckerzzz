@@ -54,12 +54,20 @@ export default {
         // Only play if client is target audience
         this.findAndSetInstrument(options.instrument); // Set instrument based on integer value
         this.playingInstrument.play(options.controls); // Issue play command to selected instrument class instance
+        this.$socket.client.emit('clientPlay', {
+          token: this.token,
+          options
+        });
       }
     },
     kill(options) {
       if (this.isAudience(options.audience)) {
         // Only kill if client is target audience
         this.killInstrument(options);
+        this.$socket.client.emit('clientKill', {
+          token: this.token,
+          options
+        });
       }
     },
     quizAsk(quiz) {
