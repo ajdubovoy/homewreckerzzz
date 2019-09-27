@@ -14,9 +14,10 @@
           | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
         h2
           | I made it 'speciALLY für U with lovE and cArE
-    b-row
+    b-row.mb-5
       b-col(v-for="module in modules" lg=6 xl=3 :key="module")
         Module
+          b-button.remove-module(variant="danger" @click="removeModule(module)") ➖
       b-col(lg=6 xl=3)
         b-button.w-100.h-100(variant="success" @click="addModule") ➕ Add Module
   b-container#additional-options
@@ -82,6 +83,15 @@ export default {
     },
     addModule() {
       this.modules.push(Math.random().toString(36).substr(2, 9)) // Generate random key
+    },
+    removeModule(module) {
+      this.modules = this.modules.filter(function(m) {
+        return module !== m;
+      });
+
+      if (this.modules.length < 1) {
+        this.addModule();
+      }
     },
     handleSubmit(password) {
       this.makePuppeteer(password);

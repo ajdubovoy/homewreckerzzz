@@ -1,5 +1,7 @@
 <template lang="pug">
 .module(:class="playing ? 'playing' : 'paused'")
+  .deep-fried-module(v-if="deepFried")
+  slot
   b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
   b-tabs
     b-tab(title="👨‍👨‍👧‍👦" active)
@@ -39,7 +41,8 @@
       b-button(type="submit" variant="primary" :disabled="quiz === 0" @click="handleQuiz") Start Jeopardy Time
     b-tab(title="🍩")
       h3 The Mysteries of Deep Frying Are Available to You
-      b-button(variant="primary" @click="handleDeepFry") DEEP FRY WITH ALL OF GOD'S FURY
+      b-button(variant="primary" @click="handleDeepFry" v-if="!deepFried") DEEP FRY WITH ALL OF GOD'S FURY
+      b-button(variant="primary" @click="unDeepFry" v-else) Omg woops that made me feel high; undo
 </template>
 
 <script>
@@ -64,7 +67,8 @@ export default {
       randomQuestion: 0,
       waveType: 'sine',
       clusterType: 'major',
-      playing: false
+      playing: false,
+      deepFried: false
     };
   },
   computed: {
@@ -143,6 +147,14 @@ export default {
       this.socketMessage = 'Sending deep fry...';
       this.$socket.client.emit('puppetDeepFry', this.instrumentRequest);
       this.socketMessage = 'Fries have been fried';
+      this.deepFried = true;
+    },
+    unDeepFry() {
+      // TODO rework with fuller featureset
+      this.socketMessage = 'Sending deep fry cancellation...';
+      this.$socket.client.emit('unDeepFry', this.instrumentRequest);
+      this.socketMessage = 'Fries have been unfried';
+      this.deepFried = false;
     },
     handleFileSubmit() {
       const formData = new FormData();
@@ -201,13 +213,33 @@ export default {
 .module{
   background-color: #212733;
   border-radius: 3px;
-  padding: 1rem;
+  padding-top: 3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
   transition: background-color 500ms ease, opacity 500ms ease;
+  position: relative;
   &.playing{
     background-color: #A3CF30;
   }
   &.paused{
     opacity: 0.9;
+  }
+  .deep-fried-module{
+    position: absolute !important;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    pointer-events: none;
+    backdrop-filter: saturate(5) contrast(5) hue-rotate(30deg) blur(0px); // the deep frying
+    background-color: rgba(pink, 0.5);
+  }
+  .remove-module{
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 </style>

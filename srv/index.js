@@ -73,6 +73,11 @@ export default (app, http) => {
       console.log('Deep fry command sent');
     });
 
+    client.on('puppetUnDeepFry', function(options = {}) {
+      io.emit('unDeepFry', options);
+      console.log('Undo deep fry command sent');
+    });
+
     // Quizzes
     client.on('quizResponse', function(response) {
       // Collect all responses

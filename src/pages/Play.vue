@@ -90,6 +90,11 @@ export default {
       if (this.isAudience(fry)) {
         this.deepFried = true;
       }
+    },
+    unDeepFry(fry) {
+      if (this.isAudience(fry)) {
+        this.deepFried = false;
+      }
     }
   },
   computed: {
