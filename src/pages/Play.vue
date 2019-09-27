@@ -1,14 +1,12 @@
 <template lang="pug">
 .play
-  Cover(v-if="!audioContext")
-    h1 plz turn OFFFFF your content blockers and let me contRoL ur aud.io!
-  Cover(v-else-if="!connected")
-    h1 overcoming the teCHnical boundarIEs and CONNECTING...
-  Cover(v-else-if="audioContext.state !== 'running'")
-    h1 urgh, im expERIencING some issues with taking over ur speakeRS. Try tapping your screen
-  Cover(v-else-if="Boolean(loadingText)")
-    h1 {{ loadingText }}
-  QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-else-if="quiz")
+  .deep-fried(v-if="deepFried")
+  QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
+  Cover(v-else)
+    h1(v-if="!connected")
+      | overcoming the teCHnical boundarIEs and CONNECTING...
+    h1(v-if="Boolean(loadingText)")
+      | {{ loadingText }}
 </template>
 
 <script>
@@ -39,7 +37,8 @@ export default {
     return {
       connected: true, // Assume connected and only show message on disconnect
       quiz: null,
-      loadingText: ""
+      loadingText: "",
+      deepFried: false
     }
   },
   sockets: {
@@ -71,6 +70,11 @@ export default {
     },
     quizCompletion() {
       this.quiz = null;
+    },
+    deepFry(fry) {
+      if (this.isAudience(fry)) {
+        this.deepFried = true;
+      }
     }
   },
   computed: {
@@ -159,4 +163,16 @@ export default {
 </script>
 
 <style lang="scss">
+@keyframes hotMess {
+  from { backdrop-filter: saturate(5) contrast(5) hue-rotate(30deg) blur(0px); }
+  to { backdrop-filter: saturate(3) contrast(7) hue-rotate(60deg) blur(1px); }
+}
+.deep-fried{
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  pointer-events: none;
+  backdrop-filter: saturate(5) contrast(5) hue-rotate(30deg) blur(0px); // the deep frying
+  animation: hotMess 2s infinite alternate;
+}
 </style>

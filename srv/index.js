@@ -55,6 +55,11 @@ export default (app, http) => {
       console.log('Kill command sent');
     });
 
+    client.on('puppetDeepFry', function(options = {}) {
+      io.emit('deepFry', options);
+      console.log('Deep fry command sent');
+    });
+
     // Quizzes
     client.on('quizResponse', function(response) {
       // Collect all responses

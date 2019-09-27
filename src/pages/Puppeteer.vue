@@ -48,10 +48,12 @@
       b-form-select(v-model="quiz" :options="quizOptions()")
     b-button(type="submit" variant="primary" :disabled="quiz === 0" @click="handleQuiz") Start Jeopardy Time
     h3 File Upload
-    b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data" method="post" action="/api/file-upload")
+    b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data")
       b-form-group
         b-form-file(accept="audio" name="userFile" v-model="userFile" :state="Boolean(userFile)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here...")
         b-button(type="submit" variant="primary") Send it to the alIEnS
+    h3 The Mysteries of Deep Frying Are Available to You
+    b-button(variant="primary" @click="handleDeepFry") DEEP FRY WITH ALL OF GOD'S FURY
 </template>
 
 <script>
@@ -180,6 +182,12 @@ export default {
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
       }
+    },
+    handleDeepFry() {
+      // TODO rework with fuller featureset
+      this.socketMessage = 'Sending deep fry...';
+      this.$socket.client.emit('puppetDeepFry', this.instrumentRequest);
+      this.resetData('Fries have been fried');
     },
     handleFileSubmit() {
       const formData = new FormData();
