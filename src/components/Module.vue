@@ -82,14 +82,17 @@ export default {
         })
       ];
     },
+    audience() {
+      return {
+        roomSection: this.roomSection,
+        seatingHeight: this.seatingHeight,
+        randomQuestion: this.randomQuestion
+      };
+    },
     instrumentRequest() {
       return {
         instrument: this.instrument,
-        audience: {
-          roomSection: this.roomSection,
-          seatingHeight: this.seatingHeight,
-          randomQuestion: this.randomQuestion
-        },
+        audience: this.audience,
         controls: {
           sustain: this.sustain,
           amplitude: this.amplitude,
@@ -114,14 +117,12 @@ export default {
   },
   methods: {
     handlePlay() {
-      // TODO rework with fuller featureset
       this.socketMessage = 'Sending play request...';
       this.$socket.client.emit('puppetPlay', this.instrumentRequest);
       this.socketMessage = 'Play request sent';
       this.playing = true;
     },
     handleKill() {
-      // TODO rework with fuller featureset
       this.socketMessage = 'Sending kill request...';
       this.$socket.client.emit('puppetKill', this.instrumentRequest);
       this.socketMessage = 'Kill request sent';
@@ -129,30 +130,23 @@ export default {
     },
     handleQuiz() {
       const quiz = quizzes[this.quiz - 1];
-      const audience = {
-        roomSection: this.roomSection,
-        seatingHeight: this.seatingHeight,
-        randomQuestion: this.randomQuestion
-      };
       if (quiz) {
         this.socketMessage = 'Sending quiz request...';
-        this.$socket.client.emit('puppetQuiz', {...quiz, ...audience});
+        this.$socket.client.emit('puppetQuiz', {...quiz, ...this.audience});
         this.socketMessage = 'Quiz request sent: ' + quiz.title;
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
       }
     },
     handleDeepFry() {
-      // TODO rework with fuller featureset
       this.socketMessage = 'Sending deep fry...';
-      this.$socket.client.emit('puppetDeepFry', this.instrumentRequest);
+      this.$socket.client.emit('puppetDeepFry', this.audience);
       this.socketMessage = 'Fries have been fried';
       this.deepFried = true;
     },
     unDeepFry() {
-      // TODO rework with fuller featureset
       this.socketMessage = 'Sending deep fry cancellation...';
-      this.$socket.client.emit('unDeepFry', this.instrumentRequest);
+      this.$socket.client.emit('puppetUnDeepFry', this.audience);
       this.socketMessage = 'Fries have been unfried';
       this.deepFried = false;
     },

@@ -7,7 +7,7 @@
       b-form-group
         b-form-input(v-model='password' type='password') 
       b-button(type="submit" variant="primary") Unleash the Hounds
-  b-container#puppeteer-dash(v-else fluid="true")
+  b-container#puppeteer-dash(v-else :fluid="true")
     b-row
       b-col.text-center
         h1
