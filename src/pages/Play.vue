@@ -104,11 +104,11 @@ export default {
       'confirmedConsent',
       'roomSection',
       'seatingHeight',
-      'randomQuestion'
+      'randomQuestion',
+      'token'
     ]),
     ...mapGetters([
-      'initialized',
-      'token'
+      'initialized'
     ])
   },
   methods: {
