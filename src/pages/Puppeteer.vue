@@ -15,7 +15,7 @@
         b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
     b-row.mb-5
       b-col(v-for="(module, i) in modules" lg=6 xl=3 :key="module")
-        Module(:midi="midiInput" :instance="i")
+        Module(:midi="midiInput" :instance="i" :files="files")
           b-button.remove-module(variant="danger" @click="removeModule(module)") ➖
       b-col(lg=6 xl=3)
         b-button.w-100.h-100.add-module(variant="success" @click="addModule") ➕ Add Module
@@ -49,7 +49,8 @@ export default {
       modules: [],
       userFile: null,
       midiInput: new Array(16).fill(60),
-      socketMessage: ""
+      socketMessage: "",
+      files: []
     }
   },
   computed: {
@@ -106,8 +107,23 @@ export default {
         method: 'post',
         data: formData
       })
-        .then(() => {
+        .then((response) => {
           this.socketMessage = 'File uploaded';
+          var arr = this.files.slice();
+          arr.push(response.data.file);
+          this.files = arr;
+        })
+        .catch((error) => {
+          this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;
+        });
+    },
+    getFiles() {
+      axios({
+        url: '/api/files',
+        method: 'get'
+      })
+        .then((response) => {
+          console.log(response);
         })
         .catch((error) => {
           this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;

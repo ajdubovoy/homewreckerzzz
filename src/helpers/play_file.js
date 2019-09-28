@@ -1,3 +1,5 @@
+import ADSR from 'adsr';
+
 // use fetch to load an audio track, and
 // decodeAudioData to decode it and stick it in a buffer.
 // Then we put the buffer into the source
@@ -13,10 +15,37 @@ export async function loadClip(url, context) {
   return buffer;
 }
 
-export function playClip(buffer, context, destination) {
-  var source = context.createBufferSource();
-  source.buffer = buffer;
-  source.connect(destination);
-  source.start(0);
-  return source;
+export function playClip(buffer, peak, context, destination) {
+
+  const gain = context.createGain();
+  const sound = context.createBufferSource();
+  sound.buffer = buffer;
+  console.log(buffer);
+  const env = ADSR(context);
+
+  sound.connect(gain);
+  gain.connect(destination);
+  env.connect(gain.gain);
+  
+  const multiplier = (amt) => {
+    return amt;
+  }
+  env.attack = multiplier(0.3);
+  env.decay = multiplier(0.5);
+  env.sustain = multiplier(0.8);
+  env.release = multiplier(0.65);
+  env.value.value = peak;
+
+  gain.gain.value = 0;
+
+  sound.start(context.currentTime);
+  env.start(context.currentTime);
+
+  return {
+    osc: sound,
+    env: env,
+    gain,
+    destination,
+    context
+  };
 }

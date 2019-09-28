@@ -156,7 +156,8 @@ export default {
       'roomSection',
       'seatingHeight',
       'randomQuestion',
-      'token'
+      'token',
+      'buffers'
     ]),
     ...mapGetters([
       'initialized'
@@ -223,7 +224,8 @@ export default {
       }
     },
     ...mapActions([
-      'setPlayingInstrument'
+      'setPlayingInstrument',
+      'addBuffer'
     ]),
   },
   components: {

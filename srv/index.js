@@ -12,7 +12,7 @@ export default (app, http) => {
   // File Upload
   const storage = multer.diskStorage({
     destination: function(req, file, callback) {
-      callback(null, 'public/uploads');
+      callback(null, './uploads');
     },
     filename: function(req, file, callback) {
       callback(null, fileCount + ".mp3");
@@ -30,11 +30,8 @@ export default (app, http) => {
     });
 
     api.post('/file-upload', upload.single('userFile'), function(req, res) {
-      console.log('File uploaded');
-      var path = req.file.path.slice(6);
-      console.log(path);
-      app.io.emit('load', {file: path});
-      res.sendStatus(200);
+      console.log(req.file.path + " uploaded");
+      res.status(200).json({file: req.file.path});
     })
   });
 

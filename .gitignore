@@ -71,3 +71,4 @@ dist/
 # Uploads
 public/uploads/*
 srv/tmp/uploads/*
+uploads
