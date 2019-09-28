@@ -24,8 +24,8 @@ export default class {
     chord.forEach((m, index) => {
       const wave = this.active[index];
       if (wave) {
-        wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.3);
-        wave.osc.frequency.exponentialRampToValueAtTime(midiToFreq(m), wave.context.currentTime + 0.3);
+        wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.1);
+        wave.osc.frequency.exponentialRampToValueAtTime(midiToFreq(m), wave.context.currentTime + 0.1);
       } else {
         this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 0.2, amplitude, this.context, options.waveType, this.compressor));
       }

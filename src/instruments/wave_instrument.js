@@ -20,8 +20,8 @@ export default class {
     const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
 
     this.active.forEach((wave) => {
-      wave.osc.frequency.exponentialRampToValueAtTime(frequency, wave.context.currentTime + 0.3);
-      wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.3);
+      wave.osc.frequency.exponentialRampToValueAtTime(frequency, wave.context.currentTime + 0.1);
+      wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.1);
     });
   }
 
