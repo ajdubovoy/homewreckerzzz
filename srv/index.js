@@ -95,6 +95,11 @@ export default (app, http) => {
       console.log('Undo deep fry command sent');
     });
 
+    client.on('puppetFinale', function(options = {}) {
+      io.emit('finale', options);
+      console.log('Finale command sent');
+    });
+
     // Quizzes
     client.on('quizResponse', function(response) {
       // Collect all responses

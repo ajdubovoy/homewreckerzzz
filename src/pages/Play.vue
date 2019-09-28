@@ -2,7 +2,12 @@
 .play
   .deep-fried(v-if="deepFried")
   .synesthesia(:class = "{playing: this.playing}" :style="{ backgroundColor: hexColor}")
-    QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
+    Cover#finale(v-if="finale" :class = "{finale: this.finale, 'chuck-norris': randomQuestion === 0, llama: randomQuestion === 1, pineapple: randomQuestion === 2}")
+      h1
+        | thnX für gettINg wreCked
+      h2
+        | we really appreciate u 😘
+    QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-else-if="quiz")
     Cover(v-else)
       h1(v-if="!connected")
         | overcoming the teCHnical boundarIEs and CONNECTING...
@@ -16,7 +21,6 @@ import throttle from 'lodash.throttle';
 import chroma from 'chroma-js';
 import WaveInstrument from '../instruments/wave_instrument';
 import ClusterInstrument from '../instruments/cluster_instrument';
-import PlayFileInstrument from '../instruments/play_file_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
 import instruments from '../data/instruments';
@@ -33,7 +37,6 @@ export default {
 
     this.waveInstrument = new WaveInstrument(this.audioContext);
     this.clusterInstrument = new ClusterInstrument(this.audioContext);
-    this.playFileInstrument = new PlayFileInstrument(this.audioContext);
 
     this.initiateLoadingText();
   },
@@ -43,7 +46,8 @@ export default {
       quiz: null,
       loadingText: "",
       deepFried: false,
-      playing: false
+      playing: false,
+      finale: false
     }
   },
   sockets: {
@@ -70,9 +74,6 @@ export default {
         });
         this.playing = true;
       }
-    },
-    load(options) {
-      this.playFileInstrument.load(options);
     },
     update(options) {
       if (this.isAudience(options.audience)) {
@@ -124,6 +125,12 @@ export default {
       if (this.isAudience(fry)) {
         this.deepFried = false;
       }
+    },
+    finale() {
+      if (this.playing) {
+        this.killInstrument();
+      }
+      this.finale = true;
     }
   },
   computed: {
@@ -240,6 +247,19 @@ export default {
 }
 .synesthesia{
   transition: background-color 150ms ease;
-  animation: flicker 500ms infinite alternate;
+  &.playing{
+    animation: flicker 500ms infinite alternate;
+  }
+}
+.finale{
+  &.llama{
+    background-image: url('~@/assets/images/llama.gif');
+  }
+  &.chuck-norris{
+    background-image: url('~@/assets/images/chuck_norris.gif');
+  }
+  &.pineapple{
+    background-image: url('~@/assets/images/pineapple.gif');
+  }
 }
 </style>
