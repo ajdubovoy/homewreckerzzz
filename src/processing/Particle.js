@@ -36,7 +36,7 @@ export class Square extends Particle {
     var h = this.ctx.hue(this.c);
     var s = this.ctx.saturation(this.c);
     var b = this.ctx.brightness(this.c);
-    this.c = this.ctx.color(h, s, 255 * (frames/float(total)));
+    this.c = this.ctx.color(h, s, 255 * (this.frames/this.total));
     this.frames--;
   }
 }
@@ -64,5 +64,22 @@ export class ShimmerSquare extends Square {
     }
     this.c = this.ctx.color(h, s, 255 * (this.frames/this.total));
     this.frames--;
+  }
+}
+
+export class PulseSquare extends Square {
+  constructor(c, x, y, frames, ctx) {
+    super(c, x, y, frames, ctx);
+    this.upperBound = this.ctx.hue(c) + 8;
+    this.lowerBound = this.ctx.hue(c) - 8;
+    this.count = 0;
+  }
+  
+  update() {
+    var h = this.ctx.hue(this.c);
+    var s = this.ctx.saturation(this.c);
+    var b = Math.sin(Math.PI * 2 * ((this.count % 30)/30))*120+122;
+    this.c = this.ctx.color(h, s, b);
+    this.count = this.count+0.5;
   }
 }
