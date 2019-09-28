@@ -5,18 +5,36 @@ export default class {
   constructor(context) {
     this.context = context;
     this.active = [];
+    this.compressor = null;
   }
 
   play(options = {}) {
-    const compressor = this.context.createDynamicsCompressor();
-    compressor.connect(this.context.destination);
+    this.compressor = this.context.createDynamicsCompressor();
+    this.compressor.connect(this.context.destination);
 
     const chord = this[options.clusterType](parseInt(options.frequency, 10));
-    this.playChord(chord, compressor, options);
+    this.playChord(chord, this.compressor, options);
+  }
+
+  update = (options = {}) => {
+    const chord = this[options.clusterType](parseInt(options.frequency, 10));
+    const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
+    const frequency = midiToFreq(options.frequency);
+
+    chord.forEach((m, index) => {
+      console.log(this.active);
+      const wave = this.active[index];
+      if (wave) {
+        wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.3);
+        wave.osc.frequency.exponentialRampToValueAtTime(midiToFreq(m), wave.context.currentTime + 0.3);
+      } else {
+        this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 0.2, amplitude, this.context, options.waveType, this.compressor));
+      }
+    });
   }
 
   playChord = (chord, destination, options = {}) => {
-    const desiredAmplitude = options.amplitude / 128; // Convert from MIDI standard
+    const desiredAmplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
     chord.forEach((m) => this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 0.2, desiredAmplitude, this.context, options.waveType, destination)));
   }
 

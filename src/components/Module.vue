@@ -48,6 +48,7 @@
 <script>
 import { mapState } from 'vuex';
 import axios from 'axios';
+import throttle from 'lodash.throttle';
 import midiToName from '../helpers/midi_to_name';
 import quizzes from '../data/quizzes';
 import instruments from '../data/instruments';
@@ -122,6 +123,13 @@ export default {
       this.socketMessage = 'Play request sent';
       this.playing = true;
     },
+    handleUpdate: throttle(function() {
+      if (this.playing) {
+        this.socketMessage = 'Sending update request...';
+        this.$socket.client.emit('puppetUpdate', this.instrumentRequest);
+        this.socketMessage = 'Update request sent';
+      }
+    }, 300),
     handleKill() {
       this.socketMessage = 'Sending kill request...';
       this.$socket.client.emit('puppetKill', this.instrumentRequest);
@@ -207,6 +215,15 @@ export default {
     midi(newMIDI) {
       this.amplitude = newMIDI.amplitude || this.amplitude;
       this.frequency = newMIDI.frequency || this.frequency;
+    },
+    amplitude() {
+      this.handleUpdate();
+    },
+    frequency() {
+      this.handleUpdate();
+    },
+    clusterType() {
+      this.handleUpdate();
     }
   }
 }
