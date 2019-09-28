@@ -38,4 +38,12 @@ export default class {
     });
     this.active = [];
   }
+
+  color = () => {
+    return {
+      h: 240 + (this.options.frequency / 128 * 360 / 4 - 45),
+      s: 1,
+      l: this.options.amplitude / (128 * 2)
+    };
+  }
 }
