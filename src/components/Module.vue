@@ -33,7 +33,7 @@
           b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
         b-form-group.col-6(v-if="instrument === 3")
           label(for="density") Density: {{ density }}
-          b-form-input(id="density" v-model="density" type="range" min="1" max="10")
+          b-form-input(id="density" v-model="density" type="range" min="1" max="15")
         b-form-group.col-6(v-if="instrument === 1")
           label(for="cluster-type") Cluster Type
           b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random']")
