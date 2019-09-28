@@ -6,6 +6,7 @@ export default class {
     this.context = context;
     this.active = [];
     this.compressor = null;
+    this.options = {};
   }
 
   play(options = {}) {
@@ -14,22 +15,25 @@ export default class {
 
     const chord = this[options.clusterType](parseInt(options.frequency, 10));
     this.playChord(chord, this.compressor, options);
+    this.options = options;
+    return this.active[0];
   }
 
   update = (options = {}) => {
     const chord = this[options.clusterType](parseInt(options.frequency, 10));
     const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
-    const frequency = midiToFreq(options.frequency);
 
     chord.forEach((m, index) => {
-      const wave = this.active[index];
-      if (wave) {
-        wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.3);
-        wave.osc.frequency.exponentialRampToValueAtTime(midiToFreq(m), wave.context.currentTime + 0.3);
+      const selectedWave = this.active[index];
+      if (selectedWave) {
+        selectedWave.env.value.exponentialRampToValueAtTime(amplitude, selectedWave.context.currentTime + 0.3);
+        selectedWave.osc.frequency.exponentialRampToValueAtTime(midiToFreq(m), selectedWave.context.currentTime + 0.3);
       } else {
         this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 0.2, amplitude, this.context, options.waveType, this.compressor));
       }
     });
+    this.options = options;
+    return this.active[0];
   }
 
   playChord = (chord, destination, options = {}) => {
@@ -72,5 +76,34 @@ export default class {
       sound.osc.stop(end);
     });
     this.active = [];
+  }
+
+  color = () => {
+    switch(this.options.clusterType) {
+      case 'minor':
+        return {
+          h: 240 + (this.options.frequency / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'major':
+        return {
+          h: 270 + (this.options.frequency / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'chromatic':
+        return {
+          h: 50 + (this.options.frequency / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'random':
+        return {
+          h: 300 + (this.options.frequency / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+    }
   }
 }

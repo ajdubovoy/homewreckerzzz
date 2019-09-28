@@ -1,17 +1,19 @@
 <template lang="pug">
 .play
   .deep-fried(v-if="deepFried")
-  QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
-  Cover(v-else)
-    h1(v-if="!connected")
-      | overcoming the teCHnical boundarIEs and CONNECTING...
-    h1(v-if="Boolean(loadingText)")
-      | {{ loadingText }}
+  .synesthesia(:class = "{playing: this.playing}" :style="{ backgroundColor: hexColor}")
+    QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
+    Cover(v-else)
+      h1(v-if="!connected")
+        | overcoming the teCHnical boundarIEs and CONNECTING...
+      h1(v-if="Boolean(loadingText)")
+        | {{ loadingText }}
 </template>
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import throttle from 'lodash.throttle';
+import chroma from 'chroma-js';
 import WaveInstrument from '../instruments/wave_instrument';
 import ClusterInstrument from '../instruments/cluster_instrument';
 import PlayFileInstrument from '../instruments/play_file_instrument';
@@ -125,6 +127,16 @@ export default {
     }
   },
   computed: {
+    hexColor() {
+      let color = {h: 0, s: 0, l: 0};
+
+      if (this.playing) {
+        color = this.playingInstrument.color();
+      }
+
+      // https://gka.github.io/chroma.js/
+      return chroma(color).hex();
+    },
     ...mapState([
       'audioContext',
       'playingInstrument',
@@ -214,6 +226,10 @@ export default {
   from { backdrop-filter: saturate(5) contrast(5) hue-rotate(30deg) blur(0px); }
   to { backdrop-filter: saturate(3) contrast(7) hue-rotate(60deg) blur(1px); }
 }
+@keyframes flicker {
+  from { opacity: 0.7; }
+  to { opacity: 1 }
+}
 .deep-fried{
   height: 100vh;
   width: 100vw;
@@ -221,5 +237,9 @@ export default {
   pointer-events: none;
   backdrop-filter: saturate(5) contrast(5) hue-rotate(30deg) blur(0px); // the deep frying
   animation: hotMess 2s infinite alternate;
+}
+.synesthesia{
+  transition: background-color 150ms ease;
+  animation: flicker 500ms infinite alternate;
 }
 </style>
