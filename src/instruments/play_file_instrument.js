@@ -4,24 +4,37 @@ export default class {
   constructor(context) {
     this.context = context;
     this.active = [];
-    this.buffers = [];
   }
 
-  play(options = {}) {
+  async play(options = {}) {
     const compressor = this.context.createDynamicsCompressor();
-    compressor.connect(this.context.destination);
-    this.active.push(playClip(this.buffers[options.index], this.context, compressor));
+    const gain = this.context.createGain();
+    compressor.connect(gain);
+    gain.connect(this.context.destination);
+    const desiredAmplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
+    gain.gain.value = desiredAmplitude;
+    const buffer = await this.load(options);
+    this.active.push(playClip(buffer, desiredAmplitude, this.context, gain));
   }
 
   async load(options = {}) {
     const buf = await loadClip(options.file, this.context);
-    this.buffers.push(buf);
+    return buf;
+  }
+
+  update = (options = {}) => {
+    const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
+
+    this.active.forEach((wave) => {
+      wave.destination.gain.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.2);
+    });
   }
 
   kill = () => {
     var self = this;
     this.active.forEach(function(sound) {
-      sound.stop(end);
+      var end = sound.env.stop(self.context.currentTime)
+      sound.osc.stop(end);
     });
     this.active = [];
   }

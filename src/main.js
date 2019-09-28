@@ -46,7 +46,8 @@ const store = new Vuex.Store({
     audioContext: new AudioContext(),
     playingInstrument: null,
     puppeteer: false,
-    confirmedConsent: false
+    confirmedConsent: false,
+    buffers: []
   },
   mutations: {
     SET_ROOM_SECTION(state, section) {

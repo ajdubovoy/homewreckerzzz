@@ -69,9 +69,6 @@ export default {
         this.playing = true;
       }
     },
-    load(options) {
-      this.playFileInstrument.load(options);
-    },
     update(options) {
       if (this.isAudience(options.audience)) {
         // Only play if client is target audience
@@ -132,7 +129,8 @@ export default {
       'roomSection',
       'seatingHeight',
       'randomQuestion',
-      'token'
+      'token',
+      'buffers'
     ]),
     ...mapGetters([
       'initialized'
@@ -199,7 +197,8 @@ export default {
       }
     },
     ...mapActions([
-      'setPlayingInstrument'
+      'setPlayingInstrument',
+      'addBuffer'
     ]),
   },
   components: {

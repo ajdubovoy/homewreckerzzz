@@ -38,8 +38,8 @@
           label(for="wave-type") Wave Type
           b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
         b-form-group.col-6(v-if="instrument === 2")
-          label(for="file-index") File index
-          b-form-input(name="file-index" v-model="fileIndex" type="number")
+          label(for="file-name") File
+          b-form-select(name="file-name" v-model="fileName" :options="files")
     b-tab(title="❓")
       b-form-group
         b-form-select(v-model="quiz" :options="quizOptions()")
@@ -75,12 +75,13 @@ export default {
       clusterType: 'major',
       playing: false,
       deepFried: false,
-      fileIndex: 0
+      fileName: ""
     };
   },
   props: {
     midi: Array,
-    instance: Number
+    instance: Number,
+    files: Array
   },
   computed: {
     instrumentOptions() {
@@ -110,7 +111,7 @@ export default {
           frequency: this.frequency,
           waveType: this.waveType,
           clusterType: this.clusterType,
-          index: this.fileIndex
+          file: this.fileName
         }
       }
     },
@@ -168,21 +169,6 @@ export default {
       this.$socket.client.emit('puppetUnDeepFry', this.audience);
       this.socketMessage = 'Fries have been unfried';
       this.deepFried = false;
-    },
-    handleFileSubmit() {
-      const formData = new FormData();
-      formData.append('userFile', this.userFile)
-      axios({
-        url: '/api/file-upload',
-        method: 'post',
-        data: formData
-      })
-        .then(() => {
-          this.socketMessage = 'File uploaded';
-        })
-        .catch((error) => {
-          this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;
-        });
     },
     quizOptions() {
       return [
