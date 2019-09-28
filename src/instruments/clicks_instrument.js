@@ -119,4 +119,8 @@ export default class {
       return first - ((first-second) * frac);
     }
   }
+
+  density = () => {
+    return this.options.density;
+  }
 }
