@@ -22,7 +22,6 @@ export default class {
     const frequency = midiToFreq(options.frequency);
 
     chord.forEach((m, index) => {
-      console.log(this.active);
       const wave = this.active[index];
       if (wave) {
         wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.3);
