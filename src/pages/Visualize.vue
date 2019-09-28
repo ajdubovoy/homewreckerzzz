@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       sketch: null,
-      queue: [1,2,3]
+      queue: [240, 300, 0]
     }
   },
   mounted() {
@@ -52,16 +52,20 @@ export default {
             ));
           }
         }*/
-        if(self.queue) {
+        if(self.queue.length != 0) {
           console.log(self.queue);
+          self.queue.forEach((hue) => {
+            let random = Math.random();
+            particles.push(new ShimmerSquare(
+              p5.color(hue, 200,255), 
+              1000*random, 
+              800*random, 
+              parseInt(60 + random*120), 
+              p5
+            ));
+          })
+          
           self.queue = [];
-          particles.push(new ShimmerSquare(
-            p5.color(240, 200,255), 
-            50, 
-            50, 
-            parseInt(60 + random*120), 
-            p5
-          ));
         }
         f++;
       }
@@ -72,7 +76,8 @@ export default {
   },
   sockets: {
     clientWasPlayed(payload) {
-      console.log(payload.options.controls.waveType);
+      console.log(colors[payload.options.controls.waveType]);
+      this.queue.push(colors[payload.options.controls.waveType]);
     }
   }
 }
