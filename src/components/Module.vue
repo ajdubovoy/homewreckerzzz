@@ -115,7 +115,7 @@ export default {
           frequency: this.frequency,
           waveType: this.waveType,
           clusterType: this.clusterType,
-          density: this.density
+          density: this.density,
           file: this.fileName
         }
       }
