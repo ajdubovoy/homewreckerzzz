@@ -24,10 +24,10 @@ export default class {
     const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
 
     chord.forEach((m, index) => {
-      const wave = this.active[index];
-      if (wave) {
-        wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.3);
-        wave.osc.frequency.exponentialRampToValueAtTime(midiToFreq(m), wave.context.currentTime + 0.3);
+      const selectedWave = this.active[index];
+      if (selectedWave) {
+        selectedWave.env.value.exponentialRampToValueAtTime(amplitude, selectedWave.context.currentTime + 0.3);
+        selectedWave.osc.frequency.exponentialRampToValueAtTime(midiToFreq(m), selectedWave.context.currentTime + 0.3);
       } else {
         this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 0.2, amplitude, this.context, options.waveType, this.compressor));
       }
