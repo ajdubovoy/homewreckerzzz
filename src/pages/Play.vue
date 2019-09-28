@@ -1,7 +1,7 @@
 <template lang="pug">
 .play
   .deep-fried(v-if="deepFried")
-  .synesthesia(:class = "{playing: this.playing}" :style="{ backgroundColor: hexColor}")
+  .synesthesia(:class = "{playing: playing && !quiz, clicking: clicking && !quiz}" :style="{ backgroundColor: hexColor}")
     Cover#finale(v-if="finale" :class = "{finale: this.finale, 'chuck-norris': randomQuestion === 0, llama: randomQuestion === 1, pineapple: randomQuestion === 2}")
       h1
         | thnX für gettINg wreCked
@@ -21,6 +21,7 @@ import throttle from 'lodash.throttle';
 import chroma from 'chroma-js';
 import WaveInstrument from '../instruments/wave_instrument';
 import ClusterInstrument from '../instruments/cluster_instrument';
+import ClicksInstrument from '../instruments/clicks_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
 import instruments from '../data/instruments';
@@ -37,6 +38,7 @@ export default {
 
     this.waveInstrument = new WaveInstrument(this.audioContext);
     this.clusterInstrument = new ClusterInstrument(this.audioContext);
+    this.clicksInstrument = new ClicksInstrument(this.audioContext);
 
     this.initiateLoadingText();
   },
@@ -144,6 +146,9 @@ export default {
       // https://gka.github.io/chroma.js/
       return chroma(color).hex();
     },
+    clicking() {
+      return this.playingInstrument === this.clicksInstrument;
+    },
     ...mapState([
       'audioContext',
       'playingInstrument',
@@ -239,6 +244,10 @@ export default {
   from { opacity: 0.7; }
   to { opacity: 1 }
 }
+@keyframes clicker {
+  from { transform: translateY(3%); }
+  to { transform: translateY(-3%); }
+}
 .deep-fried{
   height: 100vh;
   width: 100vw;
@@ -251,6 +260,9 @@ export default {
   transition: background-color 150ms ease;
   &.playing{
     animation: flicker 500ms infinite alternate;
+    &.clicking{
+      animation: clicker 100ms infinite alternate;
+    }
   }
 }
 .finale{
