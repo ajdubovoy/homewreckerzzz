@@ -12,11 +12,10 @@
       b-col.text-center
         h1
           | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
-        h2
-          | I made it 'speciALLY für U with lovE and cArE
+        b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
     b-row.mb-5
-      b-col(v-for="module in modules" lg=6 xl=3 :key="module" :midi="midiFor(module)")
-        Module
+      b-col(v-for="(module, i) in modules" lg=6 xl=3 :key="module")
+        Module(:midi="midiInput" :instance="i")
           b-button.remove-module(variant="danger" @click="removeModule(module)") ➖
       b-col(lg=6 xl=3)
         b-button.w-100.h-100.add-module(variant="success" @click="addModule") ➕ Add Module
@@ -30,6 +29,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import throttle from 'lodash.throttle';
 import axios from 'axios';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
@@ -46,8 +46,9 @@ export default {
       password: '',
       modules: [],
       userFile: null,
-      midiInput: {}
-    };
+      midiInput: new Array(16).fill(60),
+      socketMessage: ""
+    }
   },
   computed: {
     ...mapState([
@@ -56,10 +57,8 @@ export default {
   },
   methods: {
     connectMIDI() {
-      if (navigator.requestMIDIAccess) {
-        this.socketMessage = "WebMIDI initialized";
-      } else {
-        this.socketMessage = "WebMIDI could not be initialized urgh";
+      if (!navigator.requestMIDIAccess) {
+        console.log("WebMIDI could not be initialized urgh");
       }
 
       navigator.requestMIDIAccess()
@@ -67,26 +66,19 @@ export default {
     },
     onMIDISuccess(midiAccess) {
       // https://www.smashingmagazine.com/2018/03/web-midi-api/
-      this.socketMessage = "Gained access to your MIDI device!";
+      console.log("Gained access to your MIDI device!");
       for (var input of midiAccess.inputs.values()) {
         input.onmidimessage = this.getMIDIMessage;
       }
     },
-    getMIDIMessage(message) {
+    getMIDIMessage: throttle(function(message) {
       const [, note, velocity] = message.data; // Assign the MIDI message data to useable variables and disregard the first (command) for now
-
-      this.midiInput[note] = velocity;
-    },
-    midiFor(module) {
-      let i = this.modules.indexOf(module);
-
-      return {
-        amplitude: this.midiInput[i],
-        frequency: this.midiInput[i + 9]
-      }
-    },
+      var arr = this.midiInput.slice();
+      arr[note] = velocity;
+      this.midiInput = arr;
+    }, 100),
     onMIDIFailure() {
-      this.socketMessage = "Could not access your MIDI devices urgh";
+      console.log("Could not access your MIDI devices urgh");
     },
     addModule() {
       this.modules.push(Math.random().toString(36).substr(2, 9)) // Generate random key

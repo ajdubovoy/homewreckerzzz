@@ -2,7 +2,6 @@
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
   slot
-  b-alert(:variant="$socket.connected ? 'success' : 'danger'" show) {{ socketMessage }}
   b-tabs
     b-tab(title="👨‍👨‍👧‍👦" active)
       b-form-group
@@ -17,27 +16,30 @@
     b-tab(title="🎹")
       b-button(@click="handlePlay" variant="primary") Play
       b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
-      h3 scUlpt yo soUnd
-      b-form-group
-        b-form-group(label="Instrument")
-          b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :value="i.value") {{ i.text }}
-      b-form-group(v-if="instrument < 2")
-        b-form-checkbox(v-model="sustain") Sustain Mode
-      b-form-group
-        label(for="amplitude") Amplitude: {{ amplitudePercentage }}%
-        b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
-      b-form-group(v-if="instrument < 2")
-        label(for="frequency") Frequency: {{ pitchName }}
-        b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
-      b-form-group(v-if="instrument === 1")
-        label(for="cluster-type") Cluster Type
-        b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random']")
-      b-form-group(v-if="instrument < 2")
-        label(for="wave-type") Wave Type
-        b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
-      b-form-group(v-if="instrument === 2")
-        label(for="file-index") File index
-        b-form-input(name="file-index" v-model="fileIndex" type="number")
+      .row
+        .col-6 
+          b-form-group
+            b-form-group(label="Instrument")
+              b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :value="i.value") {{ i.text }}
+        .col-6
+          b-form-group(v-if="instrument < 2")
+            b-form-checkbox(v-model="sustain") Sustain Mode
+      .row
+        b-form-group.col-6
+          label(for="amplitude") Amplitude: {{ amplitudePercentage }}%
+          b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
+        b-form-group.col-6(v-if="instrument < 2")
+          label(for="frequency") Frequency: {{ pitchName }}
+          b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
+        b-form-group.col-6(v-if="instrument === 1")
+          label(for="cluster-type") Cluster Type
+          b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random']")
+        b-form-group.col-6(v-if="instrument < 2")
+          label(for="wave-type") Wave Type
+          b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
+        b-form-group.col-6(v-if="instrument === 2")
+          label(for="file-index") File index
+          b-form-input(name="file-index" v-model="fileIndex" type="number")
     b-tab(title="❓")
       b-form-group
         b-form-select(v-model="quiz" :options="quizOptions()")
@@ -75,6 +77,10 @@ export default {
       deepFried: false,
       fileIndex: 0
     };
+  },
+  props: {
+    midi: Array,
+    instance: Number
   },
   computed: {
     instrumentOptions() {
@@ -190,36 +196,10 @@ export default {
       ];
     }
   },
-  sockets: {
-    connect() {
-      // Fired when the socket connects.
-      this.socketMessage = "Successfully connected";
-    },
-
-    disconnect() {
-      this.socketMessage = "Oops, you're offline!";
-    },
-
-    play() {
-      this.socketMessage = 'Play request successfully emitted';
-    },
-    kill() {
-      this.socketMessage = 'Kill request successfully emitted';
-    },
-    quizTally(payload) {
-      this.socketMessage = 'The results are coming: ' + payload.responses.length
-    },
-    quizCompletion(payload) {
-      this.socketMessage = 'The results are in :) Quiz over with ' + payload.responses.length + ' responses'
-    }
-  },
-  props: {
-    midi: Object
-  },
   watch: {
     midi(newMIDI) {
-      this.amplitude = newMIDI.amplitude || this.amplitude;
-      this.frequency = newMIDI.frequency || this.frequency;
+      this.amplitude = newMIDI[this.instance];
+      this.frequency = newMIDI[this.instance + 8];
     },
     amplitude() {
       this.handleUpdate();
@@ -265,6 +245,9 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+  }
+  .form-group {
+    margin-bottom: 0.5rem;
   }
 }
 </style>
