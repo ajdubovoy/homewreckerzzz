@@ -19,7 +19,6 @@ export default class {
   update = (options = {}) => {
     const chord = this[options.clusterType](parseInt(options.frequency, 10));
     const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
-    const frequency = midiToFreq(options.frequency);
 
     chord.forEach((m, index) => {
       const wave = this.active[index];
