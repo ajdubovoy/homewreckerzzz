@@ -63,15 +63,26 @@ export default (app, http) => {
       console.log('Client was played');
     });
 
-    client.on('clientKill', function(payload = {}) {
+    client.on('puppetUpdate', function(options = {}) {
+      io.emit('update', options);
+      console.log('Update command sent');
+    });
+
+    client.on('clientUpdate', function(payload = {}) {
       // Mainly for visualization
-      io.emit('clientWasKilled', payload);
-      console.log('Client was killed');
+      io.emit('clientWasUpdated', payload);
+      console.log('Client was updated');
     });
 
     client.on('puppetKill', function(options = {}) {
       io.emit('kill', options);
       console.log('Kill command sent');
+    });
+
+    client.on('clientKill', function(payload = {}) {
+      // Mainly for visualization
+      io.emit('clientWasKilled', payload);
+      console.log('Client was killed');
     });
 
     client.on('puppetDeepFry', function(options = {}) {

@@ -72,6 +72,27 @@ export default {
     load(options) {
       this.playFileInstrument.load(options);
     },
+    update(options) {
+      if (this.isAudience(options.audience)) {
+        // Only play if client is target audience
+        if (this.playing) {
+          const instrumentName = instruments[options.instrument];
+          const instrumentInstance = this[instrumentName];
+          if (this.playingInstrument === instrumentInstance) {
+            this.playingInstrument.update(options.controls); // Issue play command to selected instrument class instance
+          } else {
+            this.killInstrument(options);
+            this.findAndSetInstrument(options.instrument); // Set instrument based on integer value
+            this.playingInstrument.play(options.controls); // Issue play command to selected instrument class instance
+          }
+
+          this.$socket.client.emit('clientUpdate', {
+            token: this.token,
+            options
+          });
+        }
+      }
+    },
     kill(options) {
       if (this.isAudience(options.audience)) {
         // Only kill if client is target audience

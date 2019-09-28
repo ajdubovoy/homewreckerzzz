@@ -37,6 +37,9 @@ export default function(freq, dur, peak, context, wave = 'sine', destination) {
   }
   return {
     osc: sound,
-    env: env
+    env: env,
+    gain,
+    destination,
+    context
   };
 }
