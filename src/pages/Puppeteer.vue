@@ -25,6 +25,8 @@
       b-form-group
         b-form-file(accept="audio" name="userFile" v-model="userFile" :state="Boolean(userFile)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here...")
         b-button(type="submit" variant="primary") Send it to the alIEnS
+    h3 THE GRAND FERNALE
+      b-button(variant="danger" @click="handleFinale") End this obscene thing altogether
 </template>
 
 <script>
@@ -110,6 +112,11 @@ export default {
         .catch((error) => {
           this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;
         });
+    },
+    handleFinale() {
+      if (window.confirm('r u sURE...?')) {
+        this.$socket.client.emit('puppetFinale');
+      }
     },
     ...mapActions([
       'makePuppeteer'
