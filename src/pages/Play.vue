@@ -59,6 +59,8 @@ export default {
     disconnect() {
       this.connected = false;
       this.killInstrument(); // Kill sound on disconnect just in case
+      this.playing = false;
+      this.deepFried = false;
       this.quiz = null; // Also turn off quiz mode
     },
     play(options) {
