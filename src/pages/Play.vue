@@ -247,7 +247,9 @@ export default {
 }
 .synesthesia{
   transition: background-color 150ms ease;
-  animation: flicker 500ms infinite alternate;
+  &.playing{
+    animation: flicker 500ms infinite alternate;
+  }
 }
 .finale{
   &.llama{
