@@ -65,10 +65,9 @@ export default class {
   randMetro = (density, pitch, dur, wave, peak, compressor) => {
     const env = ADSR(this.context);
 
-    var gain, time, gain2;
+    var gain, time;
     const oscillators = new Array(5);
     for (let i = 0; i < density; i++) {
-      gain2 = Math.random() * 0.5 + 0.3;
       gain = this.context.createGain();
       time = this.context.currentTime + Math.random();
       gain.connect(compressor);
@@ -92,10 +91,10 @@ export default class {
         oscillators[j].stop(time + 0.3);
         oscillators[j].type = wave;
       }
-      gain.gain.setValueAtTime(0.001, time);
-      gain.gain.linearRampToValueAtTime(gain2, time + 0.02);
-      gain.gain.linearRampToValueAtTime(gain2, time + 0.04);
-      gain.gain.linearRampToValueAtTime(0.001, time + 0.08);
+      gain.gain.setValueAtTime(0.00000001, time);
+      gain.gain.linearRampToValueAtTime(peak, time + 0.02);
+      gain.gain.linearRampToValueAtTime(peak, time + 0.04);
+      gain.gain.linearRampToValueAtTime(0.00000001, time + 0.08);
     }
     const context = this.context;
     return oscillators.map(osc => {
