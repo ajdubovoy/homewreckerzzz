@@ -21,20 +21,23 @@
       b-form-group
         b-form-group(label="Instrument")
           b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :value="i.value") {{ i.text }}
-      b-form-group
+      b-form-group(v-if="instrument < 2")
         b-form-checkbox(v-model="sustain") Sustain Mode
       b-form-group
         label(for="amplitude") Amplitude: {{ amplitudePercentage }}%
         b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
-      b-form-group
+      b-form-group(v-if="instrument < 2")
         label(for="frequency") Frequency: {{ pitchName }}
         b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
       b-form-group(v-if="instrument === 1")
         label(for="cluster-type") Cluster Type
         b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random']")
-      b-form-group
+      b-form-group(v-if="instrument < 2")
         label(for="wave-type") Wave Type
         b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
+      b-form-group(v-if="instrument === 2")
+        label(for="file-index") File index
+        b-form-input(name="file-index" v-model="fileIndex" type="number")
     b-tab(title="❓")
       b-form-group
         b-form-select(v-model="quiz" :options="quizOptions()")
@@ -68,7 +71,8 @@ export default {
       waveType: 'sine',
       clusterType: 'major',
       playing: false,
-      deepFried: false
+      deepFried: false,
+      fileIndex: 0
     };
   },
   computed: {
@@ -98,7 +102,8 @@ export default {
           amplitude: this.amplitude,
           frequency: this.frequency,
           waveType: this.waveType,
-          clusterType: this.clusterType
+          clusterType: this.clusterType,
+          index: this.fileIndex
         }
       }
     },

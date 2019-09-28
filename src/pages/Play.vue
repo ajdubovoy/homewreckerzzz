@@ -14,6 +14,7 @@ import { mapGetters, mapState, mapActions } from 'vuex';
 import throttle from 'lodash.throttle';
 import WaveInstrument from '../instruments/wave_instrument';
 import ClusterInstrument from '../instruments/cluster_instrument';
+import PlayFileInstrument from '../instruments/play_file_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
 import instruments from '../data/instruments';
@@ -30,6 +31,7 @@ export default {
 
     this.waveInstrument = new WaveInstrument(this.audioContext);
     this.clusterInstrument = new ClusterInstrument(this.audioContext);
+    this.playFileInstrument = new PlayFileInstrument(this.audioContext);
 
     this.initiateLoadingText();
   },
@@ -66,6 +68,9 @@ export default {
         });
         this.playing = true;
       }
+    },
+    load(options) {
+      this.playFileInstrument.load(options);
     },
     kill(options) {
       if (this.isAudience(options.audience)) {

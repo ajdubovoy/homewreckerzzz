@@ -7,14 +7,16 @@ import multer from 'multer';
 
 export default (app, http) => {
   app.use(express.json());
-  
+  let fileCount = 0;
+
   // File Upload
   const storage = multer.diskStorage({
     destination: function(req, file, callback) {
-      callback(null, path.join(__dirname, 'tmp', 'uploads'));
+      callback(null, 'public/uploads');
     },
     filename: function(req, file, callback) {
-      callback(null, file.originalname);
+      callback(null, fileCount + ".mp3");
+      fileCount++;
     }
   });
 
@@ -29,6 +31,9 @@ export default (app, http) => {
 
     api.post('/file-upload', upload.single('userFile'), function(req, res) {
       console.log('File uploaded');
+      var path = req.file.path.slice(6);
+      console.log(path);
+      app.io.emit('load', {file: path});
       res.sendStatus(200);
     })
   });
@@ -40,6 +45,7 @@ export default (app, http) => {
   let currentQuiz = null;
 
   const io = socketIO(http);
+  app.io = io;
   io.on("connection", client => {
     console.log('New socket connection');
 
