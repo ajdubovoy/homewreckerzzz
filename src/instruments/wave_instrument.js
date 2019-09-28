@@ -5,6 +5,7 @@ export default class {
   constructor(context) {
     this.context = context;
     this.active = [];
+    this.options = {};
   }
 
   play = (options = {}) => {
@@ -13,6 +14,8 @@ export default class {
 
     const desiredAmplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
     this.active.push(wave(midiToFreq(options.frequency), options.sustain ? 0 : 0.2, desiredAmplitude, this.context, options.waveType, compressor));
+    this.options = options;
+    return this.active[0];
   }
 
   update = (options = {}) => {
@@ -23,6 +26,8 @@ export default class {
       wave.osc.frequency.exponentialRampToValueAtTime(frequency, wave.context.currentTime + 0.3);
       wave.env.value.exponentialRampToValueAtTime(amplitude, wave.context.currentTime + 0.3);
     });
+    this.options = options;
+    return this.active[0];
   }
 
   kill = () => {
@@ -32,5 +37,13 @@ export default class {
       sound.osc.stop(end);
     });
     this.active = [];
+  }
+
+  color = () => {
+    return {
+      h: 240 + (this.options.frequency / 128 * 360 / 4 - 45),
+      s: this.options.amplitude / 128,
+      l: this.options.amplitude / (128 * 2)
+    }
   }
 }

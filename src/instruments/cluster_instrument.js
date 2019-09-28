@@ -14,6 +14,7 @@ export default class {
 
     const chord = this[options.clusterType](parseInt(options.frequency, 10));
     this.playChord(chord, this.compressor, options);
+    return this.active[0];
   }
 
   update = (options = {}) => {
@@ -29,6 +30,7 @@ export default class {
         this.active.push(wave(midiToFreq(m), options.sustain ? 0 : 0.2, amplitude, this.context, options.waveType, this.compressor));
       }
     });
+    return this.active[0];
   }
 
   playChord = (chord, destination, options = {}) => {

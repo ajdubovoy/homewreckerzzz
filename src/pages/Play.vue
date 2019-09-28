@@ -1,7 +1,7 @@
 <template lang="pug">
 .play
   .deep-fried(v-if="deepFried")
-  .synesthesia(:style="{ backgroundColor: hexColor}")
+  .synesthesia(:class = "{playing: this.playing}" :style="{ backgroundColor: hexColor}")
     QuizQuestion(:text="quiz" :submit="handleQuizSubmit" v-if="quiz")
     Cover(v-else)
       h1(v-if="!connected")
@@ -123,12 +123,10 @@ export default {
   },
   computed: {
     hexColor() {
-      const color = {h: 0, s: 0, l: 0};
+      let color = {h: 0, s: 0, l: 0};
 
       if (this.playing) {
-        color.h = 255;
-        color.s = 0.6;
-        color.l = 0.8;
+        color = this.playingInstrument.color();
       }
 
       // https://gka.github.io/chroma.js/
@@ -223,6 +221,10 @@ export default {
   from { backdrop-filter: saturate(5) contrast(5) hue-rotate(30deg) blur(0px); }
   to { backdrop-filter: saturate(3) contrast(7) hue-rotate(60deg) blur(1px); }
 }
+@keyframes flicker {
+  from { opacity: 0.7; }
+  to { opacity: 1 }
+}
 .deep-fried{
   height: 100vh;
   width: 100vw;
@@ -233,5 +235,6 @@ export default {
 }
 .synesthesia{
   transition: background-color 150ms ease;
+  animation: flicker 500ms infinite alternate;
 }
 </style>
