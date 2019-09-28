@@ -221,6 +221,9 @@ export default {
     },
     frequency() {
       this.handleUpdate();
+    },
+    clusterType() {
+      this.handleUpdate();
     }
   }
 }
