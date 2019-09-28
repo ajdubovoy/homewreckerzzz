@@ -1,7 +1,7 @@
 <template lang="pug">
 .play
   .deep-fried(v-if="deepFried")
-  .synesthesia(:class = "{playing: this.playing}" :style="{ backgroundColor: hexColor}")
+  .synesthesia(:class = "{playing: playing && !quiz, clicking: clicking && !quiz, fast: density > 5, fastest: density > 10}" :style="{ backgroundColor: hexColor}")
     Cover#finale(v-if="finale" :class = "{finale: this.finale, 'chuck-norris': randomQuestion === 0, llama: randomQuestion === 1, pineapple: randomQuestion === 2}")
       h1
         | thnX für gettINg wreCked
@@ -21,6 +21,7 @@ import throttle from 'lodash.throttle';
 import chroma from 'chroma-js';
 import WaveInstrument from '../instruments/wave_instrument';
 import ClusterInstrument from '../instruments/cluster_instrument';
+import ClicksInstrument from '../instruments/clicks_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
 import instruments from '../data/instruments';
@@ -37,6 +38,7 @@ export default {
 
     this.waveInstrument = new WaveInstrument(this.audioContext);
     this.clusterInstrument = new ClusterInstrument(this.audioContext);
+    this.clicksInstrument = new ClicksInstrument(this.audioContext);
 
     this.initiateLoadingText();
   },
@@ -144,6 +146,15 @@ export default {
       // https://gka.github.io/chroma.js/
       return chroma(color).hex();
     },
+    clicking() {
+      return this.playingInstrument === this.clicksInstrument;
+    },
+    density() {
+      if (!this.clicking) {
+        return 0;
+      }
+      return this.playingInstrument.density();
+    },
     ...mapState([
       'audioContext',
       'playingInstrument',
@@ -151,8 +162,7 @@ export default {
       'roomSection',
       'seatingHeight',
       'randomQuestion',
-      'token',
-      'buffers'
+      'token'
     ]),
     ...mapGetters([
       'initialized'
@@ -219,8 +229,7 @@ export default {
       }
     },
     ...mapActions([
-      'setPlayingInstrument',
-      'addBuffer'
+      'setPlayingInstrument'
     ]),
   },
   components: {
@@ -239,6 +248,17 @@ export default {
   from { opacity: 0.7; }
   to { opacity: 1 }
 }
+@keyframes clicker {
+  0% { transform: translateY(10%) translateX(-10%) scale(0.5, 0.5); }
+  12% { transform: translateY(-3%) translateX(4%) scale(0.6, 0.4); }
+  23% { transform: translateY(-5%) translateX(7%) scale(0.5, 0.5); }
+  40% { transform: translateY(0%) translateX(3%) scale(0.5, 0.5); }
+  55% { transform: translateY(12%) translateX(-3%) scale(0.4, 0.6); }
+  70% { transform: translateY(-2%) translateX(6%) scale(0.6, 0.5); }
+  90% { transform: translateY(4%) translateX(-4%) scale(0.5, 0.4); }
+  93% { transform: translateY(-8%) translateX(-2%) scale(0.5, 0.5); }
+  to { transform: translateY(-10%) translateX(10%) scale(0.5, 0.5); }
+}
 .deep-fried{
   height: 100vh;
   width: 100vw;
@@ -251,6 +271,15 @@ export default {
   transition: background-color 150ms ease;
   &.playing{
     animation: flicker 500ms infinite alternate;
+    &.clicking{
+      animation: clicker 750ms infinite alternate;
+      &.faster{
+        animation: clicker 400ms infinite alternate;
+      }
+      &.fastest{
+        animation: clicker 200ms infinite alternate;
+      }
+    }
   }
 }
 .finale{
