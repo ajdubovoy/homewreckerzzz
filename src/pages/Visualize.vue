@@ -50,6 +50,7 @@ export default {
             arr.splice(index, 1);
           }
         });
+
         if(self.queue.length != 0) {
           self.queue.forEach((el) => {
             if(self.users.includes(el.user) && el.sustain) {
@@ -136,7 +137,9 @@ export default {
       this.queue.push(obj);
     },
     clientWasKilled(payload) {
-      var arr = remove(this.users, (el) => el === payload.token);
+      var arr = this.users.filter((el) => el != payload.token);
+      console.log(payload.token);
+      console.log(this.users);
       this.users = arr;
     },
     quizTally(payload) {

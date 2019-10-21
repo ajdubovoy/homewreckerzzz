@@ -13,7 +13,6 @@ export default function main(_p5) {
     p5.resizeCanvas(window.innerWidth, window.innerHeight);
     p5.colorMode(p5.HSB, 360, 255, 255);
     p5.frameRate(30);
-    console.log(window.innerWidth)
   };
   p5.draw = function() {
     p5.background(0);
