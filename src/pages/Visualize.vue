@@ -6,6 +6,7 @@
 import p5 from 'p5';
 import {colors} from '../data/instruments.js';
 import {ShimmerSquare, PulseSquare} from '../processing/Particle.js';
+import {Digit} from '../processing/Text.js';
 import remove from "lodash.remove";
 import quiz from "../data/quizzes.js";
 
@@ -13,14 +14,8 @@ export default {
   data() {
     return {
       sketch: null,
-      queue: [
-        {
-          user: "hi",
-          color: 200,
-          sustain: true
-        }
-      ],
-      users: ['hi']
+      queue: [],
+      users: []
     }
   },
   mounted() {
@@ -44,6 +39,9 @@ export default {
         particles.forEach((p, index, arr) => {
           p.display();
           p.update();
+          if(p.isDead()) {
+            arr.splice(index, 1);
+          }
         });
         sustain.forEach((p, index, arr) => {
           p.p.display();
@@ -57,7 +55,7 @@ export default {
             if(self.users.includes(el.user) && el.sustain) {
               sustainCloud(el.color, el.user);
             } else {
-              cloud(el.color);
+              digitCloud(el.color);
             }
           })
           self.queue = [];
@@ -98,7 +96,33 @@ export default {
           )});
         }
       }
+      function digitCloud(hue) {
+        // makes perlin noise-based clouds of numbers
+        var centerX = Math.random()*window.innerWidth;
+        var centerY = Math.random()*window.innerHeight;
+        var offset = Math.random()*500;
+        for(var i = 0; i < 300; i++) {
+          var noiseX = p5.noise(i*2 + offset, 0);
+          var noiseY = p5.noise(0, i*2 + offset);
+          centerX += ((noiseX - 0.5) * 400) + window.innerWidth;
+          centerY += ((noiseY - 0.5) * 400) + window.innerHeight;
+          centerX %= window.innerWidth;
+          centerY %= window.innerHeight;
+          var pNoise = p5.noise((centerX+offset)*0.25, (centerY+offset)*0.25); //multiplier affects density of the cloud. lower numbers are more dense
+          particles.push(new Digit(
+            p5.color(hue, 255,255), 
+            centerX, 
+            centerY, 
+            parseInt(10 + pNoise*100), 
+            Math.floor(pNoise*(offset*0.05)), //controls max brightness, now is random, but useful for later
+            p5
+          ));
+        }
+      }
     }
+    setInterval(() => {
+      this.queue.push({color: 120});
+    }, 5000);
   },
   sockets: {
     clientWasPlayed(payload) {
