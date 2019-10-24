@@ -49,7 +49,8 @@ export default {
       loadingText: "",
       deepFried: false,
       playing: false,
-      finale: false
+      finale: false,
+      completedSockets: []
     }
   },
   sockets: {

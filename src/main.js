@@ -3,8 +3,8 @@ import Router from 'vue-router';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import Bootstrap from 'bootstrap-vue';
-import VueSocketIOExt from 'vue-socket.io-extended';
-import io from 'socket.io-client';
+// import VueSocketIOExt from 'vue-socket.io-extended';
+// import io from 'socket.io-client';
 import AudioContext from './helpers/audio_context';
 import App from './App.vue';
 import Index from './pages/Index';
@@ -126,10 +126,10 @@ const store = new Vuex.Store({
   })]
 });
 
-// Sockets
-const socket = io(process.env.SERVER_URI);
+// // Sockets
+// const socket = io(process.env.SERVER_URI);
 
-Vue.use(VueSocketIOExt, socket);
+// Vue.use(VueSocketIOExt, socket);
 
 Vue.use(Bootstrap);
 
