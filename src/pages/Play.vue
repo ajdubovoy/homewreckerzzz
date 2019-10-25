@@ -2,7 +2,7 @@
 .play
   .deep-fried(v-if="deepFried")
   .synesthesia(:class = "{playing: playing && !quiz, clicking: clicking && !quiz, fast: density > 5, fastest: density > 10}" :style="{ backgroundColor: hexColor}")
-    Cover#finale(v-if="isFinale" :class = "{finale: this.finale, 'chuck-norris': randomQuestion === 0, llama: randomQuestion === 1, pineapple: randomQuestion === 2}")
+    Cover#finale(v-if="isFinale" :class = "{finale: this.finale, 'chuck-norris': randomQuestion === 1, llama: randomQuestion === 2, pineapple: randomQuestion === 3}")
       h1
         | thnX für gettINg wreCked
       h2
