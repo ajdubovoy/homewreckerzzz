@@ -109,9 +109,9 @@ export default (app, http) => {
     api.post('/clients', (req, res) => {
       const client = req.body;
       console.log('New client request:');
-      console.log(client);
       const time = new Date();
       if (!clients.find(c => c.token === client.token)) {
+        console.log(client);
         clients.push({ ...client, time, connected: true });
         console.log(`New ${client.token} client created`);
         res.json({ client, time, connected: true });
