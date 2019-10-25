@@ -51,6 +51,7 @@ export default (app, http) => {
       sockets.push({ ...socket, token, time });
       res.json({ socket, token, time });
       console.log(`New ${socket.message} socket created`);
+      console.log(socket);
       if (socket.message === 'quizAsk') {
         console.log('Quiz started (quizAsk)');
         responses = []; // Clear any remnants
@@ -62,8 +63,10 @@ export default (app, http) => {
           // Once quiz finished, notify clients of results
           const responseValues = responses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
-          sockets.push({ ...socket, token: completionToken, time: new Date(), message: "quizComplete" });
+          const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete" };
+          sockets.push(completionSocket);
           console.log('Quiz ended and results sent (QuizComplete): ' + JSON.stringify(responseValues));
+          console.log(completionSocket);
           responses = []; // Get out of quiz mode
           currentQuiz = null;
         }, socket.request.duration);
@@ -87,6 +90,7 @@ export default (app, http) => {
         }
         sockets.push(socket);
         res.json({ socket });
+        console.log(socket);
       } else {
         console.log('Unauthorized quiz response urgh');
         res.status(401);
