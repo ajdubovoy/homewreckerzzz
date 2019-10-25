@@ -1,6 +1,7 @@
 <template lang="pug">
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
+  b-alert(show) {{ socketMessage }}
   slot
   b-tabs
     b-tab(title="👨‍👨‍👧‍👦" active)
@@ -65,7 +66,7 @@ export default {
   name: 'Module',
   data() {
     return {
-      socketMessage: "Added!",
+      socketMessage: "Module added!",
       sustain: true,
       amplitude: 100,
       frequency: 60,
@@ -145,7 +146,6 @@ export default {
         })
         .then(() => {
           this.socketMessage = `${message} request sent`;
-          this.playing = true;
         })
         .catch(() => {
           this.socketMessage = `OOPS BLOOPS, something went wrong with the ${message} request`;
@@ -153,6 +153,7 @@ export default {
     },
     handlePlay() {
       this.emitSocket('play', this.instrumentRequest);
+      this.playing = true;
     },
     handleUpdate: throttle(function() {
       if (this.playing) {

@@ -12,7 +12,7 @@
       b-col.text-center
         h1
           | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
-        b-alert(:variant="'success'" show) {{ socketMessage }}
+        b-alert(v-if="socketMessage" show) {{ socketMessage }}
     b-row.mb-5
       b-col(v-for="(module, i) in modules" lg=6 xl=3 :key="module")
         Module(:midi="midiInput" :instance="i" :files="files")
