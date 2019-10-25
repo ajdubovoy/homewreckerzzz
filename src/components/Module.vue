@@ -1,6 +1,7 @@
 <template lang="pug">
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
+  b-alert(show) {{ socketMessage }}
   slot
   b-tabs
     b-tab(title="👨‍👨‍👧‍👦" active)
@@ -55,7 +56,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import axios from 'axios';
+import axiosClient from '../helpers/axios_client';
 import throttle from 'lodash.throttle';
 import midiToName from '../helpers/midi_to_name';
 import quizzes from '../data/quizzes';
@@ -65,7 +66,7 @@ export default {
   name: 'Module',
   data() {
     return {
-      socketMessage: "Added!",
+      socketMessage: "Module added!",
       sustain: true,
       amplitude: 100,
       frequency: 60,
@@ -134,45 +135,46 @@ export default {
     ]),
   },
   methods: {
+    emitSocket(message, request) {
+      this.socketMessage = `Sending ${message} request...`;
+      axiosClient.post('sockets', {
+        message,
+        request
+        })
+        .then(() => {
+          this.socketMessage = `${message} request sent`;
+        })
+        .catch(() => {
+          this.socketMessage = `OOPS BLOOPS, something went wrong with the ${message} request`;
+        });
+    },
     handlePlay() {
-      this.socketMessage = 'Sending play request...';
-      this.$socket.client.emit('puppetPlay', this.instrumentRequest);
-      this.socketMessage = 'Play request sent';
+      this.emitSocket('play', this.instrumentRequest);
       this.playing = true;
     },
     handleUpdate: throttle(function() {
       if (this.playing) {
-        this.socketMessage = 'Sending update request...';
-        this.$socket.client.emit('puppetUpdate', this.instrumentRequest);
-        this.socketMessage = 'Update request sent';
+        this.emitSocket('update', this.instrumentRequest);
       }
     }, 300),
     handleKill() {
-      this.socketMessage = 'Sending kill request...';
-      this.$socket.client.emit('puppetKill', this.instrumentRequest);
-      this.socketMessage = 'Kill request sent';
+      this.emitSocket('kill', this.instrumentRequest);
       this.playing = false;
     },
     handleQuiz() {
       const quiz = quizzes[this.quiz - 1];
       if (quiz) {
-        this.socketMessage = 'Sending quiz request...';
-        this.$socket.client.emit('puppetQuiz', {...quiz, ...this.audience});
-        this.socketMessage = 'Quiz request sent: ' + quiz.title;
+        this.emitSocket('quizAsk', {...quiz, audience: this.audience});
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
       }
     },
     handleDeepFry() {
-      this.socketMessage = 'Sending deep fry...';
-      this.$socket.client.emit('puppetDeepFry', this.audience);
-      this.socketMessage = 'Fries have been fried';
+      this.emitSocket('deepFry', this.audience);
       this.deepFried = true;
     },
     unDeepFry() {
-      this.socketMessage = 'Sending deep fry cancellation...';
-      this.$socket.client.emit('puppetUnDeepFry', this.audience);
-      this.socketMessage = 'Fries have been unfried';
+      this.emitSocket('unDeepFry', this.audience);
       this.deepFried = false;
     },
     quizOptions() {
