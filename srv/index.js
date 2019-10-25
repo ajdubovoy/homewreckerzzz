@@ -39,6 +39,13 @@ export default (app, http) => {
     });
 
     api.get('/sockets', (req, res) => {
+      const token = req.query.token;
+      const client = clients.find(c => c.token === token);
+      if (client) {
+        client.time = new Date();
+        client.connected = true;
+      }
+
       res.json({
         sockets
       })
@@ -48,10 +55,12 @@ export default (app, http) => {
       const socket = req.body;
       const token = Math.random().toString(36).substr(2, 9); // Generate random key
       const time = new Date();
+      const requestSocket = { ...socket, token, time };
       sockets.push({ ...socket, token, time });
-      res.json({ socket, token, time });
+      res.json(requestSocket);
       console.log(`New ${socket.message} socket created`);
-      console.log(socket);
+      console.log(requestSocket);
+
       if (socket.message === 'quizAsk') {
         console.log('Quiz started (quizAsk)');
         responses = []; // Clear any remnants
@@ -98,15 +107,17 @@ export default (app, http) => {
     });
 
     api.post('/clients', (req, res) => {
-      const client = res.body.client;
+      const client = req.body;
+      console.log('New client request:');
+      console.log(client);
       const time = new Date();
       if (!clients.find(c => c.token === client.token)) {
-        clients.push({ ...client, time });
+        clients.push({ ...client, time, connected: true });
         console.log(`New ${client.token} client created`);
-        res.json({ client, time });
+        res.json({ client, time, connected: true });
       } else {
-        console.log(`${client.token} client already exists`);
-        res.json({ message: "Client already exists..." });
+        console.log(`Client ${client.token} was reconnected`);
+        res.json({ message: "Client already exists...Reconnected!" });
       }
     });
 
@@ -118,103 +129,16 @@ export default (app, http) => {
 
   app.use(routes);
 
-  // Sockets
-  // let responses = []; // Initial empty quiz responses array to local state
-  // let currentQuiz = null;
-
-  // const io = socketIO(http);
-  // app.io = io;
-  // io.on("connection", client => {
-  //   console.log('New socket connection');
-
-  //   // Socket routes
-  //   // The 'puppet' prefix is used to refer to events sent from the 'puppeteer' dashboard that are then relayed to clients
-  //   // The 'client' prefix goes the other way around
-  //   client.on('puppetPlay', function(options = {}) {
-  //     io.emit('play', options);
-  //     console.log('Play command sent');
-  //   });
-
-  //   client.on('clientPlay', function(payload = {}) {
-  //     // Mainly for visualization
-  //     io.emit('clientWasPlayed', payload);
-  //     console.log('Client was played');
-  //   });
-
-  //   client.on('puppetUpdate', function(options = {}) {
-  //     io.emit('update', options);
-  //     console.log('Update command sent');
-  //   });
-
-  //   client.on('clientUpdate', function(payload = {}) {
-  //     // Mainly for visualization
-  //     io.emit('clientWasUpdated', payload);
-  //     console.log('Client was updated');
-  //   });
-
-  //   client.on('puppetKill', function(options = {}) {
-  //     io.emit('kill', options);
-  //     console.log('Kill command sent');
-  //   });
-
-  //   client.on('clientKill', function(payload = {}) {
-  //     // Mainly for visualization
-  //     io.emit('clientWasKilled', payload);
-  //     console.log('Client was killed');
-  //   });
-
-  //   client.on('puppetDeepFry', function(options = {}) {
-  //     io.emit('deepFry', options);
-  //     console.log('Deep fry command sent');
-  //   });
-
-  //   client.on('puppetUnDeepFry', function(options = {}) {
-  //     io.emit('unDeepFry', options);
-  //     console.log('Undo deep fry command sent');
-  //   });
-
-  //   client.on('puppetFinale', function(options = {}) {
-  //     io.emit('finale', options);
-  //     console.log('Finale command sent');
-  //   });
-
-  //   // Quizzes
-  //   client.on('quizResponse', function(response) {
-  //     // Collect all responses
-  //     if (currentQuiz) {
-  //       console.log('Quiz response received: ' + JSON.stringify(response));
-  //       responses.push(response);
-  //       io.emit('quizTally', {
-  //         quiz: currentQuiz,
-  //         responses,
-  //         response
-  //       })
-  //     } else {
-  //       console.log('Unauthorized quiz response urgh');
-  //     }
-  //   });
-
-  //   client.on('puppetQuiz', function(options = { duration: '30000' }) {
-  //     console.log('Quiz started');
-  //     responses = []; // Clear any remnants
-
-  //     // Listen for survey responses
-  //     currentQuiz = options;
-  //     io.emit('quizAsk', options); // Ask clients to respond
-
-  //     setTimeout(() => {
-  //       // Once quiz finished, notify clients of results
-  //       const responseValues = responses.map(response => response.value);
-  //       io.emit('quizCompletion', {
-  //         quiz: options,
-  //         responses: responseValues
-  //       });
-  //       console.log('Quiz ended and results sent: ' + JSON.stringify(responseValues));
-  //       responses = []; // Get out of quiz mode
-  //       currentQuiz = null;
-  //     }, options.duration)
-  //   });
-  // });
+  setInterval(() => {
+    const currentTime = new Date();
+    const checkTime = new Date(currentTime - 10000);
+    clients.forEach((client) => {
+      if (client.time < checkTime && client.connected) {
+        client.connected = false;
+        console.log(`Client ${client.token} was disconnected`);
+      }
+    });
+  }, 10000);
 
   // error handler
   app.use(function(err, req, res, next) {

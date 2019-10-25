@@ -30,6 +30,8 @@ import instruments from '../data/instruments';
 export default {
   name: 'Play',
   mounted() {
+    this.connectClient();
+
     this.timer = setInterval(this.getSockets, this.updateDuration);
 
     if (!this.initialized) {
@@ -96,8 +98,22 @@ export default {
     ])
   },
   methods: {
+    connectClient() {
+      axiosClient.post('clients', {
+        token: this.$store.state.token,
+        roomSection: this.roomSection,
+        seatingHeight: this.seatingHeight,
+        randomQuestion: this.randomQuestion
+      })
+        .then(() => { this.connected = true })
+        .catch(() => { this.connected = false })
+    },
     getSockets() {
-      axiosClient.get('sockets')
+      axiosClient.get('sockets', {
+        params: {
+          token: this.$store.state.token
+        }
+      })
         .then((r) => {
           const sockets = r.data.sockets;
           this.executeSockets(sockets);
