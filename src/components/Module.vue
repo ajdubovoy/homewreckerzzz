@@ -164,7 +164,7 @@ export default {
     handleQuiz() {
       const quiz = quizzes[this.quiz - 1];
       if (quiz) {
-        this.emitSocket('quizAsk', {...quiz, ...this.audience});
+        this.emitSocket('quizAsk', {...quiz, audience: this.audience});
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
       }

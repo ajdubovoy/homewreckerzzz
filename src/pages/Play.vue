@@ -183,13 +183,13 @@ export default {
       }
     },
     quizAsk(quiz) {
-      if (this.isAudience(quiz)) {
+      if (this.isAudience(quiz.audience)) {
         this.notificationPing();
         this.quiz = quiz;
       }
     },
     quizComplete(quiz) {
-      if (this.isAudience(quiz)) {
+      if (this.isAudience(quiz.audience)) {
         this.quiz = null;
       }
     },

@@ -44,6 +44,13 @@ export default (app, http) => {
       if (client) {
         client.time = new Date();
         client.connected = true;
+        client.sockets = sockets.filter((socket) => {
+          const audience = socket.request.audience
+          const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
+          const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
+          const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
+          return isRoomSection && isSeatingHeight && isRandomQuestion;
+        });
       }
 
       res.json({
@@ -112,7 +119,7 @@ export default (app, http) => {
       const time = new Date();
       if (!clients.find(c => c.token === client.token)) {
         console.log(client);
-        clients.push({ ...client, time, connected: true });
+        clients.push({ ...client, time, connected: true, sockets: [] });
         console.log(`New ${client.token} client created`);
         res.json({ client, time, connected: true });
       } else {
@@ -120,6 +127,10 @@ export default (app, http) => {
         res.json({ message: "Client already exists...Reconnected!" });
       }
     });
+
+    api.get('/clients', (req, res) => {
+      res.json(clients);
+    })
 
     api.post('/file-upload', upload.single('userFile'), function(req, res) {
       console.log(req.file.path + " uploaded");
