@@ -56,7 +56,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import axios from 'axios';
+import axiosClient from '../helpers/axios_client';
 import throttle from 'lodash.throttle';
 import midiToName from '../helpers/midi_to_name';
 import quizzes from '../data/quizzes';
@@ -80,10 +80,7 @@ export default {
       playing: false,
       deepFried: false,
       density: 3,
-      fileName: "",
-      axiosClient: axios.create({
-        baseURL: process.env.VUE_APP_SERVER_URI + 'api/'
-      })
+      fileName: ""
     };
   },
   props: {
@@ -140,7 +137,7 @@ export default {
   methods: {
     emitSocket(message, request) {
       this.socketMessage = `Sending ${message} request...`;
-      this.axiosClient.post('sockets', {
+      axiosClient.post('sockets', {
         message,
         request
         })
