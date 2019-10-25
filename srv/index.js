@@ -26,7 +26,7 @@ export default (app, http) => {
   const upload = multer({storage: storage});
 
   // Initialization
-  const sockets = [];
+  let sockets = [];
   const clients = [];
   let responses = []; // Initial empty quiz responses array to local state
   let currentQuiz = null;
@@ -149,6 +149,15 @@ export default (app, http) => {
         console.log(`Client ${client.token} was disconnected`);
       }
     });
+  }, 10000);
+
+  setInterval(() => {
+    const currentTime = new Date();
+    const checkTime = new Date(currentTime - 10000);
+    sockets = sockets.filter((socket) => {
+      socket.time < checkTime
+    });
+    console.log("Old sockets were cleaned out like crusty earwax");
   }, 10000);
 
   // error handler
