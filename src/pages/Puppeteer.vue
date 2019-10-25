@@ -33,6 +33,7 @@
 import { mapState, mapActions } from 'vuex';
 import throttle from 'lodash.throttle';
 import axios from 'axios';
+import axiosClient from '../helpers/axios_client';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
 import Module from '../components/Module';
@@ -59,6 +60,19 @@ export default {
     ]),
   },
   methods: {
+    emitSocket(message, request) {
+      this.socketMessage = `Sending ${message} request...`;
+      axiosClient.post('sockets', {
+        message,
+        request
+        })
+        .then(() => {
+          this.socketMessage = `${message} request sent`;
+        })
+        .catch(() => {
+          this.socketMessage = `OOPS BLOOPS, something went wrong with the ${message} request`;
+        });
+    },
     connectMIDI() {
       if (!navigator.requestMIDIAccess) {
         console.log("WebMIDI could not be initialized urgh");
@@ -131,7 +145,7 @@ export default {
     },
     handleFinale() {
       if (window.confirm('r u sURE...?')) {
-        // this.$socket.client.emit('puppetFinale');
+        this.emitSocket('finale');
       }
     },
     ...mapActions([
