@@ -57,7 +57,7 @@ export default {
       playing: false,
       isFinale: false,
       completedSockets: [],
-      updateDuration: 250,
+      updateDuration: 300,
       executedSockets: [],
       connectedTime: new Date()
     }
@@ -223,10 +223,11 @@ export default {
     },
     throttledEmitQuizResponse: throttle(function(response) {
       // Throttle to prevent spamming
-      // this.$socket.client.emit('quizResponse', {
-        // clientID: this.$store.state.token,
-        // value: response
-      // });
+      axiosClient.post('quiz-responses', {
+        message: 'quizResponse',
+        clientID: this.$store.state.token,
+        value: response
+      })
     }, 750),
     notificationPing() {
       const playTone = (frequency) => {

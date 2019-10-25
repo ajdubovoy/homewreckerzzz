@@ -56,18 +56,40 @@ export default (app, http) => {
         responses = []; // Clear any remnants
 
         // Listen for survey responses
-        currentQuiz = socket.request.options;
+        currentQuiz = socket.request;
 
         setTimeout(() => {
           // Once quiz finished, notify clients of results
           const responseValues = responses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
           sockets.push({ ...socket, token: completionToken, time: new Date(), message: "quizComplete" });
-          console.log(sockets);
-          console.log('Quiz ended and results sent (QuizComplete)');
+          console.log('Quiz ended and results sent (QuizComplete): ' + JSON.stringify(responseValues));
           responses = []; // Get out of quiz mode
           currentQuiz = null;
         }, socket.request.duration);
+      }
+    });
+
+    api.post('/quiz-responses', (req, res) => {
+      // Collect all responses
+      if (currentQuiz) {
+        console.log('Quiz response received: ' + JSON.stringify(req.body));
+        responses.push(req.body);
+        const token = Math.random().toString(36).substr(2, 9); // Generate random key
+        const time = new Date();
+        const socket = {
+          message: 'quizTally',
+          quiz: currentQuiz,
+          response: req.body,
+          token,
+          time,
+          responses
+        }
+        sockets.push(socket);
+        res.json({ socket });
+      } else {
+        console.log('Unauthorized quiz response urgh');
+        res.status(401);
       }
     });
 
