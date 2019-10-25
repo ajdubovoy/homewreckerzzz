@@ -61,7 +61,7 @@ export default (app, http) => {
         setTimeout(() => {
           // Once quiz finished, notify clients of results
           const responseValues = responses.map(response => response.value);
-          sockets.push({ ...socket, token, time, message: "quizCompletion" });
+          sockets.push({ ...socket, token, time, message: "quizComplete" });
           console.log('Quiz ended and results sent: ' + JSON.stringify(responseValues));
           responses = []; // Get out of quiz mode
           currentQuiz = null;

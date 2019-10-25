@@ -110,8 +110,12 @@ export default {
     executeSockets(sockets) {
       sockets.forEach((socket) => {
         if (new Date(socket.time) > this.connectedTime && !this.executedSockets.find(s => s.token === socket.token)) {
-          this[socket.message](socket.request); // Execute the related method for that socket's message
-          this.executedSockets.push(socket);
+          try {
+            this[socket.message](socket.request); // Execute the related method for that socket's message
+            this.executedSockets.push(socket);
+          } catch {
+            this.connected = false;
+          }
         }
       })
     },
@@ -168,7 +172,7 @@ export default {
         this.quiz = quiz;
       }
     },
-    quizCompletion() {
+    quizComplete() {
       this.quiz = null;
     },
     deepFry(fry) {
