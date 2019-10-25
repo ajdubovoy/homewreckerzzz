@@ -172,8 +172,10 @@ export default {
         this.quiz = quiz;
       }
     },
-    quizComplete() {
-      this.quiz = null;
+    quizComplete(quiz) {
+      if (this.isAudience(quiz)) {
+        this.quiz = null;
+      }
     },
     deepFry(fry) {
       if (this.isAudience(fry)) {

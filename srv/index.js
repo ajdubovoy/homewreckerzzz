@@ -51,8 +51,8 @@ export default (app, http) => {
       sockets.push({ ...socket, token, time });
       res.json({ socket, token, time });
       console.log(`New ${socket.message} socket created`);
-      if (socket.message === 'quiz') {
-        console.log('Quiz started');
+      if (socket.message === 'quizAsk') {
+        console.log('Quiz started (quizAsk)');
         responses = []; // Clear any remnants
 
         // Listen for survey responses
@@ -61,8 +61,10 @@ export default (app, http) => {
         setTimeout(() => {
           // Once quiz finished, notify clients of results
           const responseValues = responses.map(response => response.value);
-          sockets.push({ ...socket, token, time, message: "quizComplete" });
-          console.log('Quiz ended and results sent: ' + JSON.stringify(responseValues));
+          const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
+          sockets.push({ ...socket, token: completionToken, time: new Date(), message: "quizComplete" });
+          console.log(sockets);
+          console.log('Quiz ended and results sent (QuizComplete)');
           responses = []; // Get out of quiz mode
           currentQuiz = null;
         }, socket.request.duration);
