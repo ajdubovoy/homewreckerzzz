@@ -149,7 +149,6 @@ export default (app, http) => {
         sockets.splice(index, 1);
       }
     });
-    console.log("Old sockets were cleaned out like crusty earwax");
 
     clients.forEach((client) => {
       if (client.time < checkTime && client.connected) {
