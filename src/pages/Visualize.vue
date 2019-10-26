@@ -7,6 +7,7 @@ import p5 from 'p5';
 import {colors} from '../data/instruments.js';
 import {ShimmerSquare, PulseSquare} from '../processing/Particle.js';
 import {Digit} from '../processing/Text.js';
+import axiosClient from '../helpers/axios_client';
 import remove from "lodash.remove";
 import quiz from "../data/quizzes.js";
 
@@ -15,11 +16,14 @@ export default {
     return {
       sketch: null,
       queue: [],
-      users: []
+      users: [],
+      played: [],
+      updateDuration: 100
     }
   },
   mounted() {
     this.sketch = new p5(main);
+    this.timer = setInterval(this.getClients, this.updateDuration);
     var self = this;
     function main(_p5) {
       let p5 = _p5;
@@ -56,8 +60,10 @@ export default {
             if(self.users.includes(el.user) && el.sustain) {
               sustainCloud(el.color, el.user);
             } else {
-              digitCloud(el.color);
+              cloud(el.color);
+              self.killClient(el.user);
             }
+            self.played.push(el.token);
           })
           self.queue = [];
         }
@@ -121,27 +127,35 @@ export default {
         }
       }
     }
-    setInterval(() => {
-      this.queue.push({color: 120});
-    }, 5000);
+  },
+  methods: {
+    getClients() {
+      axiosClient.get('clients')
+        .then((r) => {
+          r.data.filter((c) => c.connected && c.sockets.length && !this.played.includes(c.sockets[c.sockets.length-1].token))
+            .map(c => ({user: c.token, task: c.sockets[c.sockets.length-1]})).flat()
+            .forEach((el) => {
+              if(el.task.message === "play" && !this.users.includes(el.user)) {
+                let obj = {
+                  user: el.user,
+                  color: colors[el.task.request.controls.waveType].hue,
+                  sustain: el.task.request.controls.sustain,
+                  token: el.task.token
+                }
+                this.users.push(el.user);                
+                this.queue.push(obj);
+              } else if(el.task.message === "kill" && this.users.includes(el.user)) {
+                this.killClient(el.user);
+              }
+          });
+        });
+    },
+    killClient(user) {
+      var arr = this.users.filter((el) => el != user);
+      this.users = arr;
+    }
   },
   sockets: {
-    clientWasPlayed(payload) {
-      console.log(payload);
-      let obj = {
-        user: payload.token,
-        color: colors[payload.options.controls.waveType].hue,
-        sustain: payload.options.controls.sustain
-      }
-      this.users.push(payload.token);
-      this.queue.push(obj);
-    },
-    clientWasKilled(payload) {
-      var arr = this.users.filter((el) => el != payload.token);
-      console.log(payload.token);
-      console.log(this.users);
-      this.users = arr;
-    },
     quizTally(payload) {
       var self = this;
       let quiz = payload.quiz;
