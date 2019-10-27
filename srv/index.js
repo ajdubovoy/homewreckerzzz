@@ -141,7 +141,9 @@ export default (app, http) => {
     api.get('/files', (req, res) => {
       let arr = [];
       fs.readdirSync("./public/uploads").forEach(file => {
-        arr.push(file);
+        if(!file.includes(".gitkeep")) {
+          arr.push(file);
+        }
       });
       res.status(200).json({files: arr});
     })

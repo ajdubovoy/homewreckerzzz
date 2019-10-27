@@ -23,7 +23,7 @@
     h3 File Upload
     b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data")
       b-form-group
-        b-form-file(accept="audio" name="userFile" v-model="userFile" :state="Boolean(userFile)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here...")
+        b-form-file(accept="audio/mp3" name="userFile" v-model="userFile" :state="Boolean(userFile)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here...")
         b-button(type="submit" variant="primary") Send it to the alIEnS
     h3 THE GRAND FERNALE
       b-button(variant="danger" @click="handleFinale") End this obscene thing altogether
@@ -41,7 +41,7 @@ import Module from '../components/Module';
 export default {
   name: 'Puppeteer',
   mounted() {
-    //this.connectMIDI();
+    this.connectMIDI();
     this.getFiles();
     this.addModule();
   },
@@ -77,6 +77,7 @@ export default {
     connectMIDI() {
       if (!navigator.requestMIDIAccess) {
         console.log("WebMIDI could not be initialized urgh");
+        return;
       }
 
       navigator.requestMIDIAccess()
