@@ -2,7 +2,6 @@ import express from 'express';
 import createError from 'http-errors';
 import path from 'path';
 import routes from 'express-namespace-routes';
-// import socketIO from "socket.io";
 import multer from 'multer';
 import cors from 'cors';
 
