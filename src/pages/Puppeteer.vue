@@ -115,12 +115,8 @@ export default {
     },
     handleFileSubmit() {
       const formData = new FormData();
-      formData.append('userFile', this.userFile)
-      axios({
-        url: '/api/file-upload',
-        method: 'post',
-        data: formData
-      })
+      formData.append('userFile', this.userFile);
+      axiosClient.post('file-upload', formData)
         .then((response) => {
           this.socketMessage = 'File uploaded';
           var arr = this.files.slice();
@@ -132,15 +128,12 @@ export default {
         });
     },
     getFiles() {
-      axios({
-        url: '/api/files',
-        method: 'get'
-      })
+      axiosClient('files')
         .then((response) => {
           console.log(response);
         })
         .catch((error) => {
-          this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;
+          this.socketMessage = `Urgurgurg, the files weren't loaded and there was a status: ${error.response.status}`;
         });
     },
     handleFinale() {

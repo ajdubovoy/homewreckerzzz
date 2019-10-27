@@ -16,7 +16,7 @@ export default (app, http) => {
   // File Upload
   const storage = multer.diskStorage({
     destination: function(req, file, callback) {
-      callback(null, './uploads');
+      callback(null, './public/uploads');
     },
     filename: function(req, file, callback) {
       callback(null, fileCount + ".mp3");
