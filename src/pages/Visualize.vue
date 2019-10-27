@@ -159,18 +159,18 @@ export default {
     },
     getQuiz() {
       axiosClient.get('quiz-responses')
-        .then((r) => ({quiz: r.quiz, responses: r.responses.filter((res) => !this.played.includes(res.token))}))
         .then((r) => {
-          let quiz = r.quiz;
-          r.responses.forEach((res) => {
+          let quiz = r.data.quiz;
+          r.data.responses.filter((res) => !this.played.includes(res.token)).forEach((res) => {
             let obj = {
-              color: quiz.colors[res.value],
+              color: quiz.colors[res.value-1],
               sustain: false,
               token: res.token,
               type: quiz.visualization
             }              
             this.queue.push(obj);
           })
+
         })
     }
   }
