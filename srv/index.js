@@ -105,13 +105,22 @@ export default (app, http) => {
 
           const responseValues = responses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
-          const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete" };
+          const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete", responses, responseValues };
           sockets.push(completionSocket);
           console.log('Quiz ended and results sent (QuizComplete): ' + JSON.stringify(responseValues));
           console.log(completionSocket);
           responses = []; // Get out of quiz mode
           currentQuiz = null;
         }, socket.request.duration);
+      }
+    });
+
+    api.get('/quiz-responses', (req, res) => {
+      if (currentQuiz) {
+        const responseValues = responses.map(response => response.value);
+        res.json({ id: currentQuiz.id, responses, responseValues });
+      } else {
+        res.json({ responses: [] });
       }
     });
 
@@ -130,9 +139,9 @@ export default (app, http) => {
           time,
           responses
         }
-        sockets.push(socket);
+        // sockets.push(socket);
         res.json({ socket });
-        console.log(socket);
+        // console.log(socket);
       } else {
         console.log('Unauthorized quiz response urgh');
         res.status(401);
