@@ -2,7 +2,6 @@ import express from 'express';
 import createError from 'http-errors';
 import path from 'path';
 import routes from 'express-namespace-routes';
-// import socketIO from "socket.io";
 import multer from 'multer';
 import cors from 'cors';
 const fs = require('fs');
@@ -27,7 +26,7 @@ export default (app, http) => {
   const upload = multer({storage: storage});
 
   // Initialization
-  const sockets = [];
+  let sockets = [];
   const clients = [];
   let responses = []; // Initial empty quiz responses array to local state
   let currentQuiz = null;
@@ -61,6 +60,21 @@ export default (app, http) => {
 
     api.post('/sockets', (req, res) => {
       const socket = req.body;
+
+      if (socket.message === 'kill') {
+        console.log("Clearing old play, update, and kill sockets...");
+        const oldSockets = sockets;
+        sockets = sockets.filter((socket) => {
+          const audience = socket.request.audience;
+          const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
+          const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
+          const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
+          const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
+          const isTypeToRemove = socket.message === 'play' || socket.message === 'update' || socket.message === 'kill';
+          return isAudience && !isTypeToRemove;
+        });
+      }
+
       const token = Math.random().toString(36).substr(2, 9); // Generate random key
       const time = new Date();
       const requestSocket = { ...socket, token, time };
@@ -78,6 +92,17 @@ export default (app, http) => {
 
         setTimeout(() => {
           // Once quiz finished, notify clients of results
+          console.log("Clearing old quizAsk and quizComplete sockets...");
+          sockets = sockets.filter((socket) => {
+            const audience = socket.request.audience;
+            const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
+            const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
+            const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
+            const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
+            const isTypeToRemove = socket.message === 'quizAsk' || socket.message === 'quizComplete';
+            return isAudience && !isTypeToRemove;
+          });
+
           const responseValues = responses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
           const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete" };
@@ -154,12 +179,6 @@ export default (app, http) => {
   setInterval(() => {
     const currentTime = new Date();
     const checkTime = new Date(currentTime - 10000);
-
-    sockets.forEach((socket, index) => {
-      if (socket.time < checkTime) {
-        sockets.splice(index, 1);
-      }
-    });
 
     clients.forEach((client) => {
       if (client.time < checkTime && client.connected) {
