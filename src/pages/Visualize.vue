@@ -23,7 +23,10 @@ export default {
   },
   mounted() {
     this.sketch = new p5(main);
-    this.timer = setInterval(this.getClients, this.updateDuration);
+    this.timer = setInterval(() => {
+      this.getClients();
+      this.getQuiz();
+    }, this.updateDuration);
     var self = this;
     function main(_p5) {
       let p5 = _p5;
@@ -153,16 +156,22 @@ export default {
     killClient(user) {
       var arr = this.users.filter((el) => el != user);
       this.users = arr;
-    }
-  },
-  sockets: {
-    quizTally(payload) {
-      var self = this;
-      let quiz = payload.quiz;
-      let responses = payload.responses;
-      responses.forEach((el) => {
-        self.queue.push({user: "", color: payload.quiz.colors[el], sustain: false});
-      })
+    },
+    getQuiz() {
+      axiosClient.get('quiz-responses')
+        .then((r) => ({quiz: r.quiz, responses: r.responses.filter((res) => !this.played.includes(res.token))}))
+        .then((r) => {
+          let quiz = r.quiz;
+          r.responses.forEach((res) => {
+            let obj = {
+              color: quiz.colors[res.value],
+              sustain: false,
+              token: res.token,
+              type: quiz.visualization
+            }              
+            this.queue.push(obj);
+          })
+        })
     }
   }
 }
