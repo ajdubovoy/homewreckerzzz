@@ -170,11 +170,11 @@ export default {
       }
     },
     handleDeepFry() {
-      this.emitSocket('deepFry', this.audience);
+      this.emitSocket('deepFry', { audience: this.audience });
       this.deepFried = true;
     },
     unDeepFry() {
-      this.emitSocket('unDeepFry', this.audience);
+      this.emitSocket('unDeepFry', { audience: this.audience });
       this.deepFried = false;
     },
     quizOptions() {
