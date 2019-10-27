@@ -5,6 +5,7 @@ import routes from 'express-namespace-routes';
 // import socketIO from "socket.io";
 import multer from 'multer';
 import cors from 'cors';
+const fs = require('fs');
 
 export default (app, http) => {
   app.use(express.json());
@@ -135,6 +136,14 @@ export default (app, http) => {
     api.post('/file-upload', upload.single('userFile'), function(req, res) {
       console.log(req.file.path + " uploaded");
       res.status(200).json({file: req.file.path});
+    })
+
+    api.get('/files', (req, res) => {
+      let arr = [];
+      fs.readdirSync("./public/uploads").forEach(file => {
+        arr.push(file);
+      });
+      res.status(200).json({files: arr});
     })
   });
 
