@@ -1,5 +1,6 @@
 export default [
   {
+    id: 'colors1',
     title: 'Colors 1',
     question: "cHooz a color:",
     answers: [
@@ -11,10 +12,11 @@ export default [
     colors: [
       240,138,271,60
     ],
-    class: '',
+    class: 'colors',
     duration: 30000
   },
   {
+    id: 'colors2',
     title: 'Colors 2',
     question: "cHooz a color:",
     answers: [
@@ -26,10 +28,11 @@ export default [
     colors: [
       0,300,271,60
     ],
-    class: '',
+    class: 'colors',
     duration: 30000
   },
   {
+    id: 'emoji',
     title: 'Emoji',
     question: "Please select an emoji:",
     answers: [

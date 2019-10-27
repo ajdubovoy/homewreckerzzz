@@ -115,6 +115,15 @@ export default (app, http) => {
       }
     });
 
+    api.get('/quiz-responses', (req, res) => {
+      if (currentQuiz) {
+        const responseValues = responses.map(response => response.value);
+        res.json({ id: currentQuiz.id, responses, responseValues });
+      } else {
+        res.json({ responses: [] });
+      }
+    });
+
     api.post('/quiz-responses', (req, res) => {
       // Collect all responses
       if (currentQuiz) {
@@ -130,9 +139,9 @@ export default (app, http) => {
           time,
           responses
         }
-        sockets.push(socket);
+        // sockets.push(socket);
         res.json({ socket });
-        console.log(socket);
+        // console.log(socket);
       } else {
         console.log('Unauthorized quiz response urgh');
         res.status(401);
