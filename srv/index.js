@@ -78,6 +78,9 @@ export default (app, http) => {
       const token = Math.random().toString(36).substr(2, 9); // Generate random key
       const time = new Date();
       const requestSocket = { ...socket, token, time };
+      if (socket.message === 'quizAsk') {
+        requestSocket.request.time = time;
+      }
       sockets.push({ ...socket, token, time });
       res.json(requestSocket);
       console.log(`New ${socket.message} socket created`);

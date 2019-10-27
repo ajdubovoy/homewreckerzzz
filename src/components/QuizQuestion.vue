@@ -2,7 +2,6 @@
 Cover.quiz-question(:class="text.class")
   h1 {{ text.question }}
   h2(v-if="quantityText") {{ quantityText }}
-  p(v-if="timeRemaining") time reMAINing: {{ timeRemaining }}
 
   b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(key) }") {{ answer }}
 </template>
@@ -21,7 +20,7 @@ export default {
     submit: Function
   },
   mounted() {
-
+    
   },
   methods: {
     hexColor(key) {
@@ -38,6 +37,13 @@ export default {
       // https://gka.github.io/chroma.js/
       return chroma.hsl(hue, 1, 0.4);
     },
+    timeRemaining() {
+      if (!this.text.duration) {
+        return 0;
+      }
+
+      return Math.round(this.text.duration - new Date(this.text.time) - new Date());
+    }
   },
   computed: {
     quantityText() {
@@ -48,9 +54,6 @@ export default {
       } else {
         return "";
       }
-    },
-    timeRemaining() {
-
     }
   },
   components: {
