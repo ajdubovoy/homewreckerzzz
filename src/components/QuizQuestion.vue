@@ -2,10 +2,11 @@
 Cover.quiz-question(:class="text.class")
   h1 {{ text.question }}
 
-  b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" :key="key") {{ answer }}
+  b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(text.colors[key]) }") {{ answer }}
 </template>
 
 <script>
+import chroma from 'chroma-js';
 import Cover from './Cover';
 
 export default {
@@ -16,6 +17,16 @@ export default {
       answers: Array,
     },
     submit: Function
+  },
+  methods: {
+    hexColor(hue) {
+      if (!hue) {
+        return null;
+      }
+
+      // https://gka.github.io/chroma.js/
+      return chroma.hsl(hue, 1, 0.4);
+    },
   },
   components: {
     Cover
@@ -44,5 +55,9 @@ export default {
 .colors{
   background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/colors.gif');
   background-size: contain;
+}
+.btn-quiz{
+  background-blend-mode: multiply;
+  text-shadow: 2px 2px rgba(0,0,0,0.5);
 }
 </style>
