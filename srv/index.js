@@ -15,7 +15,7 @@ export default (app, http) => {
   // File Upload
   const storage = multer.diskStorage({
     destination: function(req, file, callback) {
-      callback(null, './uploads');
+      callback(null, './public/uploads');
     },
     filename: function(req, file, callback) {
       callback(null, fileCount + ".mp3");
@@ -149,7 +149,6 @@ export default (app, http) => {
         sockets.splice(index, 1);
       }
     });
-    console.log("Old sockets were cleaned out like crusty earwax");
 
     clients.forEach((client) => {
       if (client.time < checkTime && client.connected) {
