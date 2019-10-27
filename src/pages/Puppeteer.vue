@@ -32,7 +32,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import throttle from 'lodash.throttle';
-import axios from 'axios';
 import axiosClient from '../helpers/axios_client';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
