@@ -5,7 +5,7 @@ import ADSR from 'adsr';
 // Then we put the buffer into the source
 export async function loadClip(url, context) {
   var buffer, data;
-  let response = await fetch(url);
+  let response = await fetch("uploads/" + url);
   if (!response.ok) {
     throw new Error("HTTP error, status = " + response.status);
   } else {
