@@ -105,7 +105,7 @@ export default (app, http) => {
 
           const responseValues = responses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
-          const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete" };
+          const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete", responses, responseValues };
           sockets.push(completionSocket);
           console.log('Quiz ended and results sent (QuizComplete): ' + JSON.stringify(responseValues));
           console.log(completionSocket);
