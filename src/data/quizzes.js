@@ -13,6 +13,8 @@ export default [
       240,138,271,60
     ],
     class: 'colors',
+    visualization: 'colors',
+    quantity: 'multiple',
     duration: 30000
   },
   {
@@ -29,6 +31,8 @@ export default [
       0,300,271,60
     ],
     class: 'colors',
+    visualization: 'colors',
+    quantity: 'multiple',
     duration: 30000
   },
   {
@@ -45,6 +49,37 @@ export default [
       0,300,20,60
     ],
     class: 'doughnuts',
+    visualization: 'emoji',
+    quantity: 'multiple',
     duration: 30000
+  },
+  {
+    id: 'numbers1',
+    title: 'Numbers 1',
+    question: "Please select a number:",
+    answers: [
+      '0',
+      '1'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'numbers2',
+    title: 'Numbers 2',
+    question: "Please select a number:",
+    answers: [
+      '0',
+      '1',
+      '2'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
   }
 ];
