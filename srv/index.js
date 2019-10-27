@@ -117,8 +117,7 @@ export default (app, http) => {
 
     api.get('/quiz-responses', (req, res) => {
       if (currentQuiz) {
-        const responseValues = responses.map(response => response.value);
-        res.json({ id: currentQuiz.id, responses, responseValues });
+        res.json({ id: currentQuiz.id, responses, quiz: currentQuiz });
       } else {
         res.json({ responses: [] });
       }
@@ -128,8 +127,8 @@ export default (app, http) => {
       // Collect all responses
       if (currentQuiz) {
         console.log('Quiz response received: ' + JSON.stringify(req.body));
-        responses.push(req.body);
         const token = Math.random().toString(36).substr(2, 9); // Generate random key
+        responses.push({ ...req.body, token });
         const time = new Date();
         const socket = {
           message: 'quizTally',
@@ -175,9 +174,7 @@ export default (app, http) => {
     api.get('/files', (req, res) => {
       let arr = [];
       fs.readdirSync("./public/uploads").forEach(file => {
-        if(!file.includes(".gitkeep")) {
-          arr.push(file);
-        }
+        arr.push(file);
       });
       res.status(200).json({files: arr});
     })

@@ -235,7 +235,17 @@ export default {
       }
     },
     handleQuizSubmit(response) {
-      this.throttledEmitQuizResponse(response);
+      if (this.quiz.quantity === 'multiple') {
+        this.throttledEmitQuizResponse(response);
+      } else {
+        axiosClient.post('quiz-responses', {
+          message: 'quizResponse',
+          clientID: this.$store.state.token,
+          value: response
+        });
+
+        this.quizComplete(this.quiz);
+      }
     },
     throttledEmitQuizResponse: throttle(function(response) {
       // Throttle to prevent spamming
@@ -243,7 +253,7 @@ export default {
         message: 'quizResponse',
         clientID: this.$store.state.token,
         value: response
-      })
+      });
     }, 750),
     notificationPing() {
       const playTone = (frequency) => {

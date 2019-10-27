@@ -1,8 +1,10 @@
 <template lang="pug">
 Cover.quiz-question(:class="text.class")
   h1 {{ text.question }}
+  h2(v-if="quantityText") {{ quantityText }}
+  p(v-if="timeRemaining") time reMAINing: {{ timeRemaining }}
 
-  b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(text.colors[key]) }") {{ answer }}
+  b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(key) }") {{ answer }}
 </template>
 
 <script>
@@ -18,8 +20,17 @@ export default {
     },
     submit: Function
   },
+  mounted() {
+
+  },
   methods: {
-    hexColor(hue) {
+    hexColor(key) {
+      if (!this.text.colors) {
+        return null;
+      }
+
+      const hue = this.text.colors[key];
+
       if (!hue) {
         return null;
       }
@@ -27,6 +38,20 @@ export default {
       // https://gka.github.io/chroma.js/
       return chroma.hsl(hue, 1, 0.4);
     },
+  },
+  computed: {
+    quantityText() {
+      if (this.text.quantity === 'multiple') {
+        return "chooZ as manY tIMez as yOUd like:"
+      } else if (this.text.quantity === 'single') {
+        return "chooZ only ONCE & careFullY:";
+      } else {
+        return "";
+      }
+    },
+    timeRemaining() {
+
+    }
   },
   components: {
     Cover
