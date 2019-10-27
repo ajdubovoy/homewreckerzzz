@@ -41,7 +41,8 @@ import Module from '../components/Module';
 export default {
   name: 'Puppeteer',
   mounted() {
-    this.connectMIDI();
+    //this.connectMIDI();
+    this.getFiles();
     this.addModule();
   },
   data() {
@@ -119,9 +120,7 @@ export default {
       axiosClient.post('file-upload', formData)
         .then((response) => {
           this.socketMessage = 'File uploaded';
-          var arr = this.files.slice();
-          arr.push(response.data.file);
-          this.files = arr;
+          this.getFiles();
         })
         .catch((error) => {
           this.socketMessage = `Urgurgurg, file wasn't uploaded and there was a status: ${error.response.status}`;
@@ -131,6 +130,7 @@ export default {
       axiosClient('files')
         .then((response) => {
           console.log(response);
+          this.files = response.data.files;
         })
         .catch((error) => {
           this.socketMessage = `Urgurgurg, the files weren't loaded and there was a status: ${error.response.status}`;
