@@ -118,7 +118,7 @@ export default (app, http) => {
     api.get('/quiz-responses', (req, res) => {
       if (currentQuiz) {
         const responseValues = responses.map(response => response.value);
-        res.json({ id: currentQuiz.id, responses, responseValues });
+        res.json({ quiz: currentQuiz, responses, responseValues });
       } else {
         res.json({ responses: [] });
       }
