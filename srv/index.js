@@ -61,20 +61,6 @@ export default (app, http) => {
     api.post('/sockets', (req, res) => {
       const socket = req.body;
 
-      if (socket.message === 'kill') {
-        console.log("Clearing old play, update, and kill sockets...");
-        const oldSockets = sockets;
-        sockets = sockets.filter((socket) => {
-          const audience = socket.request.audience;
-          const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
-          const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
-          const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
-          const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
-          const isTypeToRemove = socket.message === 'play' || socket.message === 'update' || socket.message === 'kill';
-          return isAudience && !isTypeToRemove;
-        });
-      }
-
       const token = Math.random().toString(36).substr(2, 9); // Generate random key
       const time = new Date();
       const requestSocket = { ...socket, token, time };
@@ -86,6 +72,43 @@ export default (app, http) => {
       console.log(`New ${socket.message} socket created`);
       console.log(requestSocket);
 
+      // Handle specific cases
+
+      try{
+        if (socket.message === 'kill') {
+          console.log("Clearing old play, update, and kill sockets...");
+          sockets = sockets.filter((s) => {
+            const audience = s.request.audience;
+            const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
+            const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
+            const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
+            const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
+            const isTypeToRemove = s.message === 'play' || s.message === 'update' || s.message === 'kill';
+            console.log(s.token === token);
+            return (isAudience && !isTypeToRemove) || s.token === token;
+          });
+        }
+      } catch(err) {
+        console.log(err);
+      }
+
+      try{
+        if (socket.message === 'unDeepFry') {
+          console.log("Clearing old deepFry and unDeepFry sockets");
+          sockets = sockets.filter((s) => {
+            const audience = s.request.audience;
+            const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
+            const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
+            const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
+            const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
+            const isTypeToRemove = s.message === 'deepFry' || s.message === 'unDeepFry';
+            return (isAudience && !isTypeToRemove) || s.token === token;
+          });
+        }
+      } catch(err) {
+        console.log(err);
+      }
+
       if (socket.message === 'quizAsk') {
         console.log('Quiz started (quizAsk)');
         responses = []; // Clear any remnants
@@ -96,15 +119,19 @@ export default (app, http) => {
         setTimeout(() => {
           // Once quiz finished, notify clients of results
           console.log("Clearing old quizAsk and quizComplete sockets...");
-          sockets = sockets.filter((socket) => {
-            const audience = socket.request.audience;
-            const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
-            const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
-            const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
-            const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
-            const isTypeToRemove = socket.message === 'quizAsk' || socket.message === 'quizComplete';
-            return isAudience && !isTypeToRemove;
-          });
+          try {
+            sockets = sockets.filter((s) => {
+              const audience = s.request.audience;
+              const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
+              const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
+              const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
+              const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
+              const isTypeToRemove = s.message === 'quizAsk' || s.message === 'quizComplete';
+              return isAudience && !isTypeToRemove;
+            });
+          } catch(err) {
+            console.log(err);
+          }
 
           const responseValues = responses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
