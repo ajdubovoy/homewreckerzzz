@@ -39,23 +39,27 @@ export default (app, http) => {
     });
 
     api.get('/sockets', (req, res) => {
-      const token = req.query.token;
-      const client = clients.find(c => c.token === token);
-      if (client) {
-        client.time = new Date();
-        client.connected = true;
-        client.sockets = sockets.filter((socket) => {
-          const audience = socket.request.audience
-          const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
-          const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
-          const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
-          return isRoomSection && isSeatingHeight && isRandomQuestion;
-        });
-      }
-
       res.json({
         sockets
-      })
+      });
+
+      try{
+        const token = req.query.token;
+        const client = clients.find(c => c.token === token);
+        if (client) {
+          client.time = new Date();
+          client.connected = true;
+          client.sockets = sockets.filter((socket) => {
+            const audience = socket.request.audience
+            const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
+            const isSeatingHeight = audience.seatingHeight ? audience.seatingHeight == client.seatingHeight : true;
+            const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
+            return isRoomSection && isSeatingHeight && isRandomQuestion;
+          });
+        }
+      } catch(err) {
+        console.log(err);
+      }
     });
 
     api.post('/sockets', (req, res) => {
@@ -84,7 +88,6 @@ export default (app, http) => {
             const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
             const isAudience = isRoomSection && isSeatingHeight && isRandomQuestion;
             const isTypeToRemove = s.message === 'play' || s.message === 'update' || s.message === 'kill';
-            console.log(s.token === token);
             return (isAudience && !isTypeToRemove) || s.token === token;
           });
         }
