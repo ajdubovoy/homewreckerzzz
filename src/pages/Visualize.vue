@@ -131,7 +131,7 @@ export default {
           centerY += ((noiseY - 0.5) * 400) + window.innerHeight;
           centerX %= window.innerWidth;
           centerY %= window.innerHeight;
-          var pNoise = p5.noise((centerX+offset)*0.25, (centerY+offset)*0.25); //multiplier affects density of the cloud. lower numbers are more dense
+          var pNoise = p5.noise((centerX+offset)*0.2, (centerY+offset)*0.2); //multiplier affects density of the cloud. lower numbers are more dense
           particles.push(new Digit(
             p5.color(0, 0,255), 
             centerX, 
@@ -190,15 +190,33 @@ export default {
       axiosClient.get('quiz-responses')
         .then((r) => {
           let quiz = r.data.quiz;
-          r.data.responses.filter((res) => !this.played.includes(res.token)).forEach((res) => {
-            let obj = {
-              color: quiz.colors[res.value-1],
-              sustain: false,
-              token: res.token,
-              type: quiz.visualization
-            }              
-            this.queue.push(obj);
-          })
+          let filtered = r.data.responses.filter((res) => !this.played.includes(res.token));
+          if(quiz.visualization != "numbers") {
+            filtered.forEach((res) => {
+              let obj = {
+                color: quiz.colors[res.value-1],
+                sustain: false,
+                token: res.token,
+                type: quiz.visualization
+              }              
+              this.queue.push(obj);
+            })
+          } else {
+            let sum = 0;
+            filtered.forEach((res) => {
+              sum += parseInt(quiz.answers[res.value-1]);
+            })
+            if(filtered.length) {
+              let obj = {
+                color: Math.ceil(sum/filtered.length+2),
+                sustain: false,
+                token: filtered[0].token,
+                type: quiz.visualization
+              }              
+              this.queue.push(obj);
+            }
+          }
+          
         })
     }
   }

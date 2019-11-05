@@ -81,5 +81,37 @@ export default [
     visualization: 'numbers',
     quantity: 'single',
     duration: 5000
+  },
+  {
+    id: 'numbers3',
+    title: 'Numbers 3',
+    question: "Please select a number:",
+    answers: [
+      '0',
+      '1',
+      '2',
+      '3'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'numbers4',
+    title: 'Numbers 4',
+    question: "Please select a number:",
+    answers: [
+      '1',
+      '2',
+      '3',
+      '4'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
   }
 ];
