@@ -6,7 +6,7 @@
 import p5 from 'p5';
 import {colors} from '../data/instruments.js';
 import {ShimmerSquare, PulseSquare} from '../processing/Particle.js';
-import {Digit} from '../processing/Text.js';
+import {Digit, Emoji} from '../processing/Text.js';
 import axiosClient from '../helpers/axios_client';
 import remove from "lodash.remove";
 import quiz from "../data/quizzes.js";
@@ -61,9 +61,22 @@ export default {
         if(self.queue.length != 0) {
           self.queue.forEach((el) => {
             if(self.users.includes(el.user) && el.sustain) {
-              sustainCloud(el.color, el.user);
+              sustainCloud(el.color, el.user);  
             } else {
-              cloud(el.color);
+              switch(el.type) {
+                case "colors": 
+                  cloud(el.color);
+                  break;
+                case "numbers":
+                  digitCloud(el.color);
+                  break;
+                case "emoji":
+                  emojiCloud(el.color);
+                  break;
+                default:
+                  cloud(el.color);
+                  break;
+              }
               self.killClient(el.user);
             }
             self.played.push(el.token);
@@ -106,7 +119,7 @@ export default {
           )});
         }
       }
-      function digitCloud(hue) {
+      function digitCloud(maxBrightness) {
         // makes perlin noise-based clouds of numbers
         var centerX = Math.random()*window.innerWidth;
         var centerY = Math.random()*window.innerHeight;
@@ -118,13 +131,28 @@ export default {
           centerY += ((noiseY - 0.5) * 400) + window.innerHeight;
           centerX %= window.innerWidth;
           centerY %= window.innerHeight;
-          var pNoise = p5.noise((centerX+offset)*0.25, (centerY+offset)*0.25); //multiplier affects density of the cloud. lower numbers are more dense
+          var pNoise = p5.noise((centerX+offset)*0.2, (centerY+offset)*0.2); //multiplier affects density of the cloud. lower numbers are more dense
           particles.push(new Digit(
-            p5.color(hue, 255,255), 
+            p5.color(0, 0,255), 
             centerX, 
             centerY, 
             parseInt(10 + pNoise*100), 
-            Math.floor(pNoise*(offset*0.05)), //controls max brightness, now is random, but useful for later
+            maxBrightness, //controls max brightness, now is random, but useful for later
+            p5
+          ));
+        }
+      }
+      function emojiCloud(emoji) {
+        var centerX = Math.random()*window.innerWidth;
+        var centerY = Math.random()*window.innerHeight;
+        for(var i = 0; i < 10; i++) {
+          let randX = centerX + (Math.random() * 200) - 100;
+          let randY = centerY + (Math.random() * 200) - 100;
+          particles.push(new Emoji(
+            randX, 
+            randY, 
+            parseInt(30 + Math.random()*30), 
+            emoji,
             p5
           ));
         }
@@ -143,7 +171,8 @@ export default {
                   user: el.user,
                   color: colors[el.task.request.controls.waveType].hue,
                   sustain: el.task.request.controls.sustain,
-                  token: el.task.token
+                  token: el.task.token,
+                  type: "colors"
                 }
                 this.users.push(el.user);                
                 this.queue.push(obj);
@@ -159,18 +188,35 @@ export default {
     },
     getQuiz() {
       axiosClient.get('quiz-responses')
-        .then((r) => ({quiz: r.quiz, responses: r.responses.filter((res) => !this.played.includes(res.token))}))
         .then((r) => {
-          let quiz = r.quiz;
-          r.responses.forEach((res) => {
-            let obj = {
-              color: quiz.colors[res.value],
-              sustain: false,
-              token: res.token,
-              type: quiz.visualization
-            }              
-            this.queue.push(obj);
-          })
+          let quiz = r.data.quiz;
+          let filtered = r.data.responses.filter((res) => !this.played.includes(res.token));
+          if(quiz.visualization != "numbers") {
+            filtered.forEach((res) => {
+              let obj = {
+                color: quiz.colors[res.value-1],
+                sustain: false,
+                token: res.token,
+                type: quiz.visualization
+              }              
+              this.queue.push(obj);
+            })
+          } else {
+            let sum = 0;
+            filtered.forEach((res) => {
+              sum += parseInt(quiz.answers[res.value-1]);
+            })
+            if(filtered.length) {
+              let obj = {
+                color: Math.ceil(sum/filtered.length+2),
+                sustain: false,
+                token: filtered[0].token,
+                type: quiz.visualization
+              }              
+              this.queue.push(obj);
+            }
+          }
+          
         })
     }
   }
