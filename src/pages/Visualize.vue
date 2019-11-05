@@ -193,8 +193,9 @@ export default {
           let filtered = r.data.responses.filter((res) => !this.played.includes(res.token));
           if(quiz.visualization != "numbers") {
             filtered.forEach((res) => {
+              let key = quiz.visualization == "emoji" ? "answers" : "colors";
               let obj = {
-                color: quiz.colors[res.value-1],
+                color: quiz[key][res.value-1],
                 sustain: false,
                 token: res.token,
                 type: quiz.visualization
