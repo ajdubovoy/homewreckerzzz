@@ -33,8 +33,9 @@ export default (app, http) => {
 
   //explicitly serve file using endpoint
   app.get('/uploads/:file', (req,res) => {
-    console.log(req.params.file);
+    console.log(path.join("public/uploads/", req.params.file));
     res.contentType(path.join("public/uploads/", req.params.file));
+    console.log('we set the content type');
     req.sendFile(path.join("public/uploads/", req.params.file));
   })
 
