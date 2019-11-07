@@ -9,7 +9,6 @@ const fs = require('fs');
 export default (app, http) => {
   app.use(express.json());
   app.use(cors());
-  app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
   let fileCount = 0;
 
@@ -31,6 +30,13 @@ export default (app, http) => {
   const clients = [];
   let responses = []; // Initial empty quiz responses array to local state
   let currentQuiz = null;
+
+  //explicitly serve file using endpoint
+  app.get('/uploads/:file', (req,res) => {
+    console.log(req.params.file);
+    res.contentType(path.join("public/uploads/", req.params.file));
+    req.sendFile(path.join("public/uploads/", req.params.file));
+  })
 
   // Routes
   // https://github.com/WebStyle/express-namespace-routes
