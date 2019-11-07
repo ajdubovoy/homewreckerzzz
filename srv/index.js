@@ -16,7 +16,7 @@ export default (app, http) => {
   // File Upload
   const storage = multer.diskStorage({
     destination: function(req, file, callback) {
-      callback(null, '/public/uploads');
+      callback(null, './public/uploads');
     },
     filename: function(req, file, callback) {
       callback(null, fileCount + ".mp3");
@@ -24,7 +24,7 @@ export default (app, http) => {
     }
   });
 
-  const upload = multer({storage: storage});
+  const upload = multer({storage: storage}).single("userFile");
 
   // Initialization
   let sockets = [];
@@ -200,9 +200,17 @@ export default (app, http) => {
       res.json(clients);
     })
 
-    api.post('/file-upload', upload.single('userFile'), function(req, res) {
-      console.log(req.file.path + " uploaded");
-      res.status(200).json({file: req.file.path});
+    api.post('/file-upload', function(req, res) {
+      upload(req, res, (err) => {
+        if(err) {
+            return res.status(400).json({
+                errors: [err.message]
+            })
+        } else {
+          console.log(req.file.path + " uploaded");
+          res.status(200).json({file: req.file.path});
+        }
+      })
     })
 
     api.get('/files', (req, res) => {
