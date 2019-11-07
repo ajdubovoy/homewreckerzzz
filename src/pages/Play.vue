@@ -91,7 +91,6 @@ export default {
       'playingInstrument',
       'confirmedConsent',
       'roomSection',
-      'seatingHeight',
       'randomQuestion',
       'token'
     ]),
@@ -104,7 +103,6 @@ export default {
       axiosClient.post('clients', {
         token: this.$store.state.token,
         roomSection: this.roomSection,
-        seatingHeight: this.seatingHeight,
         randomQuestion: this.randomQuestion
       })
         .then(() => { this.connected = true })
@@ -224,12 +222,11 @@ export default {
       const instrumentInstance = this[instrumentName];
       this.setPlayingInstrument(instrumentInstance);
     },
-    isAudience({ roomSection, seatingHeight, randomQuestion }) {
+    isAudience({ roomSection, randomQuestion }) {
       // Makes sure current client satisfies 'audience' conditions
       const isRoomSection = roomSection ? roomSection == this.roomSection : true;
-      const isSeatingHeight = seatingHeight ? seatingHeight == this.seatingHeight : true;
       const isRandomQuestion = randomQuestion ? randomQuestion == this.randomQuestion : true;
-      return isRoomSection && isSeatingHeight && isRandomQuestion;
+      return isRoomSection && isRandomQuestion;
     },
     killInstrument(options = {}) {
       if (this.playingInstrument) {

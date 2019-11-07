@@ -9,9 +9,6 @@
         label(for="room-section") Room Section
         b-form-select(name="room-section" v-model="roomSection" :options="{0: 'All', 1: 'Couch', 2: 'Dining Table', 3: 'Door'}")
       b-form-group
-        label(for="seating-height") Seating Height
-        b-form-select(name="seating-height" v-model="seatingHeight" :options="{0: 'All', 1: 'Floor', 2: 'Couch', 3: 'Chair', 4: 'Standing'}")
-      b-form-group
         label(for="random-question") Random Question
         b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
     b-tab(title="🎹")
@@ -73,7 +70,6 @@ export default {
       quiz: 0,
       instrument: 0,
       roomSection: 0,
-      seatingHeight: 0,
       randomQuestion: 0,
       waveType: 'sine',
       clusterType: 'major',
@@ -102,7 +98,6 @@ export default {
     audience() {
       return {
         roomSection: this.roomSection,
-        seatingHeight: this.seatingHeight,
         randomQuestion: this.randomQuestion
       };
     },
