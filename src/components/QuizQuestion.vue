@@ -2,7 +2,7 @@
 Cover.quiz-question(:class="text.class")
   h1 {{ text.question }}
   h2(v-if="quantityText") {{ quantityText }}
-  p {{ timeRemaining() }}
+  p you hAve oNLy so maNY seCONDS: {{ timeRemaining() }}
 
   b-button(v-for="(answer, key, index) in text.answers" @click="handleSubmit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(key, answers[key + 1]) }") {{ answer }}
 </template>
@@ -111,6 +111,9 @@ export default {
   }
   50% {
     transform: scale(1.5);
+    color: transparent;
+    background-clip: text;
+    font-size: 2em;
   }
   100% {
     transform: scale(1);
