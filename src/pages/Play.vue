@@ -137,16 +137,6 @@ export default {
     },
     // SOCKETS
 
-    // connect() {
-      // this.connected = true;
-    // },
-    // disconnect() {
-      // this.connected = false;
-      // this.killInstrument(); // Kill sound on disconnect just in case
-      // this.playing = false;
-      // this.deepFried = false;
-      // this.quiz = null; // Also turn off quiz mode
-    // },
     play(options) {
       if (this.isAudience(options.audience)) {
         // Only play if client is target audience
@@ -157,6 +147,7 @@ export default {
         this.findAndSetInstrument(options.instrument); // Set instrument based on integer value
         this.playingInstrument.play(options.controls); // Issue play command to selected instrument class instance
         this.playing = true;
+        console.log(this.playing);
       }
     },
     update(options) {

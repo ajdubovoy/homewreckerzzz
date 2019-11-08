@@ -1,7 +1,7 @@
 <template>
   <Cover>
     <BlinkyText>
-      hOmewRecKerzzzzz
+      nEtwRecKerzzzzz
     </BlinkyText>
     <p>
       Are you ready to get wrECkeD? 😘

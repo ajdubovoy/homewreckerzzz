@@ -1,16 +1,18 @@
 <template lang="pug">
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
+  p.small Room Section: {{ roomSection }}; Random Question: {{ randomQuestion }}
   b-alert(show) {{ socketMessage }}
-  slot
-  b-tabs
-    b-tab(title="👨‍👨‍👧‍👦" active)
-      b-form-group
-        label(for="room-section") Room Section
-        b-form-select(name="room-section" v-model="roomSection" :options="{0: 'All', 1: 'Couch', 2: 'Dining Table', 3: 'Door'}")
-      b-form-group
-        label(for="random-question") Random Question
-        b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
+  b-button.remove-module(variant="danger" @click="handleRemove") ➖
+  #audience(v-if="!initialized")
+    b-form-group
+      label(for="room-section") Room Section
+      b-form-select(name="room-section" v-model="roomSection" :options="{0: 'All', 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4'}")
+    b-form-group
+      label(for="random-question") Random Question
+      b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
+    b-button(@click="handleInitialize" variant="primary") Set Audience
+  b-tabs(v-else)
     b-tab(title="🎹")
       b-button(@click="handlePlay" variant="primary") Play
       b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
@@ -18,7 +20,7 @@
         .col-6 
           b-form-group
             b-form-group(label="Instrument")
-              b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :value="i.value") {{ i.text }}
+              b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
         .col-6
           b-form-group(v-if="instrument < 2")
             b-form-checkbox(v-model="sustain") Sustain Mode
@@ -76,13 +78,16 @@ export default {
       playing: false,
       deepFried: false,
       density: 3,
-      fileName: ""
+      fileName: "",
+      initialized: false
     };
   },
   props: {
     midi: Array,
     instance: Number,
-    files: Array
+    files: Array,
+    removeModule: Function,
+    id: String
   },
   computed: {
     instrumentOptions() {
@@ -97,8 +102,8 @@ export default {
     },
     audience() {
       return {
-        roomSection: this.roomSection,
-        randomQuestion: this.randomQuestion
+        roomSection: parseInt(this.roomSection),
+        randomQuestion: parseInt(this.randomQuestion)
       };
     },
     instrumentRequest() {
@@ -106,8 +111,7 @@ export default {
         instrument: this.instrument,
         audience: this.audience,
         controls: {
-          sustain: this.sustain,
-          amplitude: this.amplitude,
+          sustain: this.sustain,oamplitude: this.amplitude,
           frequency: this.frequency,
           waveType: this.waveType,
           clusterType: this.clusterType,
@@ -130,6 +134,13 @@ export default {
     ]),
   },
   methods: {
+    handleInitialize() {
+      this.initialized = true;
+    },
+    handleRemove() {
+      this.handleKill();
+      this.removeModule();
+    },
     emitSocket(message, request) {
       this.socketMessage = `Sending ${message} request...`;
       axiosClient.post('sockets', {
@@ -242,6 +253,11 @@ export default {
   }
   .form-group {
     margin-bottom: 0.5rem;
+  }
+  p.small{
+    font-size: 0.6em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 }
 </style>

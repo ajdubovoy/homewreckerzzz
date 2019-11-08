@@ -5,7 +5,7 @@
       | Please authenticate yourself...or elseeeee (if ur not grEG get outtttt)
     b-form(@submit="handleSubmit(password)")
       b-form-group
-        b-form-input(v-model='password' type='password') 
+        b-form-input(v-model='password' type='password')
       b-button(type="submit" variant="primary") Unleash the Hounds
   b-container#puppeteer-dash(v-else :fluid="true")
     b-row
@@ -15,8 +15,7 @@
         b-alert(v-if="socketMessage" show) {{ socketMessage }}
     b-row.mb-5
       b-col(v-for="(module, i) in modules" lg=6 xl=3 :key="module")
-        Module(:midi="midiInput" :instance="i" :files="files")
-          b-button.remove-module(variant="danger" @click="removeModule(module)") ➖
+        Module(:midi="midiInput" :instance="i" :files="files" :removeModule="() => removeModule(module)" :id="module")
       b-col(lg=6 xl=3)
         b-button.w-100.h-100.add-module(variant="success" @click="addModule") ➕ Add Module
   b-container#additional-options
@@ -75,7 +74,7 @@ export default {
     },
     connectMIDI() {
       if (!navigator.requestMIDIAccess) {
-        console.log("WebMIDI could not be initialized urgh");
+        this.socketMessage = "WebMIDI could not be initialized urgh";
         return;
       }
 
@@ -84,7 +83,7 @@ export default {
     },
     onMIDISuccess(midiAccess) {
       // https://www.smashingmagazine.com/2018/03/web-midi-api/
-      console.log("Gained access to your MIDI device!");
+      this.socketMessage = "Gained access to your MIDI device!";
       for (var input of midiAccess.inputs.values()) {
         input.onmidimessage = this.getMIDIMessage;
       }
@@ -96,19 +95,15 @@ export default {
       this.midiInput = arr;
     }, 100),
     onMIDIFailure() {
-      console.log("Could not access your MIDI devices urgh");
+      this.socketMessage = "Could not access your MIDI devices urgh";
     },
     addModule() {
       this.modules.push(Math.random().toString(36).substr(2, 9)) // Generate random key
     },
     removeModule(module) {
-      this.modules = this.modules.filter(function(m) {
+      this.modules = this.modules.filter((m) => {
         return module !== m;
       });
-
-      if (this.modules.length < 1) {
-        this.addModule();
-      }
     },
     handleSubmit(password) {
       this.makePuppeteer(password);
@@ -118,7 +113,7 @@ export default {
       const formData = new FormData();
       formData.append('userFile', this.userFile);
       axiosClient.post('file-upload', formData)
-        .then((response) => {
+        .then(() => {
           this.socketMessage = 'File uploaded';
           this.getFiles();
         })
@@ -129,7 +124,6 @@ export default {
     getFiles() {
       axiosClient('files')
         .then((response) => {
-          console.log(response);
           this.files = response.data.files;
         })
         .catch((error) => {
@@ -138,7 +132,12 @@ export default {
     },
     handleFinale() {
       if (window.confirm('r u sURE...?')) {
-        this.emitSocket('finale');
+        this.emitSocket('finale', {
+          audience: {
+            roomSection: 0,
+            randomQuestion: 0
+          }
+        });
       }
     },
     ...mapActions([
