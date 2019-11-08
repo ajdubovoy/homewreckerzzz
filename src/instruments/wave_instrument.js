@@ -9,6 +9,7 @@ export default class {
   }
 
   play = (options = {}) => {
+    console.log(options);
     const compressor = this.context.createDynamicsCompressor();
     const gain = this.context.createGain();
     compressor.connect(gain);

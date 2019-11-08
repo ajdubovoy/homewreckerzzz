@@ -147,7 +147,6 @@ export default {
         this.findAndSetInstrument(options.instrument); // Set instrument based on integer value
         this.playingInstrument.play(options.controls); // Issue play command to selected instrument class instance
         this.playing = true;
-        console.log(this.playing);
       }
     },
     update(options) {

@@ -111,7 +111,8 @@ export default {
         instrument: this.instrument,
         audience: this.audience,
         controls: {
-          sustain: this.sustain,oamplitude: this.amplitude,
+          sustain: this.sustain,
+          amplitude: this.amplitude,
           frequency: this.frequency,
           waveType: this.waveType,
           clusterType: this.clusterType,
