@@ -28,7 +28,7 @@ export default [
       'yellow'
     ],
     colors: [
-      0,300,271,60
+      1,300,271,60
     ],
     class: 'colors',
     visualization: 'colors',
@@ -46,7 +46,7 @@ export default [
       '🤯'
     ],
     colors: [
-      0,300,20,60
+      1,300,20,60
     ],
     class: 'doughnuts',
     visualization: 'emoji',
