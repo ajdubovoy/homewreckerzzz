@@ -72,6 +72,12 @@ export default {
       return Math.round(difference / 1000);
     },
     handleSubmit(answer) {
+      const element = event.target;
+      element.classList.add('pop');
+      setTimeout(() => {
+        element.classList.remove('pop');
+      }, 150)
+
       if (this.answers[answer]) {
         this.answers[answer] += 1;
       } else {
@@ -99,6 +105,17 @@ export default {
 </script>
 
 <style lang="scss">
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .living-room{
   background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/living_room.jpg');
   background-position: center;
@@ -123,5 +140,10 @@ export default {
 .btn-quiz{
   background-blend-mode: multiply;
   text-shadow: 2px 2px rgba(0,0,0,0.5);
+}
+.pop{
+  animation-name: pop;
+  animation-duration: 150ms;
+  animation-iteration-count: 1;
 }
 </style>

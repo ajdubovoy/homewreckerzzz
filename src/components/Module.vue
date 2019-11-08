@@ -2,6 +2,7 @@
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
   p.small Room Section: {{ roomSection }}; Random Question: {{ randomQuestion }}
+  p.small(v-if="timeRemaining()") Time Remaining: {{ timeRemaining() }}
   b-alert(show) {{ socketMessage }}
   b-button.remove-module(variant="danger" @click="handleRemove") ➖
   #audience(v-if="!initialized")
@@ -46,7 +47,7 @@
     b-tab(title="❓")
       b-form-group
         b-form-select(v-model="quiz" :options="quizOptions()")
-      b-button(type="submit" variant="primary" :disabled="quiz === 0" @click="handleQuiz") Start Jeopardy Time
+      b-button(type="submit" variant="primary" :disabled="quiz === 0 || quizActive" @click="handleQuiz") Start Jeopardy Time
     b-tab(title="🍩")
       h3 The Mysteries of Deep Frying Are Available to You
       b-button(variant="primary" @click="handleDeepFry" v-if="!deepFried") DEEP FRY WITH ALL OF GOD'S FURY
@@ -79,7 +80,11 @@ export default {
       deepFried: false,
       density: 3,
       fileName: "",
-      initialized: false
+      initialized: false,
+      now: new Date(),
+      interval: null,
+      quizTime: new Date(),
+      quizActive: false
     };
   },
   props: {
@@ -88,6 +93,15 @@ export default {
     files: Array,
     removeModule: Function,
     id: String
+  },
+  mounted() {
+    this.interval = setInterval(() => {
+      this.now = new Date();
+      this.timeRemaining();
+    }, 500);
+  },
+  destroyed() {
+    clearInterval(this.interval);
   },
   computed: {
     instrumentOptions() {
@@ -172,6 +186,8 @@ export default {
       const quiz = quizzes[this.quiz - 1];
       if (quiz) {
         this.emitSocket('quizAsk', {...quiz, audience: this.audience});
+        this.quizTime = new Date();
+        this.quizActive = true;
       } else {
         this.socketMessage = 'why dont U seleCT a quiZ!?!?';
       }
@@ -194,7 +210,28 @@ export default {
           };
         })
       ];
-    }
+    },
+    timeRemaining() {
+      if (!this.quizActive || !this.quiz) {
+        return 0;
+      }
+
+      const quiz = quizzes[this.quiz - 1];
+
+      const duration = quiz.duration;
+      const time = this.quizTime;
+
+      if (!duration || !time) {
+        return 0;
+      }
+
+      const difference = duration - (this.now - time);
+      if (difference <= 0) {
+        this.quizActive = false;
+        return 0;
+      }
+      return Math.round(difference / 1000);
+    },
   },
   watch: {
     midi(newMIDI) {
