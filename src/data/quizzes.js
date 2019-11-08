@@ -90,7 +90,6 @@ export default [
       '1',
       '2',
       '3',
-      '4'
     ],
     colors: [],
     class: 'numbers',
@@ -155,6 +154,7 @@ export default [
       'a cornucopia',
       'a gazillion',
       'i dont like the question'
+
     ],
     colors: [],
     class: 'numbers',

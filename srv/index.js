@@ -23,13 +23,24 @@ export default (app, http) => {
     }
   });
 
-  const upload = multer({storage: storage});
+  const upload = multer({storage: storage}).single("userFile");
 
   // Initialization
   let sockets = [];
   const clients = [];
   let responses = []; // Initial empty quiz responses array to local state
   let currentQuiz = null;
+
+  //explicitly serve file using endpoint
+  app.get('/uploads/:file', (req,res) => {
+    res.sendFile(path.join(__dirname, path.join("../public/uploads/", req.params.file)), {}, (err) => {
+      if(err) {
+        console.log(err.message)
+      } else {
+        console.log('Sent!')
+      }
+    });
+  })
 
   // Routes
   // https://github.com/WebStyle/express-namespace-routes
@@ -191,9 +202,17 @@ export default (app, http) => {
       res.json(clients);
     })
 
-    api.post('/file-upload', upload.single('userFile'), function(req, res) {
-      console.log(req.file.path + " uploaded");
-      res.status(200).json({file: req.file.path});
+    api.post('/file-upload', function(req, res) {
+      upload(req, res, (err) => {
+        if(err) {
+            return res.status(400).json({
+                errors: [err.message]
+            })
+        } else {
+          console.log(req.file.path + " uploaded");
+          res.status(200).json({file: req.file.path});
+        }
+      })
     })
 
     api.get('/files', (req, res) => {
