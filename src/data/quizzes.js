@@ -81,5 +81,85 @@ export default [
     visualization: 'numbers',
     quantity: 'single',
     duration: 5000
+  },
+  {
+    id: 'numbers3',
+    title: 'Numbers 3',
+    question: "Please select a number:",
+    answers: [
+      '1',
+      '2',
+      '3',
+      '4'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'numbers4',
+    title: 'Numbers 4',
+    question: "Please select a number:",
+    answers: [
+      '2',
+      '3',
+      '4',
+      '8'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'numbers5',
+    title: 'Numbers 5',
+    question: "Please select a number:",
+    answers: [
+      '9',
+      '16',
+      '40',
+      '2'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'numbers6',
+    title: 'Numbers 6',
+    question: "Please select a number:",
+    answers: [
+      '100',
+      '1000',
+      'a gazillion',
+      '12093847'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'numbers7',
+    title: 'Numbers 7',
+    question: "Please select a number:",
+    answers: [
+      'a smorgasbord',
+      'a cornucopia',
+      'a gazillion',
+      'i dont like the question'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
   }
 ];
