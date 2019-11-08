@@ -2,7 +2,7 @@
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
   p.small Room Section: {{ roomSection }}; Random Question: {{ randomQuestion }}
-  p.small(v-if="timeRemaining()") Time Remaining: {{ timeRemaining() }}
+  p.small(v-if="timeRemaining()") Quiz Time Remaining: {{ timeRemaining() }}
   b-alert(show) {{ socketMessage }}
   b-button.remove-module(variant="danger" @click="handleRemove") ➖
   #audience(v-if="!initialized")

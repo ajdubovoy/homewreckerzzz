@@ -101,6 +101,10 @@ export default {
       this.modules.push(Math.random().toString(36).substr(2, 9)) // Generate random key
     },
     removeModule(module) {
+      if (this.modules.length <= 1) {
+        this.addModule();
+      }
+      
       this.modules = this.modules.filter((m) => {
         return module !== m;
       });
