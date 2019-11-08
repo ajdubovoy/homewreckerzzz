@@ -37,7 +37,13 @@ export default (app, http) => {
     //res.contentType(path.join("public/uploads/", req.params.file));
     //console.log('we set the content type');
     console.log(path.join(__dirname, path.join("../public/uploads/", req.params.file)));
-    req.sendFile(path.join(__dirname, path.join("../public/uploads/", req.params.file)));
+    res.sendFile(path.join(__dirname, path.join("../public/uploads/", req.params.file)), {}, (err) => {
+      if(err) {
+        console.log(err.message)
+      } else {
+        console.log('Sent!')
+      }
+    });
   })
 
   // Routes
