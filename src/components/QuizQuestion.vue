@@ -2,8 +2,9 @@
 Cover.quiz-question(:class="text.class")
   h1 {{ text.question }}
   h2(v-if="quantityText") {{ quantityText }}
+  p {{ timeRemaining() }}
 
-  b-button(v-for="(answer, key, index) in text.answers" @click="submit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(key) }") {{ answer }}
+  b-button(v-for="(answer, key, index) in text.answers" @click="handleSubmit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(key, answers[key + 1]) }") {{ answer }}
 </template>
 
 <script>
@@ -20,29 +21,64 @@ export default {
     submit: Function
   },
   mounted() {
-    
+    this.interval = setInterval(() => {
+      this.now = new Date();
+      this.timeRemaining();
+    }, 500);
+  },
+  data() {
+    return {
+      answers: {},
+      interval: null,
+      now: new Date()
+    }
+  },
+  destroyed() {
+    clearInterval(this.interval);
   },
   methods: {
-    hexColor(key) {
+    hexColor(answer, count) {
       if (!this.text.colors) {
         return null;
       }
 
-      const hue = this.text.colors[key];
+      const hue = this.text.colors[answer];
 
       if (!hue) {
         return null;
       }
 
+      const totalAnswers = Object.values(this.answers).reduce((a, b) => a + b, 0);
+      let saturation = count ? (count / totalAnswers) : 0;
+      if (!totalAnswers) {
+        saturation = 1;
+      }
+
       // https://gka.github.io/chroma.js/
-      return chroma.hsl(hue, 1, 0.4);
+      return chroma.hsl(hue, saturation, 0.5);
     },
     timeRemaining() {
-      if (!this.text.duration) {
+      const duration = this.text.duration;
+      const time = new Date(this.text.time);
+
+      if (!duration || !time) {
         return 0;
       }
 
-      return Math.round(this.text.duration - new Date(this.text.time) - new Date());
+      const difference = duration - (this.now - time);
+      if (difference <= 0) {
+        return 0;
+      }
+      return Math.round(difference / 1000);
+    },
+    handleSubmit(answer) {
+      if (this.answers[answer]) {
+        this.answers[answer] += 1;
+      } else {
+        this.answers[answer] = 1;
+      }
+
+      this.submit(answer);
     }
   },
   computed: {

@@ -110,6 +110,7 @@ export default (app, http) => {
 
       if (socket.message === 'quizAsk') {
         console.log('Quiz started (quizAsk)');
+        console.log(`Time remaining: ${socket.request.duration}`);
         responses = []; // Clear any remnants
 
         // Listen for survey responses
