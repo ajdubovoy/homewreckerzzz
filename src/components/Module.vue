@@ -31,8 +31,6 @@
           label(for="frequency") ♪&nbsp;{{ pitchName }}
           b-form-input(id="frequency" v-model.number="frequency" type="range" :min="minFreq" :max="maxFreq")
       .row
-        b-form-group.col-4(v-if="instrument < 2")
-          b-form-checkbox(v-model="sustain") Sustain
         b-form-group.col-4(v-if="instrument === 3")
           label(for="density") Density:&nbsp;{{ density }}
           b-form-input(id="density" v-model="density" type="range" min="1" max="15")
@@ -45,6 +43,8 @@
         b-form-group.col-4(v-if="instrument === 2")
           label(for="file-name") File
           b-form-select(name="file-name" v-model="fileName" :options="files")
+        b-form-group.col-3(v-if="instrument < 2")
+          b-form-checkbox(v-model="sustain") Sustain
     b-tab(title="❓")
       b-form-group
         b-form-select(v-model="quiz" :options="quizOptions()")
