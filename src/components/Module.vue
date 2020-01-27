@@ -1,9 +1,6 @@
 <template lang="pug">
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
-  p.small Room Section: {{ roomSection }}; Random Question: {{ randomQuestion }}
-  p.small(v-if="timeRemaining()") Quiz Time Remaining: {{ timeRemaining() }}
-  b-alert(show) {{ socketMessage }}
   b-button.remove-module(variant="danger" @click="handleRemove") ➖
   #audience(v-if="!initialized")
     b-form-group
@@ -14,36 +11,40 @@
       b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
     b-button(@click="handleInitialize" variant="primary") Set Audience
   b-tabs(v-else)
+    p.small.text-center 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}&nbsp;
+      span.small(v-if="timeRemaining()") ❓⏰: {{ timeRemaining() }}
+      span.small 🚦: {{ socketMessage }}
     b-tab(title="🎹")
-      b-button(@click="handlePlay" variant="primary") Play
-      b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
       .row
-        .col-6 
-          b-form-group
-            b-form-group(label="Instrument")
-              b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
+        .col-12.text-center.play-buttons
+          b-button-group
+            b-button(@click="handlePlay" variant="primary") Play
+            b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
+      .row
         .col-6
-          b-form-group(v-if="instrument < 2")
-            b-form-checkbox(v-model="sustain") Sustain Mode
-      .row
-        b-form-group.col-6
-          label(for="amplitude") Amplitude: {{ amplitudePercentage }}%
+          b-form-group
+            b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
+        b-form-group.col-3.sliders
+          label(for="amplitude") 🔊&nbsp;{{ amplitudePercentage }}%
           b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
-        b-form-group.col-6(v-if="instrument < 2 || instrument === 3")
-          label(for="frequency") Frequency: {{ pitchName }}
-          b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
-        b-form-group.col-6(v-if="instrument === 3")
-          label(for="density") Density: {{ density }}
+        b-form-group.col-3(v-if="instrument < 2 || instrument === 3")
+          label(for="frequency") ♪&nbsp;{{ pitchName }}
+          b-form-input(id="frequency" v-model.number="frequency" type="range" :min="minFreq" :max="maxFreq")
+      .row
+        b-form-group.col-4(v-if="instrument === 3")
+          label(for="density") Density:&nbsp;{{ density }}
           b-form-input(id="density" v-model="density" type="range" min="1" max="15")
-        b-form-group.col-6(v-if="instrument === 1")
+        b-form-group.col-4(v-if="instrument === 1")
           label(for="cluster-type") Cluster Type
-          b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random']")
-        b-form-group.col-6(v-if="instrument < 2 || instrument === 3")
+          b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random', 'golden']")
+        b-form-group.col-4(v-if="instrument < 2 || instrument === 3")
           label(for="wave-type") Wave Type
           b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
-        b-form-group.col-6(v-if="instrument === 2")
+        b-form-group.col-4(v-if="instrument === 2")
           label(for="file-name") File
           b-form-select(name="file-name" v-model="fileName" :options="files")
+        b-form-group.col-3(v-if="instrument < 2")
+          b-form-checkbox(v-model="sustain") Sustain
     b-tab(title="❓")
       b-form-group
         b-form-select(v-model="quiz" :options="quizOptions()")
@@ -61,6 +62,8 @@ import throttle from 'lodash.throttle';
 import midiToName from '../helpers/midi_to_name';
 import quizzes from '../data/quizzes';
 import instruments from '../data/instruments';
+import midiToFreq from '../helpers/midi_to_freq';
+import freqToMidi from '../helpers/freq_to_midi';
 
 export default {
   name: 'Module',
@@ -69,7 +72,9 @@ export default {
       socketMessage: "Module added!",
       sustain: true,
       amplitude: 100,
-      frequency: 60,
+      frequency: midiToFreq(60),
+      minFreq: midiToFreq(40),
+      maxFreq: midiToFreq(91),
       quiz: 0,
       instrument: 0,
       roomSection: 0,
@@ -106,9 +111,9 @@ export default {
   computed: {
     instrumentOptions() {
       return [
-        ...instruments.map((instrument, index) => { 
-          return { 
-            value: index, 
+        ...instruments.map((instrument, index) => {
+          return {
+            value: index,
             text: instrument
           };
         })
@@ -136,7 +141,8 @@ export default {
       }
     },
     pitchName() {
-      return midiToName(this.frequency);
+      const midi = freqToMidi(this.frequency);
+      return midiToName(midi);
     },
     amplitudePercentage() {
       return Math.round(this.amplitude / 128 * 100);
@@ -203,10 +209,10 @@ export default {
     quizOptions() {
       return [
         { value: 0, text: 'Please select a quiz' },
-        ...quizzes.map((quiz, index) => { 
-          return { 
-            value: index + 1, 
-            text: quiz.title 
+        ...quizzes.map((quiz, index) => {
+          return {
+            value: index + 1,
+            text: quiz.title
           };
         })
       ];
@@ -236,7 +242,7 @@ export default {
   watch: {
     midi(newMIDI) {
       this.amplitude = newMIDI[this.instance];
-      this.frequency = newMIDI[this.instance + 8];
+      this.frequency = midiToFreq(newMIDI[this.instance + 8]);
     },
     amplitude() {
       this.handleUpdate();
@@ -259,14 +265,26 @@ export default {
 
 <style lang="scss">
 .module{
+  margin-bottom: 1rem;
   background-color: #212733;
   border-radius: 3px;
-  padding-top: 3rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
+  .nav-tabs {
+    margin-left: 3rem;
+  }
+  #audience {
+    padding-top: 2.5rem;
+  }
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
   transition: background-color 500ms ease, opacity 500ms ease;
   position: relative;
+  font-size: 0.8rem;
+  select {
+    font-size: 0.8rem;
+    height: calc(1.2em + 0.75rem + 2px);
+    padding-top: 0.25em;
+  }
   &.playing{
     background-color: #A3CF30;
   }
@@ -293,9 +311,18 @@ export default {
     margin-bottom: 0.5rem;
   }
   p.small{
-    font-size: 0.6em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+  }
+  input[type=range] {
+    transform: rotateZ(270deg);
+    margin-top: 30%;
+    margin-bottom: 30%;
+  }
+  .play-buttons {
+    margin-bottom: 0.5rem;
   }
 }
 </style>

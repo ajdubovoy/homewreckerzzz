@@ -1,5 +1,4 @@
 import ADSR from 'adsr';
-import midiToFreq from '../helpers/midi_to_freq';
 
 export default class {
   constructor(context) {
@@ -11,7 +10,7 @@ export default class {
 
   play = (options = {}) => {
     const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
-    const frequency = midiToFreq(options.frequency);
+    const frequency = options.frequency;
     const wave = options.waveType;
 
     const compressor = this.context.createDynamicsCompressor();

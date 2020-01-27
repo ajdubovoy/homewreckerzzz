@@ -27,6 +27,7 @@ import PlayFileInstrument from '../instruments/play_file_instrument';
 import Cover from '../components/Cover';
 import QuizQuestion from '../components/QuizQuestion';
 import instruments from '../data/instruments';
+import midiToFreq from '../helpers/midi_to_freq';
 
 export default {
   name: 'Play',
@@ -249,7 +250,7 @@ export default {
         this.waveInstrument.play({
           sustain: false,
           amplitude: 110,
-          frequency: frequency,
+          frequency: midiToFreq(frequency),
           waveType: 'sawtooth'
         });
       }

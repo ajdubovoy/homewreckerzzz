@@ -1,5 +1,6 @@
 import wave from '../helpers/wave.js';
 import midiToFreq from '../helpers/midi_to_freq';
+import freqToMidi from '../helpers/freq_to_midi';
 
 export default class {
   constructor(context) {
@@ -10,6 +11,8 @@ export default class {
   }
 
   play(options = {}) {
+    const frequency = parseInt(options.frequency, 10);
+    const root = freqToMidi(frequency);
     const compressor = this.context.createDynamicsCompressor();
     const gain = this.context.createGain();
     this.destination = gain;
@@ -17,14 +20,16 @@ export default class {
     gain.connect(this.context.destination);
     const desiredAmplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
     gain.gain.value = desiredAmplitude;
-    const chord = this[options.clusterType](parseInt(options.frequency, 10));
+    const chord = this[options.clusterType](root);
     this.playChord(chord, options);
     this.options = options;
     return this.active[0];
   }
 
   update = (options = {}) => {
-    const chord = this[options.clusterType](parseInt(options.frequency, 10));
+    const frequency = parseInt(options.frequency, 10);
+    const root = freqToMidi(frequency);
+    const chord = this[options.clusterType](root);
     const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
 
     chord.forEach((m, index) => {
@@ -56,6 +61,12 @@ export default class {
 
   chromatic = (root) => {
     return [root, root+1, root+2, root+3, root+4, root+5];
+  }
+
+  golden = (root) => {
+    const freq = freqToMidi(root);
+    const ratio = 1.61803;
+    return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
   }
 
   random = (root) => {
