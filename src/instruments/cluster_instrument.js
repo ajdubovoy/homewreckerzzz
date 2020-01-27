@@ -63,6 +63,12 @@ export default class {
     return [root, root+1, root+2, root+3, root+4, root+5];
   }
 
+  golden = (root) => {
+    const freq = freqToMidi(root);
+    const ratio = 1.61803;
+    return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
+  }
+
   random = (root) => {
     const randomScaleDegree = () => {
       return Math.round(Math.random() * 12) + root;

@@ -37,7 +37,7 @@
           b-form-input(id="density" v-model="density" type="range" min="1" max="15")
         b-form-group.col-6(v-if="instrument === 1")
           label(for="cluster-type") Cluster Type
-          b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random']")
+          b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random', 'golden']")
         b-form-group.col-6(v-if="instrument < 2 || instrument === 3")
           label(for="wave-type") Wave Type
           b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
