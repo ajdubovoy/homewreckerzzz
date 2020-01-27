@@ -1,9 +1,6 @@
 <template lang="pug">
 .module(:class="playing ? 'playing' : 'paused'")
   .deep-fried-module(v-if="deepFried")
-  p.small Room Section: {{ roomSection }}; Random Question: {{ randomQuestion }}
-  p.small(v-if="timeRemaining()") Quiz Time Remaining: {{ timeRemaining() }}
-  b-alert(show) {{ socketMessage }}
   b-button.remove-module(variant="danger" @click="handleRemove") ➖
   #audience(v-if="!initialized")
     b-form-group
@@ -14,14 +11,16 @@
       b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
     b-button(@click="handleInitialize" variant="primary") Set Audience
   b-tabs(v-else)
+    p.small 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}&nbsp;
+      span.small(v-if="timeRemaining()") ❓⏰: {{ timeRemaining() }}
+      span.small 🚦: {{ socketMessage }}
     b-tab(title="🎹")
       b-button(@click="handlePlay" variant="primary") Play
       b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
       .row
         .col-6
           b-form-group
-            b-form-group(label="Instrument")
-              b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
+            b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
         .col-6
           b-form-group(v-if="instrument < 2")
             b-form-checkbox(v-model="sustain") Sustain Mode
@@ -264,14 +263,21 @@ export default {
 
 <style lang="scss">
 .module{
+  margin-bottom: 1rem;
   background-color: #212733;
   border-radius: 3px;
-  padding-top: 3rem;
+  .nav-tabs {
+    margin-left: 2.5rem;
+  }
+  #audience {
+    padding-top: 2.5rem;
+  }
   padding-left: 1rem;
   padding-right: 1rem;
   padding-bottom: 1rem;
   transition: background-color 500ms ease, opacity 500ms ease;
   position: relative;
+  font-size: 0.8rem;
   &.playing{
     background-color: #A3CF30;
   }
@@ -298,7 +304,8 @@ export default {
     margin-bottom: 0.5rem;
   }
   p.small{
-    font-size: 0.6em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
