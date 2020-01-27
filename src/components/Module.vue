@@ -11,36 +11,38 @@
       b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
     b-button(@click="handleInitialize" variant="primary") Set Audience
   b-tabs(v-else)
-    p.small 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}&nbsp;
+    p.small.text-center 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}&nbsp;
       span.small(v-if="timeRemaining()") ❓⏰: {{ timeRemaining() }}
       span.small 🚦: {{ socketMessage }}
     b-tab(title="🎹")
-      b-button(@click="handlePlay" variant="primary") Play
-      b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
+      .row
+        .col-12.text-center.play-buttons
+          b-button-group
+            b-button(@click="handlePlay" variant="primary") Play
+            b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
       .row
         .col-6
           b-form-group
             b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
-        .col-6
-          b-form-group(v-if="instrument < 2")
-            b-form-checkbox(v-model="sustain") Sustain Mode
-      .row
-        b-form-group.col-6
-          label(for="amplitude") Amplitude: {{ amplitudePercentage }}%
+        b-form-group.col-3.sliders
+          label(for="amplitude") 🔊&nbsp;{{ amplitudePercentage }}%
           b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
-        b-form-group.col-6(v-if="instrument < 2 || instrument === 3")
-          label(for="frequency") Frequency: {{ pitchName }}
+        b-form-group.col-3(v-if="instrument < 2 || instrument === 3")
+          label(for="frequency") ♪&nbsp;{{ pitchName }}
           b-form-input(id="frequency" v-model.number="frequency" type="range" :min="minFreq" :max="maxFreq")
-        b-form-group.col-6(v-if="instrument === 3")
-          label(for="density") Density: {{ density }}
+      .row
+        b-form-group.col-4(v-if="instrument < 2")
+          b-form-checkbox(v-model="sustain") Sustain
+        b-form-group.col-4(v-if="instrument === 3")
+          label(for="density") Density:&nbsp;{{ density }}
           b-form-input(id="density" v-model="density" type="range" min="1" max="15")
-        b-form-group.col-6(v-if="instrument === 1")
+        b-form-group.col-4(v-if="instrument === 1")
           label(for="cluster-type") Cluster Type
           b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random', 'golden']")
-        b-form-group.col-6(v-if="instrument < 2 || instrument === 3")
+        b-form-group.col-4(v-if="instrument < 2 || instrument === 3")
           label(for="wave-type") Wave Type
           b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
-        b-form-group.col-6(v-if="instrument === 2")
+        b-form-group.col-4(v-if="instrument === 2")
           label(for="file-name") File
           b-form-select(name="file-name" v-model="fileName" :options="files")
     b-tab(title="❓")
@@ -240,7 +242,7 @@ export default {
   watch: {
     midi(newMIDI) {
       this.amplitude = newMIDI[this.instance];
-      this.frequency = newMIDI[this.instance + 8];
+      this.frequency = midiToFreq(newMIDI[this.instance + 8]);
     },
     amplitude() {
       this.handleUpdate();
@@ -308,6 +310,14 @@ export default {
     margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+  }
+  input[type=range] {
+    transform: rotateZ(270deg);
+    margin-top: 30%;
+    margin-bottom: 30%;
+  }
+  .play-buttons {
+    margin-bottom: 0.5rem;
   }
 }
 </style>
