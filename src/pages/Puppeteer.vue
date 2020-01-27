@@ -8,11 +8,6 @@
         b-form-input(v-model='password' type='password')
       b-button(type="submit" variant="primary") Unleash the Hounds
   b-container#puppeteer-dash(v-else :fluid="true")
-    b-row
-      b-col.text-center
-        h1
-          | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
-        b-alert(v-if="socketMessage" show) {{ socketMessage }}
     b-row.mb-5
       b-col(v-for="(module, i) in modules" lg=6 xl=3 :key="module")
         Module(:midi="midiInput" :instance="i" :files="files" :removeModule="() => removeModule(module)" :id="module")
@@ -182,5 +177,8 @@ export default {
 <style lang="scss">
 .add-module{
   min-height: 25rem;
+}
+.puppeteer {
+  margin-top: 0.5rem;
 }
 </style>

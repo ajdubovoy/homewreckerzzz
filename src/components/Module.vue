@@ -269,14 +269,14 @@ export default {
   background-color: #212733;
   border-radius: 3px;
   .nav-tabs {
-    margin-left: 2.5rem;
+    margin-left: 3rem;
   }
   #audience {
     padding-top: 2.5rem;
   }
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
   transition: background-color 500ms ease, opacity 500ms ease;
   position: relative;
   font-size: 0.8rem;
