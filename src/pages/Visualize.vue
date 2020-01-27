@@ -11,7 +11,7 @@ import MainSketch from "../processing/main.js";
 import axiosClient from '../helpers/axios_client';
 import remove from "lodash.remove";
 import quiz from "../data/quizzes.js";
-import { bar, line, pie } from "../processing/charts.js";
+import { bar, line, pie, bubble } from "../processing/charts.js";
 
 export default {
   data() {
@@ -31,10 +31,10 @@ export default {
       this.getClients();
       this.getQuiz();
     }, this.updateDuration);
-    /* sample usage of charts. animated charts pass interval functions as section arg of an arr so that they can be cleared
-    let simpleChart = pie(this.chart, [0.5,0.5]);
-    setTimeout(() => simpleChart[1].forEach((el) => clearInterval(el)), 10000);
-    */
+    clearInterval(this.timer);
+    //sample usage of charts. animated charts pass interval functions as section arg of an arr so that they can be cleared
+    let simpleChart = bar(this.chart, [0.8,0.2]);
+    
   },
   methods: {
     getClients() {
