@@ -280,6 +280,11 @@ export default {
   transition: background-color 500ms ease, opacity 500ms ease;
   position: relative;
   font-size: 0.8rem;
+  select {
+    font-size: 0.8rem;
+    height: calc(1.2em + 0.75rem + 2px);
+    padding-top: 0.25em;
+  }
   &.playing{
     background-color: #A3CF30;
   }
