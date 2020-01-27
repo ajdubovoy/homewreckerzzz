@@ -18,7 +18,7 @@
       b-button(@click="handlePlay" variant="primary") Play
       b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
       .row
-        .col-6 
+        .col-6
           b-form-group
             b-form-group(label="Instrument")
               b-form-radio(v-model="instrument" name="instrument" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
@@ -31,7 +31,7 @@
           b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
         b-form-group.col-6(v-if="instrument < 2 || instrument === 3")
           label(for="frequency") Frequency: {{ pitchName }}
-          b-form-input(id="frequency" v-model="frequency" type="range" min="0" max="128")
+          b-form-input(id="frequency" v-model.number="frequency" type="range" :min="minFreq" :max="maxFreq")
         b-form-group.col-6(v-if="instrument === 3")
           label(for="density") Density: {{ density }}
           b-form-input(id="density" v-model="density" type="range" min="1" max="15")
@@ -61,6 +61,8 @@ import throttle from 'lodash.throttle';
 import midiToName from '../helpers/midi_to_name';
 import quizzes from '../data/quizzes';
 import instruments from '../data/instruments';
+import midiToFreq from '../helpers/midi_to_freq';
+import freqToMidi from '../helpers/freq_to_midi';
 
 export default {
   name: 'Module',
@@ -69,7 +71,9 @@ export default {
       socketMessage: "Module added!",
       sustain: true,
       amplitude: 100,
-      frequency: 60,
+      frequency: midiToFreq(60),
+      minFreq: midiToFreq(40),
+      maxFreq: midiToFreq(91),
       quiz: 0,
       instrument: 0,
       roomSection: 0,
@@ -106,9 +110,9 @@ export default {
   computed: {
     instrumentOptions() {
       return [
-        ...instruments.map((instrument, index) => { 
-          return { 
-            value: index, 
+        ...instruments.map((instrument, index) => {
+          return {
+            value: index,
             text: instrument
           };
         })
@@ -136,7 +140,8 @@ export default {
       }
     },
     pitchName() {
-      return midiToName(this.frequency);
+      const midi = freqToMidi(this.frequency);
+      return midiToName(midi);
     },
     amplitudePercentage() {
       return Math.round(this.amplitude / 128 * 100);
@@ -203,10 +208,10 @@ export default {
     quizOptions() {
       return [
         { value: 0, text: 'Please select a quiz' },
-        ...quizzes.map((quiz, index) => { 
-          return { 
-            value: index + 1, 
-            text: quiz.title 
+        ...quizzes.map((quiz, index) => {
+          return {
+            value: index + 1,
+            text: quiz.title
           };
         })
       ];

@@ -1,5 +1,4 @@
 import wave from '../helpers/wave.js';
-import midiToFreq from '../helpers/midi_to_freq';
 
 export default class {
   constructor(context) {
@@ -15,13 +14,13 @@ export default class {
     gain.connect(this.context.destination);
     const desiredAmplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
     gain.gain.value = desiredAmplitude;
-    this.active.push(wave(midiToFreq(options.frequency), options.sustain ? 0 : 0.2, this.context, options.waveType, gain));
+    this.active.push(wave(options.frequency, options.sustain ? 0 : 0.2, this.context, options.waveType, gain));
     this.options = options;
     return this.active[0];
   }
 
   update = (options = {}) => {
-    const frequency = midiToFreq(options.frequency);
+    const { frequency } = options;
     const amplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
 
     this.active.forEach((wave) => {
