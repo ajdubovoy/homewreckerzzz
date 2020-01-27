@@ -8,19 +8,24 @@
         b-form-input(v-model='password' type='password')
       b-button(type="submit" variant="primary") Unleash the Hounds
   b-container#puppeteer-dash(v-else :fluid="true")
+    // b-row
+      // b-col.text-center
+        // h1
+          // | wilkOMmEn to ur excLUsivE dashBoARD, oh puppeTeeR GREG
+        // b-alert(v-if="socketMessage" show) {{ socketMessage }}
     b-row.mb-5
       b-col(v-for="(module, i) in modules" lg=6 xl=3 :key="module")
         Module(:midi="midiInput" :instance="i" :files="files" :removeModule="() => removeModule(module)" :id="module")
       b-col(lg=6 xl=3)
         b-button.w-100.h-100.add-module(variant="success" @click="addModule") ➕ Add Module
-    b-container#additional-options
-      h3 File Upload
-      b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data")
-        b-form-group
-          b-form-file(accept="audio/mp3" name="userFile" v-model="userFile" :state="Boolean(userFile)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here...")
-          b-button(type="submit" variant="primary") Send it to the alIEnS
-      h3 THE GRAND FERNALE
-        b-button(variant="danger" @click="handleFinale") End this obscene thing altogether
+  b-container#additional-options
+    h3 File Upload
+    b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data")
+      b-form-group
+        b-form-file(accept="audio/mp3" name="userFile" v-model="userFile" :state="Boolean(userFile)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here...")
+        b-button(type="submit" variant="primary") Send it to the alIEnS
+    h3 THE GRAND FERNALE
+      b-button(variant="danger" @click="handleFinale") End this obscene thing altogether
 </template>
 
 <script>
@@ -180,5 +185,6 @@ export default {
 }
 .puppeteer {
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 </style>
