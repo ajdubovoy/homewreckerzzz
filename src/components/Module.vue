@@ -8,10 +8,13 @@
       b-form-select(name="room-section" v-model="roomSection" :options="{0: 'All', 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4'}")
     b-form-group
       label(for="random-question") Random Question
-      b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
+      b-form-select(name="random-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
+    b-form-group
+      label(for="team") Team
+      b-form-select(name="team" v-model="team" :options="{0: 'All', 1: 'Piano', 2: 'Sax'}")
     b-button(@click="handleInitialize" variant="primary") Set Audience
   b-tabs(v-else)
-    p.small.text-center 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}&nbsp;
+    p.small.text-center 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}; {{ teamEmoji }}&nbsp;
       span.small(v-if="timeRemaining()") ❓⏰: {{ timeRemaining() }}
       span.small 🚦: {{ socketMessage }}
     b-tab(title="🎹")
@@ -80,6 +83,7 @@ export default {
       instrument: 0,
       roomSection: 0,
       randomQuestion: 0,
+      team: 0,
       waveType: 'sine',
       clusterType: 'major',
       playing: false,
@@ -123,7 +127,8 @@ export default {
     audience() {
       return {
         roomSection: parseInt(this.roomSection),
-        randomQuestion: parseInt(this.randomQuestion)
+        randomQuestion: parseInt(this.randomQuestion),
+        team: parseInt(this.team)
       };
     },
     instrumentRequest() {
@@ -150,6 +155,11 @@ export default {
     },
     instrumentName() {
       return instruments[this.instrument];
+    },
+    teamEmoji() {
+      if (this.team == 1) { return '🎹' }
+      if (this.team == 2) { return '🎷' }
+      return ''
     },
     ...mapState([
       'puppeteer'

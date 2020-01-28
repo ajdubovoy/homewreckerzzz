@@ -225,6 +225,10 @@ export default {
       }
     },
     handleQuizSubmit(response) {
+      if (this.quiz.superpower === 'team') {
+        this.setTeam(response);
+      }
+
       if (this.quiz.quantity === 'multiple') {
         this.throttledEmitQuizResponse(response);
       } else {
@@ -271,7 +275,8 @@ export default {
       }
     },
     ...mapActions([
-      'setPlayingInstrument'
+      'setPlayingInstrument',
+      'setTeam'
     ]),
   },
   components: {
