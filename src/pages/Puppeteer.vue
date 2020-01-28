@@ -181,7 +181,9 @@ export default {
 
 <style lang="scss">
 .add-module{
-  min-height: 25rem;
+  height: 100%;
+  min-height: 10rem;
+  max-height: 13.3rem;
 }
 .puppeteer {
   margin-top: 0.5rem;
