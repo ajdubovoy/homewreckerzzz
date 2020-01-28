@@ -16,14 +16,15 @@
       span.small 🚦: {{ socketMessage }}
     b-tab(title="🎹")
       .row
-        .col-12.text-center.play-buttons
-          b-button-group
-            b-button(@click="handlePlay" variant="primary") Play
-            b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
-      .row
         .col-6
-          b-form-group
-            b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
+          .row
+            .col-12.play-buttons
+              b-button-group
+                b-button(@click="handlePlay" variant="primary") ▶️
+                b-button(@click="handleKill" variant="danger") ⏹
+            .col-12
+              b-form-group
+                b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
         b-form-group.col-3.sliders
           label(for="amplitude") 🔊&nbsp;{{ amplitudePercentage }}%
           b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
@@ -318,11 +319,22 @@ export default {
   }
   input[type=range] {
     transform: rotateZ(270deg);
-    margin-top: 30%;
-    margin-bottom: 30%;
+    margin-top: 65%;
+    margin-bottom: 65%;
+    margin-left: -50%;
+    margin-right: -50%;
+  }
+  div[role=group] {
+    height: 100%;
+  }
+  .custom-range {
+    width: auto;
   }
   .play-buttons {
     margin-bottom: 0.5rem;
+    label {
+      display: block;
+    }
   }
 }
 </style>
