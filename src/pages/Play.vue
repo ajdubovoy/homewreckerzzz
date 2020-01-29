@@ -239,7 +239,8 @@ export default {
           message: 'quizResponse',
           clientID: this.$store.state.token,
           value: response,
-          quizID: this.quiz.id
+          quizID: this.quiz.id,
+          token: this.quiz.token
         });
 
         this.quizComplete(this.quiz);
@@ -251,7 +252,8 @@ export default {
         message: 'quizResponse',
         clientID: this.$store.state.token,
         value: response,
-        quizID: this.quiz.id
+        quizID: this.quiz.id,
+        token: this.quiz.token
       });
     }, 750),
     notificationPing() {
