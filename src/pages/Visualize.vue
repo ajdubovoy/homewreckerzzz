@@ -31,9 +31,6 @@ export default {
       this.getClients();
       this.getQuiz();
     }, this.updateDuration);
-    clearInterval(this.timer); // TODO: this is just for troubleshooting!!! Needs to be active in live version
-    //sample usage of charts. animated charts pass interval functions as section arg of an arr so that they can be cleared
-    //let simpleChart = bar(this.chart, [0.8,0.2]);
   },
   methods: {
     getClients() {
@@ -65,6 +62,9 @@ export default {
     getQuiz() {
       axiosClient.get('quiz-responses')
         .then((r) => {
+          if(!r.data.quiz) {
+            return;
+          }
           let quiz = r.data.quiz;
           let filtered = r.data.responses.filter((res) => !this.played.includes(res.token));
           if(quiz.visualization != "numbers") {

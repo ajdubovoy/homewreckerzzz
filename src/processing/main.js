@@ -20,26 +20,22 @@ export default function main(ctx) {
     };
     p5.draw = function() {
       p5.background(0);
-      if(Math.random() > 0.95) {
-        particles.push(new Curve(Math.random()*1000+200,Math.random()*500+200,Math.floor(Math.random()*10+100),p5));
-      }
       particles.forEach((p, index, arr) => {
         p.display();
         p.update();
         if(p.isDead()) {
-          console.log(index);
-          arr.splice(index, 1);
-          console.log(arr);
+          arr[index] = null;
         }
       });
+      particles = particles.filter((el) => el != null);
       sustain.forEach((p, index, arr) => {
         p.p.display();
         p.p.update();
         if(!self.users.includes(p.user)) {
-          arr.splice(index, 1);
+          arr[index] = null;
         }
       });
-
+      sustain = sustain.filter((el) => el != null);
       if(self.queue.length != 0) {
         self.queue.forEach((el) => {
           if(self.users.includes(el.user) && el.sustain) {
@@ -55,6 +51,9 @@ export default function main(ctx) {
               case "emoji":
                 emojiCloud(el.color);
                 break;
+              case "curve":
+                particles.push(new Curve(Math.random()*1000+200,Math.random()*500+200,c,Math.floor(Math.random()*5)*30+30,p5));
+                break;
               default:
                 cloud(el.color);
                 break;
@@ -62,6 +61,8 @@ export default function main(ctx) {
             self.killClient(el.user);
           }
           self.played.push(el.token);
+          let len = self.played.length;
+          self.played = len > 500 ? self.played.slice(len-500,len-1) : self.played;
         })
         self.queue = [];
       }
