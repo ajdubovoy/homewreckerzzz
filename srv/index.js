@@ -142,15 +142,15 @@ export default (app, http) => {
             console.log(err);
           }
 
-          const relevantResponses = responses.filter(response => response.quiz.token === socket.token)
+          const relevantResponses = responses.filter(response => response.quiz.token === socket.request.token)
           const responseValues = relevantResponses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
           const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete", responses: relevantResponses, responseValues };
           sockets.push(completionSocket);
           console.log('Quiz ended and results sent (QuizComplete): ' + JSON.stringify(responseValues));
           console.log(completionSocket);
-          responses = responses.filter(response => response.quiz.token !== socket.token) // Get out of quiz mode
-          currentQuizzes = currentQuizzes.filter(q => q.token !== socket.token);
+          responses = responses.filter(response => response.quiz.token !== socket.request.token) // Get out of quiz mode
+          currentQuizzes = currentQuizzes.filter(q => q.token !== socket.request.token);
         }, socket.request.duration);
       }
     });
@@ -177,9 +177,8 @@ export default (app, http) => {
           time,
           responses
         }
-        responses = [...responses, socket]
+        responses = [...responses, req.body]
         res.json({ socket });
-        // console.log(socket);
       } else {
         console.log('Unauthorized quiz response urgh');
         res.status(401);
