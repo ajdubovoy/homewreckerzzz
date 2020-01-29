@@ -34,7 +34,6 @@ export default {
     clearInterval(this.timer); // TODO: this is just for troubleshooting!!! Needs to be active in live version
     //sample usage of charts. animated charts pass interval functions as section arg of an arr so that they can be cleared
     //let simpleChart = bar(this.chart, [0.8,0.2]);
-    
   },
   methods: {
     getClients() {
@@ -51,7 +50,7 @@ export default {
                   token: el.task.token,
                   type: "colors"
                 }
-                this.users.push(el.user);                
+                this.users.push(el.user);
                 this.queue.push(obj);
               } else if(el.task.message === "kill" && this.users.includes(el.user)) {
                 this.killClient(el.user);
@@ -76,7 +75,7 @@ export default {
                 sustain: false,
                 token: res.token,
                 type: quiz.visualization
-              }              
+              }
               this.queue.push(obj);
             })
           } else {
@@ -90,7 +89,7 @@ export default {
                 sustain: false,
                 token: filtered[0].token,
                 type: quiz.visualization
-              }              
+              }
               this.queue.push(obj);
             }
           }
@@ -98,7 +97,7 @@ export default {
     }
   }
 }
-</script> 
+</script>
 
 <style lang="scss">
 #canvas-container {

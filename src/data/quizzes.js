@@ -161,5 +161,20 @@ export default [
     visualization: 'numbers',
     quantity: 'single',
     duration: 5000
+  },
+  {
+    id: 'pickTeam',
+    title: 'Pick a Team',
+    question: "Which team are you on?",
+    answers: [
+      'Team Piano 🎹',
+      'Team Sax 🎷'
+    ],
+    colors: [],
+    class: 'team',
+    visualization: 'emoji',
+    quantity: 'single',
+    duration: 20000,
+    superpower: 'team'
   }
 ];
