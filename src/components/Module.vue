@@ -262,8 +262,8 @@ export default {
 
       // Calculate frequency on exponential scale based on max and min
       const frequencyInput = newMIDI[this.instance + 8];
-      const ratio = (Math.log2(this.maxFreq / this.minFreq)) / 128;
-      var exp = frequencyInput * ratio;
+      const ratio = Math.log2(this.maxFreq / this.minFreq) / 128;
+      const exp = frequencyInput * ratio;
       this.frequency = Math.pow(2, exp) * this.minFreq;
     },
     amplitude() {
