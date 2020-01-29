@@ -93,6 +93,7 @@ export default {
       'confirmedConsent',
       'roomSection',
       'randomQuestion',
+      'team',
       'token'
     ]),
     ...mapGetters([
@@ -104,7 +105,8 @@ export default {
       axiosClient.post('clients', {
         token: this.$store.state.token,
         roomSection: this.roomSection,
-        randomQuestion: this.randomQuestion
+        randomQuestion: this.randomQuestion,
+        team: this.team
       })
         .then(() => { this.connected = true })
         .catch(() => { this.connected = false })
@@ -213,11 +215,12 @@ export default {
       const instrumentInstance = this[instrumentName];
       this.setPlayingInstrument(instrumentInstance);
     },
-    isAudience({ roomSection, randomQuestion }) {
+    isAudience({ roomSection, randomQuestion, team }) {
       // Makes sure current client satisfies 'audience' conditions
       const isRoomSection = roomSection ? roomSection == this.roomSection : true;
       const isRandomQuestion = randomQuestion ? randomQuestion == this.randomQuestion : true;
-      return isRoomSection && isRandomQuestion;
+      const isTeam = team ? team == this.team : true;
+      return isRoomSection && isRandomQuestion && isTeam;
     },
     killInstrument(options = {}) {
       if (this.playingInstrument) {
@@ -235,7 +238,8 @@ export default {
         axiosClient.post('quiz-responses', {
           message: 'quizResponse',
           clientID: this.$store.state.token,
-          value: response
+          value: response,
+          quiz: this.quiz
         });
 
         this.quizComplete(this.quiz);
@@ -246,7 +250,8 @@ export default {
       axiosClient.post('quiz-responses', {
         message: 'quizResponse',
         clientID: this.$store.state.token,
-        value: response
+        value: response,
+        quiz: this.quiz
       });
     }, 750),
     notificationPing() {
