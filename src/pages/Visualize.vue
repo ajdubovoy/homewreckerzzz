@@ -10,7 +10,7 @@ import {colors} from '../data/instruments.js';
 import MainSketch from "../processing/main.js";
 import axiosClient from '../helpers/axios_client';
 import remove from "lodash.remove";
-import quiz from "../data/quizzes.js";
+import Quiz from "../data/quizzes.js";
 import { bar, line, pie, bubble } from "../processing/charts.js";
 
 export default {
@@ -21,6 +21,7 @@ export default {
       queue: [],
       users: [],
       played: [],
+      playing: {},
       updateDuration: 100
     }
   },
@@ -62,38 +63,47 @@ export default {
     getQuiz() {
       axiosClient.get('quiz-responses')
         .then((r) => {
-          if(!r.data.quiz) {
+          if(!r.data.quizResponses) {
             return;
           }
-          let quiz = r.data.quiz;
-          let filtered = r.data.responses.filter((res) => !this.played.includes(res.token));
-          if(quiz.visualization != "numbers") {
-            filtered.forEach((res) => {
-              let key = quiz.visualization == "emoji" ? "answers" : "colors";
-              let obj = {
-                color: quiz[key][res.value-1],
-                sustain: false,
-                token: res.token,
-                type: quiz.visualization
+          r.data.quizResponses.forEach((quiz) => {
+            let q = Quiz.find(el => el.id == quiz.quizID);
+            let continuous = q.quantity == "multiple";
+            let count = this.playing[quiz.token] ? this.playing[quiz.token] : 0;
+            if(continuous && quiz.running) {
+              for(let i = count; i < quiz.responses.length; i++) {
+                this.addToQueue(quiz.responses[i], q);
               }
-              this.queue.push(obj);
-            })
-          } else {
-            let sum = 0;
-            filtered.forEach((res) => {
-              sum += parseInt(quiz.answers[res.value-1]);
-            })
-            if(filtered.length) {
-              let obj = {
-                color: Math.ceil(sum/filtered.length+2),
-                sustain: false,
-                token: filtered[0].token,
-                type: quiz.visualization
-              }
-              this.queue.push(obj);
+              this.playing[quiz.token] = quiz.responses.length;
+            } else if(!quiz.running && !this.playing[quiz.token]){
+              this.addSingleToQueue(quiz.responses, q);
+              this.playing[quiz.token] = true;
             }
-          }
+          })
         })
+    },
+    addToQueue(r, q) {
+      let key = q.visualization == "emoji" ? "answers" : "colors";
+      let obj = {
+        color: q[key][r-1],
+        sustain: false,
+        type: q.visualization
+      }
+      this.queue.push(obj);
+    },
+    addSingleToQueue(list, quiz) {
+      let sum = 0;
+      list.forEach((res) => {
+        sum += parseInt(quiz.answers[res-1]);
+      })
+      if(list.length) {
+        let obj = {
+          color: Math.ceil(sum/list.length+2),
+          sustain: false,
+          type: quiz.visualization
+        }
+        this.queue.push(obj);
+      }
     }
   }
 }

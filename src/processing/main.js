@@ -60,9 +60,11 @@ export default function main(ctx) {
             }
             self.killClient(el.user);
           }
-          self.played.push(el.token);
-          let len = self.played.length;
-          self.played = len > 500 ? self.played.slice(len-500,len-1) : self.played;
+          if(el.token) {
+            self.played.push(el.token);
+            let len = self.played.length;
+            self.played = len > 500 ? self.played.slice(len-500,len-1) : self.played;
+          }
         })
         self.queue = [];
       }
