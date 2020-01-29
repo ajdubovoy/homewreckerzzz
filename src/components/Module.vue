@@ -34,6 +34,7 @@
         b-form-group.col-3(v-if="instrument < 2 || instrument === 3")
           label(for="frequency") ♪&nbsp;{{ pitchName }}
           b-form-input(id="frequency" v-model.number="frequency" type="range" :min="minFreq" :max="maxFreq")
+          p(:style="{ transform: 'translateY(50%)' }") {{ Math.floor(frequency) }}
       .row
         b-form-group.col-4(v-if="instrument === 3")
           label(for="density") Density:&nbsp;{{ density }}
@@ -78,9 +79,9 @@ export default {
       socketMessage: "Module added!",
       sustain: true,
       amplitude: 100,
-      frequency: midiToFreq(60),
+      frequency: midiToFreq(72),
       minFreq: midiToFreq(40),
-      maxFreq: midiToFreq(91),
+      maxFreq: midiToFreq(100),
       quiz: 0,
       instrument: 0,
       roomSection: 0,
@@ -258,7 +259,12 @@ export default {
   watch: {
     midi(newMIDI) {
       this.amplitude = newMIDI[this.instance];
-      this.frequency = midiToFreq(newMIDI[this.instance + 8]);
+
+      // Calculate frequency on exponential scale based on max and min
+      const frequencyInput = newMIDI[this.instance + 8];
+      const ratio = (Math.log2(this.maxFreq / this.minFreq)) / 128;
+      var exp = frequencyInput * ratio;
+      this.frequency = Math.pow(2, exp) * this.minFreq;
     },
     amplitude() {
       this.handleUpdate();
