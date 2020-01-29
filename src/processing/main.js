@@ -1,6 +1,7 @@
 import {colors} from '../data/instruments.js';
 import {ShimmerSquare, PulseSquare} from '../processing/Particle.js';
 import {Digit, Emoji} from '../processing/Text.js';
+import {Curve} from "../processing/Curve.js";
 
 export default function main(ctx) {
   let self = ctx;
@@ -19,11 +20,16 @@ export default function main(ctx) {
     };
     p5.draw = function() {
       p5.background(0);
+      if(Math.random() > 0.95) {
+        particles.push(new Curve(Math.random()*1000+200,Math.random()*500+200,Math.floor(Math.random()*10+100),p5));
+      }
       particles.forEach((p, index, arr) => {
         p.display();
         p.update();
         if(p.isDead()) {
+          console.log(index);
           arr.splice(index, 1);
+          console.log(arr);
         }
       });
       sustain.forEach((p, index, arr) => {
