@@ -158,11 +158,11 @@ export default (app, http) => {
     api.get('/quiz-responses', (req, res) => {
       const currentResponses = currentQuizzes.map(currentQuiz => {
         const relatedResponses = responses.filter(response => response.token === currentQuiz.token);
-        const { quizID, audience, token } = currentQuiz;
+        const { id, audience, token } = currentQuiz;
         return {
           running: true,
           responses: relatedResponses.map(response => response.value),
-          quizID,
+          quizID: id,
           audience,
           token
         };
@@ -170,11 +170,11 @@ export default (app, http) => {
 
       const quizCompleteSockets = sockets.filter(socket => socket.message === "quizComplete");
       const pastResponses = quizCompleteSockets.map(socket => {
-        const { quizID, token, audience } = socket.request;
+        const { id, token, audience } = socket.request;
         return {
           running: false,
           responses: socket.responses.map(response => response.value),
-          quizID,
+          quizID: id,
           token,
           audience
         }
