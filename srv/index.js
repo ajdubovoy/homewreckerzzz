@@ -4,6 +4,7 @@ import path from 'path';
 import routes from 'express-namespace-routes';
 import multer from 'multer';
 import cors from 'cors';
+import { isEmpty, get } from 'lodash';
 const fs = require('fs');
 
 export default (app, http) => {
@@ -29,7 +30,7 @@ export default (app, http) => {
   let sockets = [];
   const clients = [];
   let responses = []; // Initial empty quiz responses array to local state
-  let currentQuiz = null;
+  let currentQuizzes = [];
 
   //explicitly serve file using endpoint
   app.get('/uploads/:file', (req,res) => {
@@ -64,7 +65,8 @@ export default (app, http) => {
             const audience = socket.request.audience;
             const isRoomSection = audience.roomSection ? audience.roomSection == client.roomSection : true;
             const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == client.randomQuestion : true;
-            return isRoomSection && isRandomQuestion;
+            const isTeam = audience.team ? audience.team == client.team : true;
+            return isRoomSection && isRandomQuestion && isTeam;
           });
         }
       } catch(err) {
@@ -80,6 +82,7 @@ export default (app, http) => {
       const requestSocket = { ...socket, token, time };
       if (socket.message === 'quizAsk') {
         requestSocket.request.time = time;
+        requestSocket.request.token = token;
       }
       sockets.push({ ...socket, token, time });
       res.json(requestSocket);
@@ -90,7 +93,8 @@ export default (app, http) => {
         const audience = s.request.audience;
         const isRoomSection = audience.roomSection ? audience.roomSection == socket.request.audience.roomSection : true;
         const isRandomQuestion = audience.randomQuestion ? audience.randomQuestion == socket.request.audience.randomQuestion : true;
-        return isRoomSection && isRandomQuestion;
+        const isTeam = audience.team ? audience.team == socket.request.audience.team : true;
+        return isRoomSection && isRandomQuestion && isTeam;
       }
 
       // Handle specific cases
@@ -100,7 +104,7 @@ export default (app, http) => {
           console.log("Clearing old play, update, and kill sockets...");
           sockets = sockets.filter((s) => {
             const isTypeToRemove = s.message === 'play' || s.message === 'update' || s.message === 'kill';
-            return (isAudience(s, socket) && !isTypeToRemove) || s.token === token;
+            return !isAudience(s, socket) || !isTypeToRemove || s.token === token;
           });
         }
       } catch(err) {
@@ -112,7 +116,7 @@ export default (app, http) => {
           console.log("Clearing old deepFry and unDeepFry sockets");
           sockets = sockets.filter((s) => {
             const isTypeToRemove = s.message === 'deepFry' || s.message === 'unDeepFry';
-            return (isAudience(s, socket) && !isTypeToRemove) || s.token === token;
+            return isAudience(s, socket) || !isTypeToRemove || s.token === token;
           });
         }
       } catch(err) {
@@ -122,10 +126,9 @@ export default (app, http) => {
       if (socket.message === 'quizAsk') {
         console.log('Quiz started (quizAsk)');
         console.log(`Time remaining: ${socket.request.duration}`);
-        responses = []; // Clear any remnants
 
         // Listen for survey responses
-        currentQuiz = socket.request;
+        currentQuizzes = [...currentQuizzes, socket.request]
 
         setTimeout(() => {
           // Once quiz finished, notify clients of results
@@ -133,27 +136,28 @@ export default (app, http) => {
           try {
             sockets = sockets.filter((s) => {
               const isTypeToRemove = s.message === 'quizAsk' || s.message === 'quizComplete';
-              return isAudience(s, socket) && !isTypeToRemove;
+              return !isAudience(s, socket) || !isTypeToRemove;
             });
           } catch(err) {
             console.log(err);
           }
 
-          const responseValues = responses.map(response => response.value);
+          const relevantResponses = responses.filter(response => response.quiz.token === socket.request.token)
+          const responseValues = relevantResponses.map(response => response.value);
           const completionToken = Math.random().toString(36).substr(2, 9); // Generate random key
-          const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete", responses, responseValues };
+          const completionSocket = { ...socket, token: completionToken, time: new Date(), message: "quizComplete", responses: relevantResponses, responseValues };
           sockets.push(completionSocket);
           console.log('Quiz ended and results sent (QuizComplete): ' + JSON.stringify(responseValues));
           console.log(completionSocket);
-          responses = []; // Get out of quiz mode
-          currentQuiz = null;
+          responses = responses.filter(response => response.quiz.token !== socket.request.token) // Get out of quiz mode
+          currentQuizzes = currentQuizzes.filter(q => q.token !== socket.request.token);
         }, socket.request.duration);
       }
     });
 
     api.get('/quiz-responses', (req, res) => {
-      if (currentQuiz) {
-        res.json({ id: currentQuiz.id, responses, quiz: currentQuiz });
+      if (!isEmpty(currentQuizzes)) {
+        res.json({  responses, quizzes: currentQuizzes  });
       } else {
         res.json({ responses: [] });
       }
@@ -161,22 +165,20 @@ export default (app, http) => {
 
     api.post('/quiz-responses', (req, res) => {
       // Collect all responses
-      if (currentQuiz) {
+      if (!isEmpty(currentQuizzes)) {
         console.log('Quiz response received: ' + JSON.stringify(req.body));
         const token = Math.random().toString(36).substr(2, 9); // Generate random key
-        responses.push({ ...req.body, token });
         const time = new Date();
         const socket = {
-          message: 'quizTally',
-          quiz: currentQuiz,
+          message: 'quizResponse',
+          quiz: req.body.quiz,
           response: req.body,
           token,
           time,
           responses
         }
-        // sockets.push(socket);
+        responses = [...responses, req.body]
         res.json({ socket });
-        // console.log(socket);
       } else {
         console.log('Unauthorized quiz response urgh');
         res.status(401);

@@ -13,9 +13,7 @@ export default class {
     gain.connect(this.context.destination);
     const desiredAmplitude = options.amplitude / 128 || 0.000001; // Convert from MIDI standard and prevent 0 value error
     gain.gain.value = desiredAmplitude;
-    console.log(options);
     const buffer = await this.load(options);
-    console.log(buffer);
     this.active.push(playClip(buffer, desiredAmplitude, this.context, gain));
   }
 

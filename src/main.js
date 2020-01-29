@@ -42,6 +42,7 @@ const store = new Vuex.Store({
     token: Math.random().toString(36).substr(2, 9), // Generate random key
     roomSection: 0,
     randomQuestion: 0,
+    team: 0, // Team piano or team sax :)
     audioContext: new AudioContext(),
     playingInstrument: null,
     puppeteer: false,
@@ -54,6 +55,9 @@ const store = new Vuex.Store({
     },
     SET_RANDOM_QUESTION(state, answer) {
       state.randomQuestion = answer;
+    },
+    SET_TEAM(state, answer) {
+      state.team = answer;
     },
     MAKE_PUPPETEER(state) {
       state.puppeteer = true
@@ -71,6 +75,9 @@ const store = new Vuex.Store({
     },
     setRandomQuestion({ commit }, answer) {
       commit('SET_RANDOM_QUESTION', answer);
+    },
+    setTeam({ commit }, answer) {
+      commit('SET_TEAM', answer);
     },
     makePuppeteer({ commit }, password) {
       if (password === 'iamgkap720') {
@@ -97,6 +104,10 @@ const store = new Vuex.Store({
       // Enum
       return ['uninitialized', 'chuckNorris', 'llama', 'pineapple'][state.randomQuestion];
     },
+    teamString(state) {
+      // Enum
+      return ['uninitialized', 'piano', 'sax'][state.team];
+    },
     currentQuizSection({ roomSection, randomQuestion }) {
       // Returns an integer from 0-3 depending on how many of the quiz questions the person has answered. Useful for Quiz component.
       if (!roomSection) {
@@ -109,7 +120,7 @@ const store = new Vuex.Store({
     }
   },
   plugins: [createPersistedState({
-    paths: ['token', 'roomSection', 'randomQuestion', 'puppeteer']
+    paths: ['token', 'roomSection', 'randomQuestion', 'puppeteer', 'team']
   })]
 });
 

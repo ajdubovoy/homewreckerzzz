@@ -120,7 +120,7 @@ export default {
   }
 }
 .living-room{
-  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/living_room.jpg');
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/silent_green.jpg');
   background-position: center;
   background-size: cover;
 }
@@ -142,6 +142,10 @@ export default {
 }
 .numbers{
   background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/numbers.gif');
+  background-size: contain;
+}
+.team{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/football_team.gif');
   background-size: contain;
 }
 .btn-quiz{

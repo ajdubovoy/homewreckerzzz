@@ -8,22 +8,26 @@
       b-form-select(name="room-section" v-model="roomSection" :options="{0: 'All', 1: 'Part 1', 2: 'Part 2', 3: 'Part 3', 4: 'Part 4'}")
     b-form-group
       label(for="random-question") Random Question
-      b-form-select(name="randon-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
+      b-form-select(name="random-question" v-model="randomQuestion" :options="{0: 'All', 1: 'Chuck Norris', 2: 'Llama', 3: 'Pineapple'}")
+    b-form-group
+      label(for="team") Team
+      b-form-select(name="team" v-model="team" :options="{0: 'All', 1: 'Piano', 2: 'Sax'}")
     b-button(@click="handleInitialize" variant="primary") Set Audience
   b-tabs(v-else)
-    p.small.text-center 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}&nbsp;
+    p.small.text-center 🏠: {{ roomSection }}; 🦙: {{ randomQuestion }}; {{ teamEmoji }}&nbsp;
       span.small(v-if="timeRemaining()") ❓⏰: {{ timeRemaining() }}
       span.small 🚦: {{ socketMessage }}
     b-tab(title="🎹")
       .row
-        .col-12.text-center.play-buttons
-          b-button-group
-            b-button(@click="handlePlay" variant="primary") Play
-            b-button(@click="handleKill" variant="danger") THE massive KILL SWITCH
-      .row
         .col-6
-          b-form-group
-            b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
+          .row
+            .col-12.play-buttons
+              b-button-group
+                b-button(@click="handlePlay" variant="primary") ▶️
+                b-button(@click="handleKill" variant="danger") ⏹
+            .col-12
+              b-form-group
+                b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
         b-form-group.col-3.sliders
           label(for="amplitude") 🔊&nbsp;{{ amplitudePercentage }}%
           b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
@@ -79,6 +83,7 @@ export default {
       instrument: 0,
       roomSection: 0,
       randomQuestion: 0,
+      team: 0,
       waveType: 'sine',
       clusterType: 'major',
       playing: false,
@@ -122,7 +127,8 @@ export default {
     audience() {
       return {
         roomSection: parseInt(this.roomSection),
-        randomQuestion: parseInt(this.randomQuestion)
+        randomQuestion: parseInt(this.randomQuestion),
+        team: parseInt(this.team)
       };
     },
     instrumentRequest() {
@@ -149,6 +155,11 @@ export default {
     },
     instrumentName() {
       return instruments[this.instrument];
+    },
+    teamEmoji() {
+      if (this.team == 1) { return '🎹' }
+      if (this.team == 2) { return '🎷' }
+      return ''
     },
     ...mapState([
       'puppeteer'
@@ -318,11 +329,22 @@ export default {
   }
   input[type=range] {
     transform: rotateZ(270deg);
-    margin-top: 30%;
-    margin-bottom: 30%;
+    margin-top: 65%;
+    margin-bottom: 65%;
+    margin-left: -50%;
+    margin-right: -50%;
+  }
+  div[role=group] {
+    height: 100%;
+  }
+  .custom-range {
+    width: auto;
   }
   .play-buttons {
     margin-bottom: 0.5rem;
+    label {
+      display: block;
+    }
   }
 }
 </style>
