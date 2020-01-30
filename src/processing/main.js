@@ -52,7 +52,7 @@ export default function main(ctx) {
                 emojiCloud(el.color);
                 break;
               case "curve":
-                particles.push(new Curve(Math.random()*1000+200,Math.random()*500+200,c,Math.floor(Math.random()*5)*30+30,p5));
+                particles.push(new Curve(Math.random()*1000+200,Math.random()*500+200,el.color,Math.floor(Math.random()*5)*30+30,p5));
                 break;
               default:
                 cloud(el.color);

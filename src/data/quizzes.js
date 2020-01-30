@@ -176,5 +176,47 @@ export default [
     quantity: 'single',
     duration: 20000,
     superpower: 'team'
+  },
+  {
+    id: 'curveTest',
+    title: 'curve TESTING',
+    question: "Do you want ittt?",
+    answers: [
+      'yas',
+      'nerp'
+    ],
+    colors: [],
+    class: 'test',
+    visualization: 'curve',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'barTest',
+    title: 'bar TESTING',
+    question: "Do you want ittt?",
+    answers: [
+      'yas',
+      'nerp'
+    ],
+    colors: [],
+    class: 'chart',
+    visualization: 'bar',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'pieTest',
+    title: 'pie TESTING',
+    question: "Do you want ittt?",
+    answers: [
+      'yas',
+      'nerp'
+    ],
+    colors: [],
+    class: 'chart',
+    visualization: 'pie',
+    quantity: 'single',
+    duration: 5000
   }
 ];

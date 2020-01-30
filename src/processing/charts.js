@@ -1,7 +1,7 @@
 import Chart from 'chart.js';
 
 export function bar(el, data) {
-	let wordList = ["yes", "no", "maybe", "why?", "how?", "NEVER"];
+	let wordList = ["no","yes", "maybe", "why?", "how?", "NEVER"];
 	function genColors(i) {
 		return new Array(i).fill(null).map(() => {
 			let r = Math.floor(Math.random()*255);
@@ -122,7 +122,7 @@ export function line(el, data) {
 			chart.data.labels = new Array(50).fill(label);
 			chart.update();
 		}, 50)}, 1000);
-	return [chart, interval];
+	return [chart, [interval]];
 }
 
 export function pie(el, inputData) {

@@ -22,7 +22,10 @@ export default {
       users: [],
       played: [],
       playing: {},
-      updateDuration: 100
+      updateDuration: 100,
+      charts: {
+        bar,line,pie,bubble
+      }
     }
   },
   mounted() {
@@ -92,7 +95,7 @@ export default {
       this.queue.push(obj);
     },
     addSingleToQueue(list, quiz) {
-      let sum = 0;
+      /*let sum = 0;
       list.forEach((res) => {
         sum += parseInt(quiz.answers[res-1]);
       })
@@ -103,6 +106,25 @@ export default {
           type: quiz.visualization
         }
         this.queue.push(obj);
+      }*/
+      let yes = list.filter((i) => i == 1).length;
+      let no = list.filter((i) => i == 2).length;
+      if(quiz.visualization == "curve" && list.length) {
+        let obj = {
+          color: Math.floor(yes/list.length*20),
+          sustain: false,
+          type: quiz.visualization
+        }
+        this.queue.push(obj);
+        console.log(obj);
+      } else if(quiz.class == "chart") {
+        let data = [no/list.length, yes/list.length];
+        let chart = this.charts[quiz.visualization](this.chart, data);
+        setTimeout(() => {
+          chart[1].length ? chart[1].forEach((el) => clearInterval(el)) : clearInterval(chart[1]); 
+          let el = document.getElementById('chart-container');
+          this.chart.clearRect(0, 0, this.chart.width, this.chart.height);
+        }, 10000);
       }
     }
   }
