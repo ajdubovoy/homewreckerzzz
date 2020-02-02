@@ -17,7 +17,10 @@ export default {
   data() {
     return {
       sketch: null,
-      chart: null,
+      chart: {
+        context: null,
+        current: null
+      },
       queue: [],
       users: [],
       played: [],
@@ -30,7 +33,7 @@ export default {
   },
   mounted() {
     this.sketch = new p5(MainSketch(this));
-    this.chart = document.getElementById('chart-container').getContext('2d');
+    this.chart.context = document.getElementById('chart-container').getContext('2d');
     this.timer = setInterval(() => {
       this.getClients();
       this.getQuiz();
@@ -116,14 +119,13 @@ export default {
           type: quiz.visualization
         }
         this.queue.push(obj);
-        console.log(obj);
       } else if(quiz.class == "chart") {
         let data = [no/list.length, yes/list.length];
-        let chart = this.charts[quiz.visualization](this.chart, data);
+        this.chart.current = this.charts[quiz.visualization](this.chart.context, data);
         setTimeout(() => {
+          let chart = this.chart.current;
           chart[1].length ? chart[1].forEach((el) => clearInterval(el)) : clearInterval(chart[1]); 
-          let el = document.getElementById('chart-container');
-          this.chart.clearRect(0, 0, this.chart.width, this.chart.height);
+          chart[0].destroy();
         }, 10000);
       }
     }
