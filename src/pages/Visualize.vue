@@ -127,6 +127,19 @@ export default {
           chart[1].length ? chart[1].forEach((el) => clearInterval(el)) : clearInterval(chart[1]); 
           chart[0].destroy();
         }, 10000);
+      } else if(quiz.visualization == "numbers") {
+        let sum = 0;
+        list.forEach((res) => {
+          sum += parseInt(quiz.answers[res-1]);
+        })
+        if(list.length) {
+          let obj = {
+            color: Math.ceil(sum/list.length+2),
+            sustain: false,
+            type: quiz.visualization
+          }
+          this.queue.push(obj);
+        }
       }
     }
   }
