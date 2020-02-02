@@ -114,7 +114,7 @@ export default {
       let no = list.filter((i) => i == 2).length;
       if(quiz.visualization == "curve" && list.length) {
         let obj = {
-          color: Math.floor(yes/list.length*20),
+          color: Math.floor((yes/list.length)*20),
           sustain: false,
           type: quiz.visualization
         }
