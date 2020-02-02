@@ -185,7 +185,21 @@ export default [
       'yas',
       'nerp'
     ],
-    colors: [],
+    colors: [1],
+    class: 'test',
+    visualization: 'curve',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'curveTest2',
+    title: 'curve TESTING 2',
+    question: "Do you want ittt?",
+    answers: [
+      'yas',
+      'nerp'
+    ],
+    colors: [300],
     class: 'test',
     visualization: 'curve',
     quantity: 'single',

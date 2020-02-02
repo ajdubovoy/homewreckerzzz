@@ -29,7 +29,7 @@ export class Curve {
   
   display() {
     this.ctx.noFill();
-    this.ctx.stroke(this.c, 200, 255);
+    this.ctx.stroke(this.c);
     this.ctx.strokeWeight(30);
     this.ctx.beginShape();
     if(this.dying) {

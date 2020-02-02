@@ -98,23 +98,13 @@ export default {
       this.queue.push(obj);
     },
     addSingleToQueue(list, quiz) {
-      /*let sum = 0;
-      list.forEach((res) => {
-        sum += parseInt(quiz.answers[res-1]);
-      })
-      if(list.length) {
-        let obj = {
-          color: Math.ceil(sum/list.length+2),
-          sustain: false,
-          type: quiz.visualization
-        }
-        this.queue.push(obj);
-      }*/
       let yes = list.filter((i) => i == 1).length;
       let no = list.filter((i) => i == 2).length;
       if(quiz.visualization == "curve" && list.length) {
+        let yesFrac = yes/list.length;
+        console.log(yesFrac);
         let obj = {
-          color: Math.floor((yes/list.length)*20),
+          color: [quiz.colors[0], yesFrac*160+50, yesFrac*150+100],
           sustain: false,
           type: quiz.visualization
         }
