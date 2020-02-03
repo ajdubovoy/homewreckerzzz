@@ -181,14 +181,13 @@ export default {
       }
       if (this.isAudience(options.audience) && this.playing) {
         // Only kill if client is target audience
-        console.log("KILLING")
         this.killInstrument(options);
         this.playing = false;
       }
     },
     quizAsk(quiz) {
       if (this.isAudience(quiz.audience)) {
-        this.notificationPing();
+        // this.notificationPing();
         this.quiz = quiz;
       }
     },
