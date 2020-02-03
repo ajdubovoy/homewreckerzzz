@@ -173,6 +173,7 @@ export default {
       }
     },
     kill(options) {
+      console.log("KILLING")
       const { roomSection, randomQuestion, team } = options.audience;
       if (!roomSection, !randomQuestion, !team) {
         this.killInstrument();
@@ -191,7 +192,11 @@ export default {
       }
     },
     quizComplete(quiz) {
-      if (this.isAudience(quiz.audience)) {
+      try {
+        if (this.isAudience(quiz.audience)) {
+          this.quiz = null;
+        }
+      } catch {
         this.quiz = null;
       }
     },
@@ -252,7 +257,7 @@ export default {
           token: this.quiz.token
         });
 
-        this.quizComplete(this.quiz);
+        this.quiz = null;
       }
     },
     throttledEmitQuizResponse: throttle(function(response) {
