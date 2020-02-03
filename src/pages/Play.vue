@@ -174,7 +174,7 @@ export default {
     },
     kill(options) {
       const { roomSection, randomQuestion, team } = options.audience;
-      if (!roomSection, randomQuestion, team) {
+      if (!roomSection, !randomQuestion, !team) {
         this.killInstrument();
         this.playing = false;
       }
