@@ -71,7 +71,7 @@ export default class {
 
   euler = (root) => {
     const freq = freqToMidi(root);
-    const ratio = Math.E / 2;
+    const ratio = 1 / Math.E;
     return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
   }
 

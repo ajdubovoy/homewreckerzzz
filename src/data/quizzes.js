@@ -279,7 +279,21 @@ export default [
     ],
     colors: [230, 1],
     class: 'piano',
-    visualization: 'pie',
+    visualization: 'curve',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'pianoLouder',
+    title: 'Piano Louder',
+    question: "shoUld the piano be LOUDER?",
+    answers: [
+      'ya',
+      'oof plz no'
+    ],
+    colors: [230, 1],
+    class: 'piano',
+    visualization: 'curve',
     quantity: 'single',
     duration: 15000
   },
