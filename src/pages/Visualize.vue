@@ -122,7 +122,6 @@ export default {
         list.forEach((res) => {
           sum += parseInt(quiz.answers[res-1]);
         })
-        console.log(sum/list.length);
         if(list.length) {
           let obj = {
             color: Math.ceil(sum/list.length+2),
