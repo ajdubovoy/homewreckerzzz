@@ -2,6 +2,7 @@ import {colors} from '../data/instruments.js';
 import {ShimmerSquare, PulseSquare} from '../processing/Particle.js';
 import {Digit, Emoji} from '../processing/Text.js';
 import {Curve} from "../processing/Curve.js";
+import {Instrument} from "../processing/Instrument.js";
 
 export default function main(ctx) {
   let self = ctx;
@@ -17,6 +18,10 @@ export default function main(ctx) {
       p5.resizeCanvas(window.innerWidth, window.innerHeight);
       p5.colorMode(p5.HSB, 360, 255, 255);
       p5.frameRate(30);
+      let inst1 = new Instrument(p5.color(50, 200, 255), 300, 5, p5);
+      let inst2 = new Instrument(p5.color(100, 200, 255), 800, 3, p5);
+      self.instruments.push(inst1);
+      self.instruments.push(inst2);
     };
     p5.draw = function() {
       p5.background(0);
@@ -36,6 +41,9 @@ export default function main(ctx) {
         }
       });
       sustain = sustain.filter((el) => el != null);
+      self.instruments.forEach((inst) => {
+        if(!inst.stopped){inst.display(); inst.update();}
+      });
       if(self.queue.length != 0) {
         self.queue.forEach((el) => {
           if(self.users.includes(el.user) && el.sustain) {

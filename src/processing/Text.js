@@ -4,8 +4,10 @@ export class Digit extends Particle {
   constructor(c, x, y, frames, max, ctx) {
     super(x, y, frames, ctx);
     this.c = c;
+    this.total = frames;
+    this.max = max;
     this.interval = Math.floor(frames/max);
-    this.text = '' + Math.min(Math.floor(frames/this.interval), 9);
+    this.text = '' + Math.floor(frames/this.interval)
     this.update();
   }
   
@@ -20,8 +22,8 @@ export class Digit extends Particle {
     var h = this.ctx.hue(this.c);
     var s = this.ctx.saturation(this.c);
     var b = this.ctx.brightness(this.c);
-    let digit = Math.min(Math.floor(this.frames/this.interval),9);
-    this.c = this.ctx.color(h, s, Math.max(255 * (digit/9), 10));
+    let digit = Math.floor(this.frames/this.total*this.max)
+    this.c = this.ctx.color(h, s, Math.min(255 * (digit/9), 255));
     this.frames--;
  	  this.text = '' + digit;
   }

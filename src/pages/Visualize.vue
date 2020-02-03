@@ -10,7 +10,7 @@ import {colors} from '../data/instruments.js';
 import MainSketch from "../processing/main.js";
 import axiosClient from '../helpers/axios_client';
 import remove from "lodash.remove";
-import Quiz from "../data/quizzes.js";
+import Quizzes from "../data/quizzes.js";
 import { bar, line, pie, bubble } from "../processing/charts.js";
 
 export default {
@@ -21,7 +21,8 @@ export default {
         context: null,
         current: null
       },
-      queue: [],
+      queue: [], // elements to draw which are either short-lived or sustained by active 'users' in the users array
+      instruments: [], // drawn elements with a long lifespan meant to act as the score for a particular player
       users: [],
       played: [],
       playing: {},
@@ -73,7 +74,7 @@ export default {
             return;
           }
           r.data.quizResponses.forEach((quiz) => {
-            let q = Quiz.find(el => el.id == quiz.quizID);
+            let q = Quizzes.find(el => el.id == quiz.quizID); // get quiz object from quizzes.js
             let continuous = q.quantity == "multiple";
             let count = this.playing[quiz.token] ? this.playing[quiz.token] : 0;
             if(continuous && quiz.running) {
@@ -102,7 +103,6 @@ export default {
       let no = list.filter((i) => i == 2).length;
       if(quiz.visualization == "curve" && list.length) {
         let yesFrac = yes/list.length;
-        console.log(yesFrac);
         let obj = {
           color: [quiz.colors[0], yesFrac*160+50, yesFrac*150+100],
           sustain: false,
@@ -122,6 +122,7 @@ export default {
         list.forEach((res) => {
           sum += parseInt(quiz.answers[res-1]);
         })
+        console.log(sum/list.length);
         if(list.length) {
           let obj = {
             color: Math.ceil(sum/list.length+2),
