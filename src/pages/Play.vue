@@ -44,6 +44,7 @@ export default {
     }
 
     this.waveInstrument = new WaveInstrument(this.audioContext);
+    this.pingInstrument = new WaveInstrument(this.audioContext);
     this.clusterInstrument = new ClusterInstrument(this.audioContext);
     this.clicksInstrument = new ClicksInstrument(this.audioContext);
     this.playFileInstrument = new PlayFileInstrument(this.audioContext);
@@ -133,8 +134,9 @@ export default {
             this[socket.message](socket.request); // Execute the related method for that socket's message
             this.executedSockets.push(socket);
             return true;
-          } catch {
+          } catch(err) {
             this.connected = false;
+            console.debug(err)
             return false;
           }
         }
@@ -191,7 +193,11 @@ export default {
       }
     },
     quizComplete(quiz) {
-      if (this.isAudience(quiz.audience)) {
+      try {
+        if (this.isAudience(quiz.audience)) {
+          this.quiz = null;
+        }
+      } catch {
         this.quiz = null;
       }
     },
@@ -252,7 +258,7 @@ export default {
           token: this.quiz.token
         });
 
-        this.quizComplete(this.quiz);
+        this.quiz = null;
       }
     },
     throttledEmitQuizResponse: throttle(function(response) {
@@ -267,7 +273,7 @@ export default {
     }, 750),
     notificationPing() {
       const playTone = (frequency) => {
-        this.waveInstrument.play({
+        this.pingInstrument.play({
           sustain: false,
           amplitude: 110,
           frequency: midiToFreq(frequency),
