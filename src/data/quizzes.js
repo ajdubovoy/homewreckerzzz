@@ -1,5 +1,23 @@
 export default [
   {
+    id: 'colors0',
+    title: 'Colors 0',
+    question: "cHooz a color:",
+    answers: [
+      'blue',
+      'bluish',
+      'purple',
+      'lightttt'
+    ],
+    colors: [
+      240,260,271,210
+    ],
+    class: 'colors',
+    visualization: 'colors',
+    quantity: 'multiple',
+    duration: 30000
+  },
+  {
     id: 'colors1',
     title: 'Colors 1',
     question: "cHooz a color:",
@@ -29,6 +47,24 @@ export default [
     ],
     colors: [
       1,300,271,60
+    ],
+    class: 'colors',
+    visualization: 'colors',
+    quantity: 'multiple',
+    duration: 30000
+  },
+  {
+    id: 'colors3',
+    title: 'Colors 3',
+    question: "cHooz a color:",
+    answers: [
+      'red',
+      'pink',
+      'purple',
+      'redder'
+    ],
+    colors: [
+      10,300,271,1
     ],
     class: 'colors',
     visualization: 'colors',
@@ -130,39 +166,6 @@ export default [
     duration: 5000
   },
   {
-    id: 'numbers6',
-    title: 'Numbers 6',
-    question: "Please select a number:",
-    answers: [
-      '100',
-      '1000',
-      'a gazillion',
-      '12093847'
-    ],
-    colors: [],
-    class: 'numbers',
-    visualization: 'numbers',
-    quantity: 'single',
-    duration: 5000
-  },
-  {
-    id: 'numbers7',
-    title: 'Numbers 7',
-    question: "Please select a number:",
-    answers: [
-      'a smorgasbord',
-      'a cornucopia',
-      'a gazillion',
-      'i dont like the question'
-
-    ],
-    colors: [],
-    class: 'numbers',
-    visualization: 'numbers',
-    quantity: 'single',
-    duration: 5000
-  },
-  {
     id: 'pickTeam',
     title: 'Pick a Team',
     question: "Which team are you on?",
@@ -178,59 +181,127 @@ export default [
     superpower: 'team'
   },
   {
-    id: 'curveTest',
-    title: 'curve TESTING',
-    question: "Do you want ittt?",
+    id: 'cello',
+    title: 'Cello',
+    question: "Do you want the cellist to have more fun?",
     answers: [
-      'yas',
-      'nerp'
+      'yeep',
+      'nopers'
     ],
-    colors: [1],
-    class: 'test',
-    visualization: 'curve',
+    colors: [230, 1],
+    class: 'cello',
+    visualization: 'pie',
     quantity: 'single',
-    duration: 5000
+    duration: 15000
   },
   {
-    id: 'curveTest2',
-    title: 'curve TESTING 2',
-    question: "Do you want ittt?",
+    id: 'pianoCap',
+    title: 'Piano Cap',
+    question: "Should the pianist wear a dainty cap?",
     answers: [
-      'yas',
-      'nerp'
+      'plz',
+      'ewww no'
     ],
-    colors: [300],
-    class: 'test',
-    visualization: 'curve',
+    colors: [230, 1],
+    class: 'piano',
+    visualization: 'pie',
     quantity: 'single',
-    duration: 5000
+    duration: 15000
   },
   {
-    id: 'barTest',
-    title: 'bar TESTING',
-    question: "Do you want ittt?",
+    id: 'repeat',
+    title: 'Repeat?',
+    question: "Should we do it again?",
     answers: [
       'yas',
       'nerp'
     ],
-    colors: [],
-    class: 'chart',
-    visualization: 'bar',
-    quantity: 'single',
-    duration: 5000
-  },
-  {
-    id: 'pieTest',
-    title: 'pie TESTING',
-    question: "Do you want ittt?",
-    answers: [
-      'yas',
-      'nerp'
-    ],
-    colors: [],
+    colors: [230, 1],
     class: 'chart',
     visualization: 'pie',
     quantity: 'single',
-    duration: 5000
-  }
+    duration: 15000
+  },
+  {
+    id: 'control',
+    title: 'Control?',
+    question: "Are you in control right now?",
+    answers: [
+      'totes my goats',
+      'noooooooOPE'
+    ],
+    colors: [230, 1],
+    class: 'chart',
+    visualization: 'bar',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'moreControl',
+    title: 'more control?',
+    question: "do you want more control?",
+    answers: [
+      'oh yahhhhhhh',
+      'tbh im fine'
+    ],
+    colors: [230, 1],
+    class: 'chart',
+    visualization: 'pie',
+    quantity: 'bar',
+    duration: 15000
+  },
+  {
+    id: 'stop',
+    title: 'Stop?',
+    question: "Do U wanT thIs to stop?",
+    answers: [
+      'omg plzzzzz',
+      'naw keep goin'
+    ],
+    colors: [230, 1],
+    class: 'stop',
+    visualization: 'pie',
+    quantity: 'bar',
+    duration: 15000
+  },
+  {
+    id: 'stopMore',
+    title: 'Stop More?',
+    question: "no srsly like we could END this. want us to StOP?",
+    answers: [
+      'yassssss',
+      'im rly fine'
+    ],
+    colors: [230, 1],
+    class: 'stop',
+    visualization: 'pie',
+    quantity: 'bar',
+    duration: 15000
+  },
+  {
+    id: 'checkNeighbor',
+    title: 'Check your neighbor',
+    question: "Does your neighbor's phOne say the sAme thing as yours? lOOk arOUnd u",
+    answers: [
+      'complete same',
+      'omg totally different'
+    ],
+    colors: [230, 1],
+    class: 'look',
+    visualization: 'pie',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'moveAround',
+    title: 'Move around',
+    question: "u can mOve arOUnd now!",
+    answers: [],
+    colors: [],
+    class: 'move',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 15000
+  },
 ];

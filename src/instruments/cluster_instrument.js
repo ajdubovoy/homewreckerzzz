@@ -69,6 +69,18 @@ export default class {
     return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
   }
 
+  euler = (root) => {
+    const freq = freqToMidi(root);
+    const ratio = Math.E / 2;
+    return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
+  }
+
+  pythagoras = (root) => {
+    const freq = freqToMidi(root);
+    const ratio = 3/2;
+    return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
+  }
+
   random = (root) => {
     const randomScaleDegree = () => {
       return Math.round(Math.random() * 12) + root;
@@ -121,6 +133,18 @@ export default class {
           l: this.options.amplitude / (128 * 2)
         };
       case 'golden':
+        return {
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'euler':
+        return {
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'pythagoras':
         return {
           h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,

@@ -2,9 +2,9 @@
 Cover.quiz-question(:class="text.class")
   h1 {{ text.question }}
   h2(v-if="quantityText") {{ quantityText }}
-  p(v-if="timeRemaining()") you hAve oNLy so maNY seCONDS: {{ timeRemaining() }}
+  p(v-if="!text.message") you hAve oNLy so maNY seCONDS: {{ timeRemaining() }}
 
-  b-button(v-for="(answer, key, index) in text.answers" @click="handleSubmit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(key, answers[key + 1]) }") {{ answer }}
+  b-button(v-for="(answer, key, index) in text.answers" v-if="!text.message" @click="handleSubmit(key + 1)" class="btn-quiz" :key="key" :style="{ backgroundColor: hexColor(key, answers[key + 1]) }") {{ answer }}
 </template>
 
 <script>
@@ -17,6 +17,7 @@ export default {
     text: {
       question: String,
       answers: Array,
+      message: Boolean
     },
     submit: Function
   },
@@ -89,6 +90,10 @@ export default {
   },
   computed: {
     quantityText() {
+      if (this.text.message) {
+        return "";
+      }
+
       if (this.text.quantity === 'multiple') {
         return "chooZ as manY tIMez as yOUd like:"
       } else if (this.text.quantity === 'single') {
@@ -146,6 +151,30 @@ export default {
 }
 .team{
   background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/football_team.gif');
+  background-size: contain;
+}
+.chart{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/chart.gif');
+  background-size: contain;
+}
+.look{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/eyes.gif');
+  background-size: contain;
+}
+.move{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/walk.gif');
+  background-size: contain;
+}
+.stop{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/stop.gif');
+  background-size: contain;
+}
+.cello{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/cello.gif');
+  background-size: contain;
+}
+.piano{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/piano.gif');
   background-size: contain;
 }
 .btn-quiz{
