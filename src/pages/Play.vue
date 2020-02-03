@@ -44,6 +44,7 @@ export default {
     }
 
     this.waveInstrument = new WaveInstrument(this.audioContext);
+    this.pingInstrument = new WaveInstrument(this.audioContext);
     this.clusterInstrument = new ClusterInstrument(this.audioContext);
     this.clicksInstrument = new ClicksInstrument(this.audioContext);
     this.playFileInstrument = new PlayFileInstrument(this.audioContext);
@@ -187,7 +188,7 @@ export default {
     },
     quizAsk(quiz) {
       if (this.isAudience(quiz.audience)) {
-        // this.notificationPing();
+        this.notificationPing();
         this.quiz = quiz;
       }
     },
@@ -272,7 +273,7 @@ export default {
     }, 750),
     notificationPing() {
       const playTone = (frequency) => {
-        this.waveInstrument.play({
+        this.pingInstrument.play({
           sustain: false,
           amplitude: 110,
           frequency: midiToFreq(frequency),
