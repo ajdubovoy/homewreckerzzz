@@ -133,8 +133,9 @@ export default {
             this[socket.message](socket.request); // Execute the related method for that socket's message
             this.executedSockets.push(socket);
             return true;
-          } catch {
+          } catch(err) {
             this.connected = false;
+            console.debug(err)
             return false;
           }
         }
@@ -173,7 +174,6 @@ export default {
       }
     },
     kill(options) {
-      console.log("KILLING")
       const { roomSection, randomQuestion, team } = options.audience;
       if (!roomSection, !randomQuestion, !team) {
         this.killInstrument();
@@ -181,6 +181,7 @@ export default {
       }
       if (this.isAudience(options.audience) && this.playing) {
         // Only kill if client is target audience
+        console.log("KILLING")
         this.killInstrument(options);
         this.playing = false;
       }
