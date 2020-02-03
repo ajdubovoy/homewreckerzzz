@@ -19,6 +19,8 @@
       b-col(lg=6 xl=3)
         b-button.w-100.h-100.add-module(variant="success" @click="addModule") ➕ Add Module
   b-container#additional-options
+    h3 Kill Everyone
+        b-button(@click="handleKill" variant="danger") ⏹ Master Kill Switch
     h3 File Upload
     b-form(@submit.prevent="handleFileSubmit(userFile)" enctype="multipart/form-data")
       b-form-group
@@ -139,10 +141,22 @@ export default {
         this.emitSocket('finale', {
           audience: {
             roomSection: 0,
-            randomQuestion: 0
+            randomQuestion: 0,
+            team: 0
           }
         });
       }
+    },
+    handleKill() {
+      this.emitSocket('kill', {
+        audience: {
+          roomSection: 0,
+          randomQuestion: 0,
+          team: 0
+        }
+      });
+      this.modules = [];
+      this.addModule();
     },
     ...mapActions([
       'makePuppeteer'

@@ -132,12 +132,16 @@ export default {
           try {
             this[socket.message](socket.request); // Execute the related method for that socket's message
             this.executedSockets.push(socket);
+            return true;
           } catch {
             this.connected = false;
+            return false;
           }
         }
+        return false;
       })
     },
+
     // SOCKETS
 
     play(options) {
@@ -169,6 +173,11 @@ export default {
       }
     },
     kill(options) {
+      const { roomSection, randomQuestion, team } = options.audience;
+      if (!roomSection, !randomQuestion, !team) {
+        this.killInstrument();
+        this.playing = false;
+      }
       if (this.isAudience(options.audience) && this.playing) {
         // Only kill if client is target audience
         this.killInstrument(options);

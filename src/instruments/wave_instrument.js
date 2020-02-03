@@ -1,4 +1,5 @@
 import wave from '../helpers/wave.js';
+import freqToMidi from '../helpers/freq_to_midi';
 
 export default class {
   constructor(context) {
@@ -46,25 +47,25 @@ export default class {
     switch(this.options.waveType) {
       case 'sine':
         return {
-          h: 240 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 240 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'square':
         return {
-          h: 270 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 270 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'triangle':
         return {
-          h: 50 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'sawtooth':
         return {
-          h: 300 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 300 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };

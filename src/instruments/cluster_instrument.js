@@ -69,6 +69,18 @@ export default class {
     return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
   }
 
+  euler = (root) => {
+    const freq = freqToMidi(root);
+    const ratio = 1 / Math.E;
+    return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
+  }
+
+  pythagoras = (root) => {
+    const freq = freqToMidi(root);
+    const ratio = 3/2;
+    return [freq, freq * Math.pow(ratio, 1), freq * Math.pow(ratio, ratio), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 3), freq * Math.pow(ratio, 4)];
+  }
+
   random = (root) => {
     const randomScaleDegree = () => {
       return Math.round(Math.random() * 12) + root;
@@ -98,25 +110,43 @@ export default class {
     switch(this.options.clusterType) {
       case 'minor':
         return {
-          h: 240 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 240 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'major':
         return {
-          h: 270 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 270 + (freqToMidi((this.options.frequency)) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'chromatic':
         return {
-          h: 50 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'random':
         return {
-          h: 300 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 300 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'golden':
+        return {
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'euler':
+        return {
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'pythagoras':
+        return {
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };

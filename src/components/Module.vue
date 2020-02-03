@@ -30,10 +30,10 @@
                 b-form-radio(v-model="instrument" :name="`instrument-${instance}`" v-for="i in instrumentOptions" :key="i.value" :value="i.value") {{ i.text }}
         b-form-group.col-3.sliders
           label(for="amplitude") 🔊&nbsp;{{ amplitudePercentage }}%
-          b-form-input(id="amplitude" v-model="amplitude" type="range" min="0" max="128")
+          b-form-input(id="amplitude" v-model="amplitude" type="range" class="vertical" min="0" max="128")
         b-form-group.col-3(v-if="instrument < 2 || instrument === 3")
           label(for="frequency") ♪&nbsp;{{ pitchName }}
-          b-form-input(id="frequency" v-model.number="frequency" type="range" :min="minFreq" :max="maxFreq")
+          b-form-input(id="frequency" v-model.number="frequency" type="range" class="vertical" :min="minFreq" :max="maxFreq")
           p(:style="{ transform: 'translateY(50%)' }") {{ Math.floor(frequency) }}
       .row
         b-form-group.col-4(v-if="instrument === 3")
@@ -41,7 +41,7 @@
           b-form-input(id="density" v-model="density" type="range" min="1" max="15")
         b-form-group.col-4(v-if="instrument === 1")
           label(for="cluster-type") Cluster Type
-          b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random', 'golden']")
+          b-form-select(name="cluster-type" v-model="clusterType" :options="['major', 'minor', 'chromatic', 'random', 'golden', 'euler', 'pythagoras']")
         b-form-group.col-4(v-if="instrument < 2 || instrument === 3")
           label(for="wave-type") Wave Type
           b-form-select(name="wave-type" v-model="waveType" :options="['sine', 'square', 'sawtooth', 'triangle']")
@@ -338,7 +338,7 @@ export default {
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
-  input[type=range] {
+  input.vertical {
     transform: rotateZ(270deg);
     margin-top: 65%;
     margin-bottom: 65%;
