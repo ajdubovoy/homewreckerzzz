@@ -250,8 +250,22 @@ export default [
       'nO'
     ],
     colors: [230, 1],
-    class: 'chart',
-    visualization: 'bar',
+    class: 'light',
+    visualization: 'curve',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'different',
+    title: 'Something Different',
+    question: "Should we do something dIFFerent?",
+    answers: [
+      'obvi',
+      'naw'
+    ],
+    colors: [230, 1],
+    class: 'light',
+    visualization: 'curve',
     quantity: 'single',
     duration: 15000
   },
