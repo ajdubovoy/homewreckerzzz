@@ -166,6 +166,39 @@ export default [
     duration: 5000
   },
   {
+    id: 'numbers6',
+    title: 'Numbers 6',
+    question: "Please select a number:",
+    answers: [
+      '100',
+      '1000',
+      'a gazillion',
+      '12093847'
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
+    id: 'numbers7',
+    title: 'Numbers 7',
+    question: "Please select a number:",
+    answers: [
+      'a smorgasbord',
+      'a cornucopia',
+      'a gazillion',
+      'i dont like the question'
+
+    ],
+    colors: [],
+    class: 'numbers',
+    visualization: 'numbers',
+    quantity: 'single',
+    duration: 5000
+  },
+  {
     id: 'pickTeam',
     title: 'Pick a Team',
     question: "Which team are you on?",
@@ -190,7 +223,35 @@ export default [
     ],
     colors: [230, 1],
     class: 'cello',
-    visualization: 'pie',
+    visualization: 'curve',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'shutUp',
+    title: 'Shut up',
+    question: "Do you think someone should shut up?",
+    answers: [
+      'yeep',
+      'nopers'
+    ],
+    colors: [230, 1],
+    class: 'stop',
+    visualization: 'curve',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'newSection',
+    title: 'New section',
+    question: "Would you like for a new section to start",
+    answers: [
+      'fo sho',
+      'nO'
+    ],
+    colors: [230, 1],
+    class: 'chart',
+    visualization: 'bar',
     quantity: 'single',
     duration: 15000
   },
@@ -246,8 +307,22 @@ export default [
     ],
     colors: [230, 1],
     class: 'chart',
-    visualization: 'pie',
-    quantity: 'bar',
+    visualization: 'bar',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'controlAnother',
+    title: 'Control someone else',
+    question: "Do U want 2 contrOL someone eLse?",
+    answers: [
+      'of cOurse',
+      'thx but naw'
+    ],
+    colors: [230, 1],
+    class: 'chart',
+    visualization: 'bar',
+    quantity: 'single',
     duration: 15000
   },
   {
@@ -260,8 +335,8 @@ export default [
     ],
     colors: [230, 1],
     class: 'stop',
-    visualization: 'pie',
-    quantity: 'bar',
+    visualization: 'bar',
+    quantity: 'single',
     duration: 15000
   },
   {
@@ -274,8 +349,8 @@ export default [
     ],
     colors: [230, 1],
     class: 'stop',
-    visualization: 'pie',
-    quantity: 'bar',
+    visualization: 'bar',
+    quantity: 'single',
     duration: 15000
   },
   {
@@ -283,8 +358,8 @@ export default [
     title: 'Check your neighbor',
     question: "Does your neighbor's phOne say the sAme thing as yours? lOOk arOUnd u",
     answers: [
-      'complete same',
-      'omg totally different'
+      'complete sAme',
+      'omg totally dIffErent'
     ],
     colors: [230, 1],
     class: 'look',
@@ -299,6 +374,18 @@ export default [
     answers: [],
     colors: [],
     class: 'move',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'sneeze',
+    title: 'Sneeze',
+    question: "it's srSLY fine if you need to sneeze",
+    answers: [],
+    colors: [],
+    class: 'sneeze',
     visualization: '',
     message: true,
     quantity: 'single',
