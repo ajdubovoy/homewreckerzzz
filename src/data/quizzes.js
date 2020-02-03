@@ -270,26 +270,12 @@ export default [
     duration: 15000
   },
   {
-    id: 'pianoCap',
-    title: 'Piano Cap',
-    question: "Should the pianist wear a dainty cap?",
+    id: 'pianoFun',
+    title: 'Piano Fun',
+    question: "Should the pianist have more fun?",
     answers: [
       'plz',
       'ewww no'
-    ],
-    colors: [230, 1],
-    class: 'piano',
-    visualization: 'curve',
-    quantity: 'single',
-    duration: 15000
-  },
-  {
-    id: 'pianoLouder',
-    title: 'Piano Louder',
-    question: "shoUld the piano be LOUDER?",
-    answers: [
-      'ya',
-      'oof plz no'
     ],
     colors: [230, 1],
     class: 'piano',
