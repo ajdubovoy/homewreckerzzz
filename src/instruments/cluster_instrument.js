@@ -98,25 +98,31 @@ export default class {
     switch(this.options.clusterType) {
       case 'minor':
         return {
-          h: 240 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 240 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'major':
         return {
-          h: 270 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 270 + (freqToMidi((this.options.frequency)) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'chromatic':
         return {
-          h: 50 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
       case 'random':
         return {
-          h: 300 + (this.options.frequency / 128 * 360 / 4 - 45),
+          h: 300 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
+          s: this.options.amplitude / 128,
+          l: this.options.amplitude / (128 * 2)
+        };
+      case 'golden':
+        return {
+          h: 50 + (freqToMidi(this.options.frequency) / 128 * 360 / 4 - 45),
           s: this.options.amplitude / 128,
           l: this.options.amplitude / (128 * 2)
         };
