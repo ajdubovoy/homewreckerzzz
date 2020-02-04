@@ -295,7 +295,7 @@ export default [
     visualization: 'instrument', //if visualize is instrument, the details key is necessary
     details: {
       "instrument": "sax",
-      "param": "speed" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+      "param": "speed" // sax/piano: [speed, texture, color, volume], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
     duration: 10000

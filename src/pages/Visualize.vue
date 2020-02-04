@@ -147,12 +147,27 @@ export default {
       } else if(quiz.visualization == "instrument") {
         let details = quiz.details;
         let inst = this.instruments[details.instrument];
-        if(details.param == "speed") {
-          let choice = this.mostPopular(list, quiz);
-          let amt = choice ? 2 : -2;
-          inst.interval = inst.interval + amt;
-        } else if(details.param == "texture") {
-          
+        let choice = this.mostPopular(list, quiz);
+        switch(details.param) {
+          case "speed":
+            let amt = !choice ? 2 : -2;
+            let mult = !choice ? 1.25 : 0.75;
+            inst.interval = inst.interval + amt;
+            inst.chance = Math.min(Math.max(inst.chance * mult, 0), 1);
+            break;
+          case "texture":
+            if(choice) { // skronky
+              inst.skronk();
+            } else { // smooth
+              inst.smooth();
+            }
+            break;
+          case "color":
+            inst.setColor(quiz.colors[choice]);
+            break;
+          case "volume":
+            inst.setSize(!choice);
+            break;
         }
       }
     },

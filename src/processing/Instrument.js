@@ -1,7 +1,7 @@
 export class Instrument {
   constructor(c, y, interval, ctx) {
     this.y = y;
-    this.c = c;
+    this.c = ctx.color(c, 200, 255);
     this.frames = 0;
     this.period = 90;
     this.interval = Math.floor(this.period/interval); // interval is number of blips on screen per cycle. cycle is 3 seconds so 90 frames at 30fps (the period)
@@ -64,11 +64,11 @@ export class Instrument {
   }
 
   setColor(c) {
-    this.c = c;
+    this.c = this.ctx.color(c, 200, 255);
   }
 
   setSize(s) {
-    this.radius = s;
+    this.radius = s ? this.radius*1.2 : this.radius*0.7;
   }
   
   // DRAW functions
@@ -105,11 +105,11 @@ export class Instrument {
   chooseShape() {
     this.curr = chooseWeighted(this.shapes, this.probs);
   }
-  moreCurves() {
-    this.probs = [20,20,30,30,0];
+  smooth() {
+    this.probs = [20,5,30,30,0];
   }
-  moreEmoji() {
-    this.probs = [5,15,15,20,60];
+  skronk() {
+    this.probs = [5,50,15,20,60];
   }
 }
 

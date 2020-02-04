@@ -137,16 +137,19 @@ export default function main(ctx) {
         ));
       }
     }
-    function emojiCloud(emoji) {
+    function emojiCloud(emoji, mult) {
       var centerX = Math.random()*window.innerWidth;
       var centerY = Math.random()*window.innerHeight;
+      if(!mult) {
+        mult = 1;
+      }
       for(var i = 0; i < 10; i++) {
         let randX = centerX + (Math.random() * 200) - 100;
         let randY = centerY + (Math.random() * 200) - 100;
         particles.push(new Emoji(
           randX, 
           randY, 
-          parseInt(30 + Math.random()*30), 
+          parseInt((30 + Math.random()*30)*mult), 
           emoji,
           p5
         ));
@@ -161,6 +164,7 @@ export default function main(ctx) {
         this.chance = 1;
         this.stopped = true;
         this.emoji = ['😍','🤓','🤗','🤯'];
+        this.mult = 1;
       }
 
       start() {
@@ -170,7 +174,7 @@ export default function main(ctx) {
           arr[i] = setInterval(() => {
             let emoji = this.emoji[Math.floor(Math.random()*4)];
             if(Math.random() < this.chance) {
-              emojiCloud(emoji);
+              emojiCloud(emoji, this.mult);
             }
           }, this.interval + Math.floor(Math.random()*200))
         }
@@ -180,6 +184,10 @@ export default function main(ctx) {
         this.stopped = true;
         this.intervals.forEach((el) => clearInterval(el));
         this.intervals = [];
+      }
+
+      setSize(s) {
+        this.mult = s ? 1.5 : 0.75;
       }
 
       update() {
