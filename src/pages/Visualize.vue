@@ -82,6 +82,15 @@ export default {
             let q = Quizzes.find(el => el.id == quiz.quizID); // get quiz object from quizzes.js
             let continuous = q.quantity == "multiple";
             let count = this.playing[quiz.token] ? this.playing[quiz.token] : 0;
+            if(q.event) {
+              for(var key in q.event) {
+                if(q.event[key]) {
+                  this.instruments[key].start();
+                } else {
+                  this.instruments[key].stop();
+                }
+              }
+            }
             if(continuous && quiz.running) {
               for(let i = count; i < quiz.responses.length; i++) {
                 this.addToQueue(quiz.responses[i], q);

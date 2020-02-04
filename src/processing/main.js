@@ -21,7 +21,7 @@ export default function main(ctx) {
       // initialize 'instruments'
       self.instruments["sax"] = new Instrument(p5.color(50, 200, 255), 300, 5, p5);
       self.instruments["piano"] = new Instrument(p5.color(100, 200, 255), 800, 3, p5);
-      self.instruments["curves"] = new CurveInstrument(p5.color(1, 200, 255), 6, p5);
+      self.instruments["curves"] = new CurveInstrument(p5.color(1, 200, 255), 3, p5);
       self.instruments["emoji"] = new EmojiInstrument(3, p5);
     };
     p5.draw = function() {
