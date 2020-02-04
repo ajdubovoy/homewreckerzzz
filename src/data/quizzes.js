@@ -303,12 +303,12 @@ export default [
       "param": "speed" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'louderPiano',
     title: 'Piano Loud',
-    question: "i can barely hEar the haMMErs hit those Strings '' want them to play louder?",
+    question: "i can barely hEar the haMMErs hit those Strings. Want them to play louder?",
     answers: [
       'GO FOR IT',
       'plz no stop urg garble'
@@ -321,7 +321,7 @@ export default [
       "param": "volume" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'texturePiano',
@@ -339,7 +339,7 @@ export default [
       "param": "texture" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'colorPiano',
@@ -361,7 +361,7 @@ export default [
       "param": "color" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'fasterSax',
@@ -379,7 +379,7 @@ export default [
       "param": "speed" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'louderSax',
@@ -397,7 +397,7 @@ export default [
       "param": "volume" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'textureSax',
@@ -415,7 +415,7 @@ export default [
       "param": "texture" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'colorSax',
@@ -437,7 +437,7 @@ export default [
       "param": "color" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
-    duration: 10000
+    duration: 15000
   },
   {
     id: 'newSection',
@@ -584,6 +584,54 @@ export default [
     answers: [],
     colors: [],
     class: 'sneeze',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'sorry',
+    title: 'Sorry',
+    question: "im hOnestly s0 sorry this had to happen...",
+    answers: [],
+    colors: [],
+    class: 'sorry',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'agitated',
+    title: 'Agitated',
+    question: "tbh i feel kindA agitated n0w",
+    answers: [],
+    colors: [],
+    class: 'sorry',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'horrible',
+    title: 'Horrible',
+    question: "that was preTTy horRible pfffffff",
+    answers: [],
+    colors: [],
+    class: 'amateur',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'wishEnd',
+    title: 'Wish for end',
+    question: "I reaLLy wiSH this would END",
+    answers: [],
+    colors: [],
+    class: 'stop',
     visualization: '',
     message: true,
     quantity: 'single',
