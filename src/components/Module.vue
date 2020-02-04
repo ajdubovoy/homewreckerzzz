@@ -55,6 +55,8 @@
         b-form-select(v-model="quiz" :options="quizOptions()")
       p(v-if="quizInstance") {{ quizInstance.question }}
       p(v-if="quizInstance") {{ quizInstance.answers.join(", ") }}
+      p(v-if="quizInstance && quizInstance.event" class="events")
+        span(v-for="(state, event) in quizInstance.event" :class="state ? 'active' : 'inactive'") {{ event }}&nbsp;
       b-button(type="submit" variant="primary" :disabled="quiz === 0 || quizActive" @click="handleQuiz") Start Jeopardy Time
     b-tab(title="🍩")
       h3 The Mysteries of Deep Frying Are Available to You
@@ -355,6 +357,15 @@ export default {
     margin-bottom: 0.5rem;
     label {
       display: block;
+    }
+  }
+
+  .events {
+    .active {
+      color: #218838;
+    }
+    .inactive {
+      color: #C82333;
     }
   }
 }
