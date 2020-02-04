@@ -442,6 +442,13 @@ export default [
     visualization: '',
     message: true,
     quantity: 'single',
-    duration: 1
+    duration: 1,
+    event: {
+      finale: true,
+      sax: false,
+      piano: false,
+      curves: false,
+      emoji: false
+    }
   },
 ];
