@@ -349,10 +349,10 @@ export default [
       'red',
       'pink',
       'purple',
-      'yellow'
+      'blue',
     ],
     colors: [
-      1,300,271,60
+      1,300,271,240
     ],
     class: 'piano',
     visualization: 'instrument', //if visualize is instrument, the details key is necessary
@@ -376,7 +376,7 @@ export default [
     visualization: 'instrument', //if visualize is instrument, the details key is necessary
     details: {
       "instrument": "sax",
-      "param": "speed" // sax/piano: [speed, texture, color, volume], emoji: [speed, volume], curves: [speed, color]
+      "param": "speed" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
     duration: 15000
@@ -425,10 +425,10 @@ export default [
       'red',
       'pink',
       'purple',
-      'yellow'
+      'blue'
     ],
     colors: [
-      1,300,271,60
+      1,300,271,240
     ],
     class: 'sax',
     visualization: 'instrument', //if visualize is instrument, the details key is necessary
