@@ -150,7 +150,8 @@ export default [
     event: {
       piano: false,
       sax: false,
-      curves: false
+      curves: false,
+      emoji: false
     }
   },
   {
@@ -249,7 +250,10 @@ export default [
     class: 'numbers',
     visualization: 'numbers',
     quantity: 'single',
-    duration: 5000
+    duration: 5000,
+    event: {
+      emoji: true
+    }
   },
   {
     id: 'pickTeam',
