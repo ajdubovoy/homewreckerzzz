@@ -150,8 +150,8 @@ export default {
         let choice = this.mostPopular(list, quiz);
         switch(details.param) {
           case "speed":
-            let amt = !choice ? 2 : -2;
-            let mult = !choice ? 1.25 : 0.75;
+            var amt = !choice ? 2 : -2;
+            var mult = !choice ? 1.25 : 0.75;
             inst.interval = inst.interval + amt;
             inst.chance = Math.min(Math.max(inst.chance * mult, 0), 1);
             break;
