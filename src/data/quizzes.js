@@ -33,7 +33,10 @@ export default [
     class: 'colors',
     visualization: 'colors',
     quantity: 'multiple',
-    duration: 30000
+    duration: 30000,
+    event: {
+      piano: true
+    }
   },
   {
     id: 'colors2',
@@ -51,7 +54,10 @@ export default [
     class: 'colors',
     visualization: 'colors',
     quantity: 'multiple',
-    duration: 30000
+    duration: 30000,
+    event: {
+      sax: true
+    }
   },
   {
     id: 'colors3',
@@ -69,7 +75,10 @@ export default [
     class: 'colors',
     visualization: 'colors',
     quantity: 'multiple',
-    duration: 30000
+    duration: 30000,
+    event: {
+      curves: true
+    }
   },
   {
     id: 'emoji',
@@ -90,6 +99,24 @@ export default [
     duration: 30000
   },
   {
+    id: 'emoji2',
+    title: 'Emoji 2',
+    question: "Please select an emoji:",
+    answers: [
+      '🐣',
+      '🍡',
+      '🦖',
+      '🤯'
+    ],
+    colors: [
+      1,300,20,60
+    ],
+    class: 'doughnuts',
+    visualization: 'emoji',
+    quantity: 'multiple',
+    duration: 20000
+  },
+  {
     id: 'numbers1',
     title: 'Numbers 1',
     question: "Please select a number:",
@@ -101,7 +128,12 @@ export default [
     class: 'numbers',
     visualization: 'numbers',
     quantity: 'single',
-    duration: 5000
+    duration: 5000,
+    event: {
+      piano: false,
+      sax: false,
+      curves: false
+    }
   },
   {
     id: 'numbers2',
@@ -179,7 +211,10 @@ export default [
     class: 'numbers',
     visualization: 'numbers',
     quantity: 'single',
-    duration: 5000
+    duration: 5000,
+    event: {
+      curves: true
+    }
   },
   {
     id: 'numbers7',
@@ -214,23 +249,26 @@ export default [
     superpower: 'team'
   },
   {
-    id: 'cello',
-    title: 'Cello',
-    question: "Do you want the cellist to have more fun?",
+    id: 'celloFun',
+    title: 'Cello Fun',
+    question: "do u waNt the CellISt to have more fUn?",
     answers: [
-      'yeep',
-      'nopers'
+      'OFCOURSE',
+      'omg ew no'
     ],
     colors: [230, 1],
     class: 'cello',
-    visualization: 'curve',
+    visualization: '',
     quantity: 'single',
-    duration: 15000
+    duration: 15000,
+    event: {
+      curves: true
+    }
   },
   {
-    id: 'shutUp',
-    title: 'Shut up',
-    question: "Do you think someone should shut up?",
+    id: 'pianoShutUp',
+    title: 'Piano shut up',
+    question: "Do you think that dArnED pianist should shut up?",
     answers: [
       'yeep',
       'nopers'
@@ -239,7 +277,10 @@ export default [
     class: 'stop',
     visualization: 'curve',
     quantity: 'single',
-    duration: 15000
+    duration: 15000,
+    event: {
+      piano: false
+    }
   },
   {
     id: 'newSection',
@@ -265,20 +306,6 @@ export default [
     ],
     colors: [230, 1],
     class: 'light',
-    visualization: 'curve',
-    quantity: 'single',
-    duration: 15000
-  },
-  {
-    id: 'pianoFun',
-    title: 'Piano Fun',
-    question: "Should the pianist have more fun?",
-    answers: [
-      'plz',
-      'ewww no'
-    ],
-    colors: [230, 1],
-    class: 'piano',
     visualization: 'curve',
     quantity: 'single',
     duration: 15000
@@ -404,5 +431,17 @@ export default [
     message: true,
     quantity: 'single',
     duration: 15000
+  },
+  {
+    id: 'finale',
+    title: 'Finale',
+    question: "done...",
+    answers: [],
+    colors: [],
+    class: '',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 1
   },
 ];
