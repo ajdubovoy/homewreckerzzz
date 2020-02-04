@@ -37,6 +37,7 @@ import axiosClient from '../helpers/axios_client';
 import Cover from '../components/Cover';
 import BlinkyText from '../components/BlinkyText';
 import Module from '../components/Module';
+import quizzes from '../data/quizzes';
 
 export default {
   name: 'Puppeteer',
@@ -106,7 +107,7 @@ export default {
       if (this.modules.length <= 1) {
         this.addModule();
       }
-      
+
       this.modules = this.modules.filter((m) => {
         return module !== m;
       });
@@ -144,6 +145,15 @@ export default {
             randomQuestion: 0,
             team: 0
           }
+        });
+        const finaleQuiz = quizzes.find(quiz => quiz.id === 'finale')
+        this.emitSocket('quizAsk', {
+          audience: {
+            roomSection: 0,
+            randomQuestion: 0,
+            team: 0
+          },
+          request: finaleQuiz
         });
       }
     },
