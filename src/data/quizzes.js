@@ -214,16 +214,18 @@ export default [
     superpower: 'team'
   },
   {
-    id: 'cello',
-    title: 'Cello',
-    question: "Do you want the cellist to have more fun?",
+    id: 'celloVolume',
+    title: 'Cello Volume',
+    question: "Isn't that cellist like...so qUIET? Want him to play LOUDEr?",
     answers: [
-      'yeep',
-      'nopers'
+      'OFCOURSE',
+      'omg ew no'
     ],
     colors: [230, 1],
     class: 'cello',
-    visualization: 'curve',
+    visualization: 'instrument',
+    instrument: 'cello',
+    param: 'volume',
     quantity: 'single',
     duration: 15000
   },
