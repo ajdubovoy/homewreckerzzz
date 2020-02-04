@@ -326,10 +326,10 @@ export default [
   {
     id: 'texturePiano',
     title: 'Piano Texture',
-    question: "this is feelin' awful samEY; wanna swItch it up?",
+    question: "this is feelin' awful samEY; how u wanna swItch it up?",
     answers: [
-      'totes',
-      'I LIKE THIS THO'
+      'make it chunkier',
+      'make it smoother'
     ],
     colors: [230, 1],
     class: 'piano',
@@ -402,10 +402,10 @@ export default [
   {
     id: 'textureSax',
     title: 'Sax Texture',
-    question: "want the sax to t00t that h0rn differently?",
+    question: "which way do you want the sax to t00t that h0rn?",
     answers: [
-      'plzzzzzzzzzzzz',
-      'nah thx'
+      'skrrrrooooooouuuuuuuuuuunkkkkkkkkkk',
+      'sm00th as a babys bottom'
     ],
     colors: [230, 1],
     class: 'sax',
