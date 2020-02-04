@@ -322,7 +322,7 @@ export default [
   {
     id: 'texturePiano',
     title: 'Piano Texture',
-    question: "this is feelin\' awful samEY; wanna swItch it up?",
+    question: "this is feelin' awful samEY; wanna swItch it up?",
     answers: [
       'totes',
       'I LIKE THIS THO'
