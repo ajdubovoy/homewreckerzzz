@@ -4,12 +4,13 @@ export class Instrument {
     this.c = ctx.color(c, 200, 255);
     this.frames = 0;
     this.period = 90;
+    this.initial = interval;
     this.interval = Math.floor(this.period/interval); // interval is number of blips on screen per cycle. cycle is 3 seconds so 90 frames at 30fps (the period)
     this.ctx = ctx;
     this.draw = true;
     this.step = (window.innerWidth-300)/(interval - 1); // how many pixels per interval
     this.x = 150;
-    this.chance = 1; // percent chance that a 'note' will be drawn
+    this.chance = 0.9; // percent chance that a 'note' will be drawn
     this.radius = 150;
     this.curr = this.circle;
     this.shapes = [this.circle, this.cross, this.curveUp, this.curveDown, this.emoji];
@@ -68,7 +69,7 @@ export class Instrument {
   }
 
   setSize(s) {
-    this.radius = s ? this.radius*1.2 : this.radius*0.7;
+    this.radius = s ? this.radius*1.5 : this.radius*0.5;
   }
   
   // DRAW functions

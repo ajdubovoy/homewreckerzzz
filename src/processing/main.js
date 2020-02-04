@@ -160,6 +160,7 @@ export default function main(ctx) {
         this.intervals = [];
         this.ctx = ctx;
         this.period = 3000; // in miliseconds
+        this.initial = interval;
         this.interval = Math.ceil(this.period/interval);
         this.chance = 1;
         this.stopped = true;
@@ -188,6 +189,10 @@ export default function main(ctx) {
 
       setSize(s) {
         this.mult = s ? 1.5 : 0.75;
+      }
+
+      setInterval(yes) {
+        this.interval = Math.ceil(this.period/yes);
       }
 
       update() {

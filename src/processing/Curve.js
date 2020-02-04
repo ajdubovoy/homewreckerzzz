@@ -67,6 +67,7 @@ export class CurveInstrument {
     this.c = c;
     this.ctx = ctx;
     this.period = 90;
+    this.initial = interval;
     this.interval = Math.ceil(this.period/interval);
     this.chance = 0.1;
     this.stopped = true;

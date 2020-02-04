@@ -130,7 +130,7 @@ export default {
           let chart = this.chart.current;
           chart[1].length ? chart[1].forEach((el) => clearInterval(el)) : clearInterval(chart[1]); 
           chart[0].destroy();
-        }, 10000);
+        }, 15000);
       } else if(quiz.visualization == "numbers") {
         let sum = 0;
         list.forEach((res) => {
@@ -152,11 +152,11 @@ export default {
           case "speed":
             var amt = !choice ? 2 : -2;
             var mult = !choice ? 1.25 : 0.75;
-            inst.interval = inst.interval + amt;
+            inst.setInterval(inst.initial + amt);
             inst.chance = Math.min(Math.max(inst.chance * mult, 0), 1);
             break;
           case "texture":
-            if(choice) { // skronky
+            if(!choice) { // skronky
               inst.skronk();
             } else { // smooth
               inst.smooth();
