@@ -144,7 +144,25 @@ export default {
           }
           this.queue.push(obj);
         }
+      } else if(quiz.visualization == "instrument") {
+        let details = quiz.details;
+        let inst = this.instruments[details.instrument];
+        if(details.param == "speed") {
+          let choice = this.mostPopular(list, quiz);
+          let amt = choice ? 2 : -2;
+          inst.interval = inst.interval + amt;
+        } else if(details.param == "texture") {
+          
+        }
       }
+    },
+    mostPopular(list, quiz) {
+      let arr = new Array(quiz.answers.length).fill(0);
+      list.forEach((r) => arr[r-1] = arr[r-1]+1);
+      var max = arr.reduce(function(a, b) {
+          return Math.max(a, b);
+      });
+      return arr.indexOf(max);
     }
   }
 }
