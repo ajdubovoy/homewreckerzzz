@@ -22,7 +22,12 @@ export default {
         current: null
       },
       queue: [], // elements to draw which are either short-lived or sustained by active 'users' in the users array
-      instruments: [], // drawn elements with a long lifespan meant to act as the score for a particular player
+      instruments: {
+        "piano": null,
+        "sax": null,
+        "curves": null,
+        "emoji": null
+      }, // drawn elements with a long lifespan meant to act as the score for a particular player
       users: [],
       played: [],
       playing: {},

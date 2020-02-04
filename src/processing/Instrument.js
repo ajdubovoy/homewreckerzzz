@@ -9,7 +9,7 @@ export class Instrument {
     this.draw = true;
     this.step = (window.innerWidth-300)/(interval - 1); // how many pixels per interval
     this.x = 150;
-    this.chance = 0.75; // percent chance that a 'note' will be drawn
+    this.chance = 1; // percent chance that a 'note' will be drawn
     this.radius = 150;
     this.curr = this.circle;
     this.shapes = [this.circle, this.cross, this.curveUp, this.curveDown, this.emoji];
@@ -49,10 +49,6 @@ export class Instrument {
     if(this.frames % this.interval == this.interval-5 && this.draw) {
       this.draw = false;
     }
-  }
-
-  isDead() {
-    return false;
   }
 
   setChance(chance) {

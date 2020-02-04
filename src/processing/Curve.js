@@ -61,6 +61,60 @@ export class Curve {
   }
 }
 
+export class CurveInstrument {
+  constructor(c, interval, ctx) {
+    this.curves = [];
+    this.c = c;
+    this.ctx = ctx;
+    this.period = 90;
+    this.interval = Math.ceil(this.period/interval);
+    this.chance = 1;
+    this.stopped = true;
+    this.frames = 0;
+  }
+
+  start() {
+    this.stopped = false;
+  }
+  stop() {
+    this.stopped = true;
+  }
+
+  display() {
+    this.curves.forEach((el, i, arr) => {
+      el.update();
+      el.display();
+      if(el.isDead()) {
+        arr[i] = null;
+      }
+    });
+    this.curves = this.curves.filter((el) => el != null);
+  }
+  
+  update() {
+    this.frames++;
+    if(this.frames % this.interval == 0) {
+      if(Math.random() <= this.chance) {
+        let newCurve = new Curve(Math.random()*1000+200,Math.random()*500+200,this.c,Math.floor(Math.random()*5)*30+30,this.ctx);
+        this.curves.push(newCurve);
+      }
+      return;
+    }
+  }
+
+  setChance(chance) {
+    this.chance = chance;
+  }
+
+  setInterval(interval) {
+    this.interval = Math.floor(this.period/interval);
+  }
+
+  setColor(c) {
+    this.c = c;
+  }
+}
+
 function genPoints(x,y,cx1,cy1,dist) {
   let cx2,cy2,x2,y2,rand;
   let clampY = clamp(window.innerHeight);

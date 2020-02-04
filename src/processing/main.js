@@ -1,7 +1,7 @@
 import {colors} from '../data/instruments.js';
 import {ShimmerSquare, PulseSquare} from '../processing/Particle.js';
 import {Digit, Emoji} from '../processing/Text.js';
-import {Curve} from "../processing/Curve.js";
+import {Curve, CurveInstrument} from "../processing/Curve.js";
 import {Instrument} from "../processing/Instrument.js";
 
 export default function main(ctx) {
@@ -18,10 +18,11 @@ export default function main(ctx) {
       p5.resizeCanvas(window.innerWidth, window.innerHeight);
       p5.colorMode(p5.HSB, 360, 255, 255);
       p5.frameRate(30);
-      let inst1 = new Instrument(p5.color(50, 200, 255), 300, 5, p5);
-      let inst2 = new Instrument(p5.color(100, 200, 255), 800, 3, p5);
-      self.instruments.push(inst1);
-      self.instruments.push(inst2);
+      // initialize 'instruments'
+      self.instruments["sax"] = new Instrument(p5.color(50, 200, 255), 300, 5, p5);
+      self.instruments["piano"] = new Instrument(p5.color(100, 200, 255), 800, 3, p5);
+      self.instruments["curves"] = new CurveInstrument(p5.color(1, 200, 255), 6, p5);
+      self.instruments["emoji"] = new EmojiInstrument(3, p5);
     };
     p5.draw = function() {
       p5.background(0);
@@ -41,9 +42,10 @@ export default function main(ctx) {
         }
       });
       sustain = sustain.filter((el) => el != null);
-      self.instruments.forEach((inst) => {
+      for(var key in self.instruments) {
+        let inst = self.instruments[key];
         if(!inst.stopped){inst.display(); inst.update();}
-      });
+      }
       if(self.queue.length != 0) {
         self.queue.forEach((el) => {
           if(self.users.includes(el.user) && el.sustain) {
@@ -148,6 +150,43 @@ export default function main(ctx) {
           emoji,
           p5
         ));
+      }
+    }
+    class EmojiInstrument {
+      constructor(interval, ctx) {
+        this.intervals = [];
+        this.ctx = ctx;
+        this.period = 3000; // in miliseconds
+        this.interval = Math.ceil(this.period/interval);
+        this.chance = 1;
+        this.stopped = true;
+        this.emoji = ['😍','🤓','🤗','🤯'];
+      }
+
+      start() {
+        this.stopped = false;
+        let arr = new Array(3);
+        for(let i = 0; i < 3; i++) {
+          arr[i] = setInterval(() => {
+            let emoji = this.emoji[Math.floor(Math.random()*4)];
+            if(Math.random() < this.chance) {
+              emojiCloud(emoji);
+            }
+          }, this.interval + Math.floor(Math.random()*200))
+        }
+        this.intervals = arr;
+      }
+      stop() {
+        this.stopped = true;
+        this.intervals.forEach((el) => clearInterval(el));
+        this.intervals = [];
+      }
+
+      update() {
+
+      }
+      display() {
+
       }
     }
   }
