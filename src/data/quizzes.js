@@ -477,7 +477,21 @@ export default [
     ],
     colors: [230, 1],
     class: 'chart',
-    visualization: 'pie',
+    visualization: 'curve',
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'checkNeighbor',
+    title: 'Check your neighbor',
+    question: "Does your neighbor's phOne say the sAme thing as yours? lOOk arOUnd u",
+    answers: [
+      'complete sAme',
+      'omg totally dIffErent'
+    ],
+    colors: [230, 1],
+    class: 'look',
+    visualization: '',
     quantity: 'single',
     duration: 15000
   },
@@ -491,7 +505,7 @@ export default [
     ],
     colors: [230, 1],
     class: 'chart',
-    visualization: 'bar',
+    visualization: 'pie',
     quantity: 'single',
     duration: 15000
   },
@@ -505,7 +519,7 @@ export default [
     ],
     colors: [230, 1],
     class: 'chart',
-    visualization: 'bar',
+    visualization: 'bubble',
     quantity: 'single',
     duration: 15000
   },
@@ -519,7 +533,7 @@ export default [
     ],
     colors: [230, 1],
     class: 'chart',
-    visualization: 'bar',
+    visualization: 'line',
     quantity: 'single',
     duration: 15000
   },
@@ -533,7 +547,7 @@ export default [
     ],
     colors: [230, 1],
     class: 'stop',
-    visualization: 'bar',
+    visualization: 'pie',
     quantity: 'single',
     duration: 15000
   },
@@ -548,20 +562,6 @@ export default [
     colors: [230, 1],
     class: 'stop',
     visualization: 'bar',
-    quantity: 'single',
-    duration: 15000
-  },
-  {
-    id: 'checkNeighbor',
-    title: 'Check your neighbor',
-    question: "Does your neighbor's phOne say the sAme thing as yours? lOOk arOUnd u",
-    answers: [
-      'complete sAme',
-      'omg totally dIffErent'
-    ],
-    colors: [230, 1],
-    class: 'look',
-    visualization: 'pie',
     quantity: 'single',
     duration: 15000
   },
