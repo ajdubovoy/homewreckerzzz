@@ -117,6 +117,24 @@ export default [
     duration: 20000
   },
   {
+    id: 'emoji3',
+    title: 'Emoji 3',
+    question: "Please select an emoji:",
+    answers: [
+      '🙌',
+      '🤟',
+      '🦶',
+      '👀'
+    ],
+    colors: [
+      1,300,20,60
+    ],
+    class: 'doughnuts',
+    visualization: 'emoji',
+    quantity: 'multiple',
+    duration: 20000
+  },
+  {
     id: 'numbers1',
     title: 'Numbers 1',
     question: "Please select a number:",
@@ -266,26 +284,85 @@ export default [
     }
   },
   {
-    id: 'pianoShutUp',
-    title: 'Piano shut up',
-    question: "Do you think that dArnED pianist should shut up?",
+    id: 'fasterPiano',
+    title: 'Piano Fast',
+    question: "🙄 that pianist is lookin' awful tired? shouldn't they play FASTER???",
     answers: [
-      'yeep',
-      'nopers'
+      'go forrr it',
+      'i really prefer a sustained effort'
     ],
     colors: [230, 1],
-    class: 'stop',
-    visualization: 'curve',
+    class: 'piano',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "piano",
+      "param": "speed" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
     quantity: 'single',
-    duration: 15000,
-    event: {
-      piano: false
-    }
+    duration: 10000
   },
   {
-    id: 'fasterSAX',
-    title: 'that fast sax',
-    question: "🙄 wow, what is this guy doing? shouldn't he play FASTER???",
+    id: 'louderPiano',
+    title: 'Piano Loud',
+    question: "i can barely hEar the haMMErs hit those Strings '' want them to play louder?",
+    answers: [
+      'GO FOR IT',
+      'plz no stop urg garble'
+    ],
+    colors: [230, 1],
+    class: 'piano',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "piano",
+      "param": "volume" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 10000
+  },
+  {
+    id: 'texturePiano',
+    title: 'Piano Texture',
+    question: "this is feelin\' awful samEY; wanna swItch it up?",
+    answers: [
+      'totes',
+      'I LIKE THIS THO'
+    ],
+    colors: [230, 1],
+    class: 'piano',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "piano",
+      "param": "texture" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 10000
+  },
+  {
+    id: 'colorPiano',
+    title: 'Piano Color',
+    question: "d0 u like a colOUR to repaint the PIANO?",
+    answers: [
+      'red',
+      'pink',
+      'purple',
+      'yellow'
+    ],
+    colors: [
+      1,300,271,60
+    ],
+    class: 'piano',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "piano",
+      "param": "color" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 10000
+  },
+  {
+    id: 'fasterSax',
+    title: 'Sax Fast',
+    question: "🙄 wow, what is this sax cat doing? shouldn't they play FASTER???",
     answers: [
       'i was thinking the same thing',
       'i don\'t agree, mean computer'
@@ -296,6 +373,64 @@ export default [
     details: {
       "instrument": "sax",
       "param": "speed" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 10000
+  },
+  {
+    id: 'louderSax',
+    title: 'Sax Loud',
+    question: "that sax is aWfUl quIET;;;want them to SKRoNK?",
+    answers: [
+      'i\'ve been waiting für u to ask tHAt',
+      'ew that sounds awfUL'
+    ],
+    colors: [230, 1],
+    class: 'sax',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "sax",
+      "param": "volume" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 10000
+  },
+  {
+    id: 'textureSax',
+    title: 'Sax Texture',
+    question: "want the sax to t00t that h0rn differently?",
+    answers: [
+      'plzzzzzzzzzzzz',
+      'nah thx'
+    ],
+    colors: [230, 1],
+    class: 'sax',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "sax",
+      "param": "texture" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 10000
+  },
+  {
+    id: 'colorSax',
+    title: 'Sax Color',
+    question: "d0 u like a colOUR to repaint the SAX?",
+    answers: [
+      'red',
+      'pink',
+      'purple',
+      'yellow'
+    ],
+    colors: [
+      1,300,271,60
+    ],
+    class: 'sax',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "sax",
+      "param": "color" // sax/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
     duration: 10000
