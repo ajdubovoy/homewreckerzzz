@@ -372,10 +372,10 @@ export default [
       'stay slow young squiggleone'
     ],
     colors: [230, 1],
-    class: 'piano',
+    class: 'curve',
     visualization: 'instrument', //if visualize is instrument, the details key is necessary
     details: {
-      "instrument": "piano",
+      "instrument": "curves",
       "param": "speed" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',
@@ -394,10 +394,10 @@ export default [
     colors: [
       1,300,271,240
     ],
-    class: 'piano',
+    class: 'curve',
     visualization: 'instrument', //if visualize is instrument, the details key is necessary
     details: {
-      "instrument": "curve",
+      "instrument": "curves",
       "param": "color" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
     },
     quantity: 'single',

@@ -197,6 +197,10 @@ export default {
   background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('~@/assets/images/amateur.gif');
   background-size: contain;
 }
+.curve{
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.8)), url('~@/assets/images/curve.gif');
+  background-size: contain;
+}
 .btn-quiz{
   background-blend-mode: multiply;
   text-shadow: 2px 2px rgba(0,0,0,0.5);
