@@ -21,7 +21,7 @@ export default function main(ctx) {
       // initialize 'instruments'
       self.instruments["sax"] = new Instrument(p5.color(50, 200, 255), 300, 5, p5);
       self.instruments["piano"] = new Instrument(p5.color(100, 200, 255), 800, 3, p5);
-      self.instruments["curves"] = new CurveInstrument(p5.color(1, 200, 255), 3, p5);
+      self.instruments["curves"] = new CurveInstrument(p5.color(1, 200, 255), 4, p5);
       self.instruments["emoji"] = new EmojiInstrument(3, p5);
     };
     p5.draw = function() {
@@ -164,7 +164,12 @@ export default function main(ctx) {
         this.interval = Math.ceil(this.period/interval);
         this.chance = 1;
         this.stopped = true;
-        this.emoji = ['😍','🤓','🤗','🤯'];
+        this.emoji = ['😍','🤓','🤗','🤯', '🙌',
+      '🤟',
+      '🦶',
+      '👀','🐣',
+      '🍡',
+      '🦖',];
         this.mult = 1;
       }
 
@@ -173,11 +178,11 @@ export default function main(ctx) {
         let arr = new Array(3);
         for(let i = 0; i < 3; i++) {
           arr[i] = setInterval(() => {
-            let emoji = this.emoji[Math.floor(Math.random()*4)];
+            let emoji = this.emoji[Math.floor(Math.random()*this.emoji.length)];
             if(Math.random() < this.chance) {
               emojiCloud(emoji, this.mult);
             }
-          }, this.interval + Math.floor(Math.random()*200))
+          }, this.interval + Math.floor(Math.random()*500))
         }
         this.intervals = arr;
       }

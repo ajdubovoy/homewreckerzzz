@@ -112,7 +112,7 @@ export class CurveInstrument {
   }
 
   setColor(c) {
-    this.c = c;
+    this.c = this.ctx.color(c, 200, 255);
   }
 }
 

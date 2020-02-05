@@ -85,7 +85,9 @@ export default {
             if(q.event) {
               for(var key in q.event) {
                 if(q.event[key]) {
-                  this.instruments[key].start();
+                  if(this.instruments[key].stopped) {
+                    this.instruments[key].start();
+                  }
                 } else {
                   this.instruments[key].stop();
                 }
