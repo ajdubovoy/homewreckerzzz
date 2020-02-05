@@ -364,6 +364,46 @@ export default [
     duration: 15000
   },
   {
+    id: 'fasterCurve',
+    title: 'Curve Fast',
+    question: "plz can i has the SQUIGGLES speedier?",
+    answers: [
+      'sqoop more sqööpily',
+      'stay slow young squiggleone'
+    ],
+    colors: [230, 1],
+    class: 'piano',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "piano",
+      "param": "speed" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'curveColor',
+    title: 'Curve Color',
+    question: "i wanna make the sqÜÜIggles prettier; dont u?",
+    answers: [
+      'red',
+      'pink',
+      'purple',
+      'blue',
+    ],
+    colors: [
+      1,300,271,240
+    ],
+    class: 'piano',
+    visualization: 'instrument', //if visualize is instrument, the details key is necessary
+    details: {
+      "instrument": "curve",
+      "param": "color" // piano/piano: [speed, texture, color, volume, emoji], emoji: [speed, volume], curves: [speed, color]
+    },
+    quantity: 'single',
+    duration: 15000
+  },
+  {
     id: 'fasterSax',
     title: 'Sax Fast',
     question: "🙄 wow, what is this sax cat doing? shouldn't they play FASTER???",
@@ -593,6 +633,18 @@ export default [
     id: 'sorry',
     title: 'Sorry',
     question: "im hOnestly s0 sorry this had to happen...",
+    answers: [],
+    colors: [],
+    class: 'sorry',
+    visualization: '',
+    message: true,
+    quantity: 'single',
+    duration: 15000
+  },
+  {
+    id: 'notPretty',
+    title: 'Not Pretty',
+    question: "i rLLy dont like musiK that isnt preTTy........😵",
     answers: [],
     colors: [],
     class: 'sorry',
