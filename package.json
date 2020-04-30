@@ -31,7 +31,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "express-namespace-routes": "^0.0.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "lodash.remove": "^4.7.0",
     "lodash.throttle": "^4.1.1",
